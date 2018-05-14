@@ -36,6 +36,11 @@ class HomeViewController: UIViewController {
         self.navigationController?.pushViewController(destination, animated: true)
     }
     
+    @IBAction func settingsBtnTapped(_ sender: Any) {
+          let destination = self.storyboard?.instantiateViewController(withIdentifier: "SettingsViewController") as! SettingsViewController
+          self.navigationController?.pushViewController(destination, animated: true)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.isNavigationBarHidden = true

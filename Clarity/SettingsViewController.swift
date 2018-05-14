@@ -7,12 +7,16 @@
 //
 
 import UIKit
+import Firebase
 
 class SettingsViewController: UIViewController {
 
+    let db = Firestore.firestore()
+    
+    @IBOutlet weak var nameTxtField: UITextField!
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
     }
 
@@ -20,5 +24,9 @@ class SettingsViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
+    @IBAction func backBtnPressed(_ sender: Any) {
+        print(nameTxtField.text)
+    }
+    
 }

@@ -19,6 +19,7 @@
 		E7C0A5F320A9F23F007A8F39 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E7C0A5F120A9F23F007A8F39 /* LaunchScreen.storyboard */; };
 		E7C0A5FE20A9F23F007A8F39 /* ClarityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C0A5FD20A9F23F007A8F39 /* ClarityTests.swift */; };
 		E7C0A60920A9F23F007A8F39 /* ClarityUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C0A60820A9F23F007A8F39 /* ClarityUITests.swift */; };
+		E7F7DB0720AA251500252AA1 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F7DB0620AA251500252AA1 /* SettingsViewController.swift */; };
 		FA684CBBD94A12E5511C9123 /* Pods_ClarityTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDD35D5BF6B1106C6A550085 /* Pods_ClarityTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -62,6 +63,7 @@
 		E7C0A60420A9F23F007A8F39 /* ClarityUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ClarityUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7C0A60820A9F23F007A8F39 /* ClarityUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClarityUITests.swift; sourceTree = "<group>"; };
 		E7C0A60A20A9F23F007A8F39 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E7F7DB0620AA251500252AA1 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		ED82CB166BA61ED7F4423C5A /* Pods-Clarity.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Clarity.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Clarity/Pods-Clarity.debug.xcconfig"; sourceTree = "<group>"; };
 		EDDB8AEEFE050573C461D29B /* Pods_ClarityUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ClarityUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD43534DA3442C0B51F8F166 /* Pods-Clarity.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Clarity.release.xcconfig"; path = "Pods/Target Support Files/Pods-Clarity/Pods-Clarity.release.xcconfig"; sourceTree = "<group>"; };
@@ -146,6 +148,7 @@
 				9CB90C3920AA129100BEADCA /* GoogleService-Info.plist */,
 				E7C0A5E820A9F23E007A8F39 /* AppDelegate.swift */,
 				9CB90C3520AA108A00BEADCA /* HomeViewController.swift */,
+				E7F7DB0620AA251500252AA1 /* SettingsViewController.swift */,
 				9CB90C3720AA11B400BEADCA /* MealViewController.swift */,
 				E7C0A5EC20A9F23E007A8F39 /* Main.storyboard */,
 				9CDC1FEB20AA02CD00503BAB /* LoginViewController.swift */,
@@ -441,6 +444,7 @@
 				9CDC1FEC20AA02CD00503BAB /* LoginViewController.swift in Sources */,
 				9CB90C3820AA11B500BEADCA /* MealViewController.swift in Sources */,
 				E7C0A5E920A9F23E007A8F39 /* AppDelegate.swift in Sources */,
+				E7F7DB0720AA251500252AA1 /* SettingsViewController.swift in Sources */,
 				9CB90C3620AA108B00BEADCA /* HomeViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
