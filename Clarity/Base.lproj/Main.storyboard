@@ -97,6 +97,9 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ike-5x-tpu">
                                 <rect key="frame" x="62" y="562" width="250" height="56"/>
                                 <state key="normal" image="loginBtn"/>
+                                <connections>
+                                    <segue destination="glx-cc-HIe" kind="show" id="dtV-b6-24K"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Signup" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zpx-o9-5ns">
                                 <rect key="frame" x="165" y="632" width="45" height="17"/>
@@ -166,10 +169,10 @@
             </objects>
             <point key="canvasLocation" x="1449" y="-677"/>
         </scene>
-        <!--View Controller-->
+        <!--Home View Controller-->
         <scene sceneID="xO3-BI-YIc">
             <objects>
-                <viewController id="glx-cc-HIe" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="HomeViewController" id="glx-cc-HIe" customClass="HomeViewController" customModule="Clarity" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="6HK-oh-FWx">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -186,10 +189,16 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gS6-A1-FGI">
                                         <rect key="frame" x="0.0" y="0.0" width="135" height="135"/>
                                         <state key="normal" image="Dinner"/>
+                                        <connections>
+                                            <action selector="dinnerTapped:" destination="Fwd-hH-COX" eventType="touchUpInside" id="sUs-jg-chK"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1qo-YY-1yw">
                                         <rect key="frame" x="162" y="0.0" width="135" height="135"/>
                                         <state key="normal" image="Snacks"/>
+                                        <connections>
+                                            <action selector="snacksTapped:" destination="Fwd-hH-COX" eventType="touchUpInside" id="Fco-qL-fNt"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>
@@ -199,10 +208,16 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rT3-iT-Qy5">
                                         <rect key="frame" x="0.0" y="0.0" width="135" height="135"/>
                                         <state key="normal" image="Breakfast"/>
+                                        <connections>
+                                            <action selector="breakfastTapped:" destination="glx-cc-HIe" eventType="touchUpInside" id="eLx-n3-Yzu"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7fW-Om-XHN">
                                         <rect key="frame" x="160" y="0.0" width="135" height="135"/>
                                         <state key="normal" image="Lunch"/>
+                                        <connections>
+                                            <action selector="lunchTapped:" destination="Fwd-hH-COX" eventType="touchUpInside" id="0gU-YQ-Djy"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>
@@ -237,8 +252,24 @@
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IVW-Xb-5Xd" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="Fwd-hH-COX" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="1448.8" y="27.436281859070466"/>
+        </scene>
+        <!--Meal View Controller-->
+        <scene sceneID="LZI-0c-Krf">
+            <objects>
+                <viewController storyboardIdentifier="MealViewController" id="G9s-XZ-xH9" customClass="MealViewController" customModule="Clarity" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="hoD-lQ-hg2">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="Krb-Gu-YPm"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XUy-5D-3Yx" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2469" y="50"/>
         </scene>
     </scenes>
     <resources>
