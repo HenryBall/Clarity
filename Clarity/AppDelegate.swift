@@ -25,6 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         
         let homeViewController = s.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
         let loginViewController = s.instantiateViewController(withIdentifier: "login") as! LoginViewController
+    
         let navigationController: UINavigationController = s.instantiateInitialViewController() as! UINavigationController
         
         if (!GIDSignIn.sharedInstance().hasAuthInKeychain()){
@@ -72,9 +73,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
             
             UserDefaults.standard.set(GIDSignIn.sharedInstance().currentUser.userID, forKey: "user_id")
             
-            let destination = self.s.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
+            //let destination = self.s.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
+            let settingsViewController = self.s.instantiateViewController(withIdentifier: "SettingsViewController") as! SettingsViewController
             let nv = self.window.rootViewController as! UINavigationController
-            nv.viewControllers = [destination]
+            nv.viewControllers = [settingsViewController]
         }
     }
     

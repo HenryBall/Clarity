@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -138,10 +139,10 @@
             </objects>
             <point key="canvasLocation" x="736.79999999999995" y="28.335832083958024"/>
         </scene>
-        <!--View Controller-->
+        <!--Settings View Controller-->
         <scene sceneID="2xS-0z-LyO">
             <objects>
-                <viewController id="anb-sK-6mI" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SettingsViewController" id="anb-sK-6mI" customClass="SettingsViewController" customModule="Clarity" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="9ds-XG-dNw">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -194,6 +195,7 @@
                                         <state key="normal" image="Dinner"/>
                                         <connections>
                                             <action selector="dinnerTapped:" destination="Fwd-hH-COX" eventType="touchUpInside" id="sUs-jg-chK"/>
+                                            <action selector="dinnerTapped:" destination="glx-cc-HIe" eventType="touchUpInside" id="sxT-fy-WCX"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1qo-YY-1yw">
@@ -201,6 +203,7 @@
                                         <state key="normal" image="Snacks"/>
                                         <connections>
                                             <action selector="snacksTapped:" destination="Fwd-hH-COX" eventType="touchUpInside" id="Fco-qL-fNt"/>
+                                            <action selector="snacksTapped:" destination="glx-cc-HIe" eventType="touchUpInside" id="Yf5-V5-fae"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -220,6 +223,7 @@
                                         <state key="normal" image="Lunch"/>
                                         <connections>
                                             <action selector="lunchTapped:" destination="Fwd-hH-COX" eventType="touchUpInside" id="0gU-YQ-Djy"/>
+                                            <action selector="lunchTapped:" destination="glx-cc-HIe" eventType="touchUpInside" id="0te-eX-ioU"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -266,9 +270,32 @@
                     <view key="view" contentMode="scaleToFill" id="hoD-lQ-hg2">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7AV-Bz-ZfH">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="170.5"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Og-c1-VA6">
+                                <rect key="frame" x="15" y="30" width="14" height="24"/>
+                                <state key="normal" image="backButton"/>
+                                <connections>
+                                    <action selector="backTapped:" destination="G9s-XZ-xH9" eventType="touchUpInside" id="UQz-Jp-mU3"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="9Og-c1-VA6" firstAttribute="top" secondItem="hoD-lQ-hg2" secondAttribute="top" constant="30" id="LH2-1c-cz5"/>
+                            <constraint firstItem="7AV-Bz-ZfH" firstAttribute="leading" secondItem="Krb-Gu-YPm" secondAttribute="leading" id="MVc-ea-ae2"/>
+                            <constraint firstItem="7AV-Bz-ZfH" firstAttribute="height" secondItem="hoD-lQ-hg2" secondAttribute="width" multiplier="1/2.2" id="aJt-hb-dKk"/>
+                            <constraint firstItem="9Og-c1-VA6" firstAttribute="leading" secondItem="Krb-Gu-YPm" secondAttribute="leading" constant="15" id="daS-aG-gEw"/>
+                            <constraint firstItem="7AV-Bz-ZfH" firstAttribute="top" secondItem="hoD-lQ-hg2" secondAttribute="top" id="j1L-Pm-mPf"/>
+                            <constraint firstItem="Krb-Gu-YPm" firstAttribute="trailing" secondItem="7AV-Bz-ZfH" secondAttribute="trailing" id="uYz-kB-djf"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="Krb-Gu-YPm"/>
                     </view>
+                    <connections>
+                        <outlet property="bannerImage" destination="7AV-Bz-ZfH" id="acq-rN-79J"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XUy-5D-3Yx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -280,6 +307,7 @@
         <image name="Dinner" width="135" height="135"/>
         <image name="Lunch" width="135" height="135"/>
         <image name="Snacks" width="135" height="135"/>
+        <image name="backButton" width="14" height="24"/>
         <image name="getStartedBtn" width="250" height="56"/>
         <image name="greenBlueBackground" width="375" height="317"/>
         <image name="greenBlueBkgdSettings" width="375" height="667"/>
