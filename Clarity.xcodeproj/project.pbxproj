@@ -7,14 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		007319F02321ABF02802DC78 /* Pods_ClarityUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDDB8AEEFE050573C461D29B /* Pods_ClarityUITests.framework */; };
+		4A3C89E96AAD5B51EED42B15 /* Pods_Clarity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F01538DE5D7B296F77D75B8 /* Pods_Clarity.framework */; };
+		9CB90C3620AA108B00BEADCA /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB90C3520AA108A00BEADCA /* HomeViewController.swift */; };
+		9CB90C3820AA11B500BEADCA /* MealViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB90C3720AA11B400BEADCA /* MealViewController.swift */; };
+		9CB90C3A20AA129200BEADCA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9CB90C3920AA129100BEADCA /* GoogleService-Info.plist */; };
 		9CDC1FEC20AA02CD00503BAB /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CDC1FEB20AA02CD00503BAB /* LoginViewController.swift */; };
 		E7C0A5E920A9F23E007A8F39 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C0A5E820A9F23E007A8F39 /* AppDelegate.swift */; };
-		E7C0A5EB20A9F23E007A8F39 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C0A5EA20A9F23E007A8F39 /* ViewController.swift */; };
 		E7C0A5EE20A9F23E007A8F39 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E7C0A5EC20A9F23E007A8F39 /* Main.storyboard */; };
 		E7C0A5F020A9F23F007A8F39 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E7C0A5EF20A9F23F007A8F39 /* Assets.xcassets */; };
 		E7C0A5F320A9F23F007A8F39 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E7C0A5F120A9F23F007A8F39 /* LaunchScreen.storyboard */; };
 		E7C0A5FE20A9F23F007A8F39 /* ClarityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C0A5FD20A9F23F007A8F39 /* ClarityTests.swift */; };
 		E7C0A60920A9F23F007A8F39 /* ClarityUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C0A60820A9F23F007A8F39 /* ClarityUITests.swift */; };
+		FA684CBBD94A12E5511C9123 /* Pods_ClarityTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDD35D5BF6B1106C6A550085 /* Pods_ClarityTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,10 +40,18 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1F01538DE5D7B296F77D75B8 /* Pods_Clarity.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Clarity.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		27045314FA5F22880CB76D03 /* Pods-ClarityUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ClarityUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ClarityUITests/Pods-ClarityUITests.release.xcconfig"; sourceTree = "<group>"; };
+		5060E24991B215836FF205D4 /* Pods-ClarityTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ClarityTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ClarityTests/Pods-ClarityTests.debug.xcconfig"; sourceTree = "<group>"; };
+		731279D8CB126C6DD31848EB /* Pods-ClarityTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ClarityTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ClarityTests/Pods-ClarityTests.release.xcconfig"; sourceTree = "<group>"; };
+		9CB90C3520AA108A00BEADCA /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		9CB90C3720AA11B400BEADCA /* MealViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MealViewController.swift; sourceTree = "<group>"; };
+		9CB90C3920AA129100BEADCA /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9CDC1FEB20AA02CD00503BAB /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		CDD35D5BF6B1106C6A550085 /* Pods_ClarityTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ClarityTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E274A5A283688D6A31B4A23D /* Pods-ClarityUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ClarityUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ClarityUITests/Pods-ClarityUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		E7C0A5E520A9F23E007A8F39 /* Clarity.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Clarity.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7C0A5E820A9F23E007A8F39 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		E7C0A5EA20A9F23E007A8F39 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		E7C0A5ED20A9F23E007A8F39 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E7C0A5EF20A9F23F007A8F39 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E7C0A5F220A9F23F007A8F39 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -49,6 +62,9 @@
 		E7C0A60420A9F23F007A8F39 /* ClarityUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ClarityUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7C0A60820A9F23F007A8F39 /* ClarityUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClarityUITests.swift; sourceTree = "<group>"; };
 		E7C0A60A20A9F23F007A8F39 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		ED82CB166BA61ED7F4423C5A /* Pods-Clarity.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Clarity.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Clarity/Pods-Clarity.debug.xcconfig"; sourceTree = "<group>"; };
+		EDDB8AEEFE050573C461D29B /* Pods_ClarityUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ClarityUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FD43534DA3442C0B51F8F166 /* Pods-Clarity.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Clarity.release.xcconfig"; path = "Pods/Target Support Files/Pods-Clarity/Pods-Clarity.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +72,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4A3C89E96AAD5B51EED42B15 /* Pods_Clarity.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -63,6 +80,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA684CBBD94A12E5511C9123 /* Pods_ClarityTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -70,12 +88,36 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				007319F02321ABF02802DC78 /* Pods_ClarityUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		91ABC6AADF31A684B53BA786 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1F01538DE5D7B296F77D75B8 /* Pods_Clarity.framework */,
+				CDD35D5BF6B1106C6A550085 /* Pods_ClarityTests.framework */,
+				EDDB8AEEFE050573C461D29B /* Pods_ClarityUITests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B7AEFEDC64FFBF4505A2E7F4 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				ED82CB166BA61ED7F4423C5A /* Pods-Clarity.debug.xcconfig */,
+				FD43534DA3442C0B51F8F166 /* Pods-Clarity.release.xcconfig */,
+				5060E24991B215836FF205D4 /* Pods-ClarityTests.debug.xcconfig */,
+				731279D8CB126C6DD31848EB /* Pods-ClarityTests.release.xcconfig */,
+				E274A5A283688D6A31B4A23D /* Pods-ClarityUITests.debug.xcconfig */,
+				27045314FA5F22880CB76D03 /* Pods-ClarityUITests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		E7C0A5DC20A9F23E007A8F39 = {
 			isa = PBXGroup;
 			children = (
@@ -83,6 +125,8 @@
 				E7C0A5FC20A9F23F007A8F39 /* ClarityTests */,
 				E7C0A60720A9F23F007A8F39 /* ClarityUITests */,
 				E7C0A5E620A9F23E007A8F39 /* Products */,
+				B7AEFEDC64FFBF4505A2E7F4 /* Pods */,
+				91ABC6AADF31A684B53BA786 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -99,8 +143,10 @@
 		E7C0A5E720A9F23E007A8F39 /* Clarity */ = {
 			isa = PBXGroup;
 			children = (
+				9CB90C3920AA129100BEADCA /* GoogleService-Info.plist */,
 				E7C0A5E820A9F23E007A8F39 /* AppDelegate.swift */,
-				E7C0A5EA20A9F23E007A8F39 /* ViewController.swift */,
+				9CB90C3520AA108A00BEADCA /* HomeViewController.swift */,
+				9CB90C3720AA11B400BEADCA /* MealViewController.swift */,
 				E7C0A5EC20A9F23E007A8F39 /* Main.storyboard */,
 				9CDC1FEB20AA02CD00503BAB /* LoginViewController.swift */,
 				E7C0A5EF20A9F23F007A8F39 /* Assets.xcassets */,
@@ -135,9 +181,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E7C0A60D20A9F23F007A8F39 /* Build configuration list for PBXNativeTarget "Clarity" */;
 			buildPhases = (
+				D867EA515C97C02035B7DA09 /* [CP] Check Pods Manifest.lock */,
 				E7C0A5E120A9F23E007A8F39 /* Sources */,
 				E7C0A5E220A9F23E007A8F39 /* Frameworks */,
 				E7C0A5E320A9F23E007A8F39 /* Resources */,
+				174707CDAEB9679F7F390D01 /* [CP] Embed Pods Frameworks */,
+				E000FD1FD5424A066A261339 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -152,6 +201,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E7C0A61020A9F23F007A8F39 /* Build configuration list for PBXNativeTarget "ClarityTests" */;
 			buildPhases = (
+				FCCEA29A848702FBE4E18F20 /* [CP] Check Pods Manifest.lock */,
 				E7C0A5F520A9F23F007A8F39 /* Sources */,
 				E7C0A5F620A9F23F007A8F39 /* Frameworks */,
 				E7C0A5F720A9F23F007A8F39 /* Resources */,
@@ -170,6 +220,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E7C0A61320A9F23F007A8F39 /* Build configuration list for PBXNativeTarget "ClarityUITests" */;
 			buildPhases = (
+				837EB19E03E53EDA900F9A17 /* [CP] Check Pods Manifest.lock */,
 				E7C0A60020A9F23F007A8F39 /* Sources */,
 				E7C0A60120A9F23F007A8F39 /* Frameworks */,
 				E7C0A60220A9F23F007A8F39 /* Resources */,
@@ -233,6 +284,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E7C0A5F320A9F23F007A8F39 /* LaunchScreen.storyboard in Resources */,
+				9CB90C3A20AA129200BEADCA /* GoogleService-Info.plist in Resources */,
 				E7C0A5F020A9F23F007A8F39 /* Assets.xcassets in Resources */,
 				E7C0A5EE20A9F23E007A8F39 /* Main.storyboard in Resources */,
 			);
@@ -254,14 +306,142 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		174707CDAEB9679F7F390D01 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Clarity/Pods-Clarity-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/BoringSSL/openssl.framework",
+				"${BUILT_PRODUCTS_DIR}/Charts/Charts.framework",
+				"${BUILT_PRODUCTS_DIR}/ChartsRealm/ChartsRealm.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMOAuth2/GTMOAuth2.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
+				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
+				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC/GRPCClient.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC-Core/grpc.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC-ProtoRPC/ProtoRPC.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC-RxLibrary/RxLibrary.framework",
+				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Charts.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ChartsRealm.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMOAuth2.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GRPCClient.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpc.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtoRPC.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxLibrary.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Clarity/Pods-Clarity-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		837EB19E03E53EDA900F9A17 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ClarityUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D867EA515C97C02035B7DA09 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Clarity-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E000FD1FD5424A066A261339 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Clarity/Pods-Clarity-resources.sh",
+				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Clarity/Pods-Clarity-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FCCEA29A848702FBE4E18F20 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ClarityTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		E7C0A5E120A9F23E007A8F39 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				9CDC1FEC20AA02CD00503BAB /* LoginViewController.swift in Sources */,
-				E7C0A5EB20A9F23E007A8F39 /* ViewController.swift in Sources */,
+				9CB90C3820AA11B500BEADCA /* MealViewController.swift in Sources */,
 				E7C0A5E920A9F23E007A8F39 /* AppDelegate.swift in Sources */,
+				9CB90C3620AA108B00BEADCA /* HomeViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -432,6 +612,7 @@
 		};
 		E7C0A60E20A9F23F007A8F39 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = ED82CB166BA61ED7F4423C5A /* Pods-Clarity.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -442,7 +623,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.Robert.Clarity;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Clarity;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -451,6 +632,7 @@
 		};
 		E7C0A60F20A9F23F007A8F39 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FD43534DA3442C0B51F8F166 /* Pods-Clarity.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -461,7 +643,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.Robert.Clarity;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Clarity;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -470,6 +652,7 @@
 		};
 		E7C0A61120A9F23F007A8F39 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5060E24991B215836FF205D4 /* Pods-ClarityTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -490,6 +673,7 @@
 		};
 		E7C0A61220A9F23F007A8F39 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 731279D8CB126C6DD31848EB /* Pods-ClarityTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -510,6 +694,7 @@
 		};
 		E7C0A61420A9F23F007A8F39 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E274A5A283688D6A31B4A23D /* Pods-ClarityUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -529,6 +714,7 @@
 		};
 		E7C0A61520A9F23F007A8F39 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 27045314FA5F22880CB76D03 /* Pods-ClarityUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;

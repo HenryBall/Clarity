@@ -80,7 +80,7 @@
         <!--Login View Controller-->
         <scene sceneID="S98-IC-KPc">
             <objects>
-                <viewController id="Nmx-cJ-Cvc" customClass="LoginViewController" customModule="Clarity" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="login" id="Nmx-cJ-Cvc" customClass="LoginViewController" customModule="Clarity" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Ciu-zF-Ma5">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -130,6 +130,9 @@
                         <viewLayoutGuide key="safeArea" id="KcM-mf-e6x"/>
                     </view>
                     <navigationItem key="navigationItem" id="kxM-2W-alK"/>
+                    <connections>
+                        <outlet property="GoogleSignInButton" destination="ike-5x-tpu" id="OIr-Vv-J3A"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Arf-6E-t6t" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
