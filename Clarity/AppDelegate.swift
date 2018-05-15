@@ -24,7 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         GIDSignIn.sharedInstance().delegate = self
         
         let homeViewController = s.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
-        let loginViewController = s.instantiateViewController(withIdentifier: "login") as! LoginViewController
+        let loginViewController = s.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
     
         let navigationController: UINavigationController = s.instantiateInitialViewController() as! UINavigationController
         
@@ -70,14 +70,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
             let document = db.collection("users").document(GIDSignIn.sharedInstance().currentUser.userID)
             document.setData(["logged-in": true], options: SetOptions.merge())
             
-            
             UserDefaults.standard.set(GIDSignIn.sharedInstance().currentUser.userID, forKey: "user_id")
             
-            //let destination = self.s.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
-            let settingsViewController = self.s.instantiateViewController(withIdentifier: "SettingsViewController") as! SettingsViewController
+            let destination = self.s.instantiateViewController(withIdentifier: "GettingStartedViewController") as! GettingStartedViewController
             let nv = self.window.rootViewController as! UINavigationController
-            nv.viewControllers = [settingsViewController]
+            nv.viewControllers = [destination]
         }
+
     }
     
     func applicationWillResignActive(_ application: UIApplication) {
