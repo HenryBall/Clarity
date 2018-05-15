@@ -18,6 +18,8 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var userName: UILabel!
     @IBOutlet weak var userLocation: UILabel!
     
+   
+    
     @IBAction func breakfastTapped(_ sender: Any) {
         let destination = self.storyboard?.instantiateViewController(withIdentifier: "MealViewController") as! MealViewController
         destination.selectedOption = 0
@@ -71,6 +73,10 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.isNavigationBarHidden = true
+        fillUserInfo()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
         fillUserInfo()
     }
 

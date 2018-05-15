@@ -155,7 +155,7 @@
                                 <constraints>
                                     <constraint firstAttribute="width" constant="300" id="1om-KT-Q9Z"/>
                                 </constraints>
-                                <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <userDefinedRuntimeAttributes>
@@ -169,7 +169,7 @@
                                 <constraints>
                                     <constraint firstAttribute="width" constant="300" id="o5m-xa-aWr"/>
                                 </constraints>
-                                <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <userDefinedRuntimeAttributes>
@@ -208,6 +208,9 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tQL-z4-Bsc">
                                 <rect key="frame" x="62.5" y="571" width="250" height="56"/>
                                 <state key="normal" image="saveSettingsbtn"/>
+                                <connections>
+                                    <action selector="onSaveSettingsPressed:" destination="anb-sK-6mI" eventType="touchUpInside" id="cZc-cS-eqp"/>
+                                </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xiq-kO-hiY">
                                 <rect key="frame" x="61" y="268.5" width="300" height="1"/>
@@ -238,7 +241,7 @@
                                 <constraints>
                                     <constraint firstAttribute="width" constant="300" id="Wdo-M3-7xg"/>
                                 </constraints>
-                                <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="yes"/>
                                 <userDefinedRuntimeAttributes>
@@ -266,7 +269,6 @@
                             <constraint firstItem="pFC-8Q-pSo" firstAttribute="leading" secondItem="Roz-pC-x8L" secondAttribute="trailing" constant="16" id="Hsr-im-T7G"/>
                             <constraint firstAttribute="bottom" secondItem="bbG-wO-2rV" secondAttribute="bottom" id="IIk-Zd-UJK"/>
                             <constraint firstItem="xiq-kO-hiY" firstAttribute="top" secondItem="C9m-gs-Zsw" secondAttribute="bottom" constant="2" id="Jn9-mj-jgZ"/>
-                            <constraint firstItem="bbG-wO-2rV" firstAttribute="leading" secondItem="IIO-VW-MjS" secondAttribute="trailing" constant="-45" id="NPC-mu-sGV"/>
                             <constraint firstItem="bbG-wO-2rV" firstAttribute="leading" secondItem="xPt-MK-ymC" secondAttribute="leading" id="OW9-RX-f7m"/>
                             <constraint firstItem="2GS-dW-Mjc" firstAttribute="leading" secondItem="Roz-pC-x8L" secondAttribute="trailing" constant="16" id="PGr-AL-ac8"/>
                             <constraint firstItem="C9m-gs-Zsw" firstAttribute="centerY" secondItem="IIO-VW-MjS" secondAttribute="centerY" id="QKH-wH-w1Y"/>
@@ -286,7 +288,6 @@
                             <constraint firstItem="IIO-VW-MjS" firstAttribute="leading" secondItem="xPt-MK-ymC" secondAttribute="leading" constant="23" id="eOo-1c-Ngl"/>
                             <constraint firstItem="h2q-6N-4Ew" firstAttribute="leading" secondItem="4FU-yj-g83" secondAttribute="trailing" constant="16" id="eTZ-4o-w1A"/>
                             <constraint firstItem="aYZ-DC-2Xm" firstAttribute="top" secondItem="xPt-MK-ymC" secondAttribute="top" constant="20" id="evf-dt-0Os"/>
-                            <constraint firstItem="bbG-wO-2rV" firstAttribute="leading" secondItem="Roz-pC-x8L" secondAttribute="trailing" constant="-45" id="hEo-77-NVV"/>
                             <constraint firstItem="xiq-kO-hiY" firstAttribute="leading" secondItem="IIO-VW-MjS" secondAttribute="trailing" constant="16" id="jaz-70-b8Y"/>
                             <constraint firstItem="RJE-Rj-qFe" firstAttribute="leading" secondItem="4FU-yj-g83" secondAttribute="trailing" constant="16" id="jxZ-qc-jec"/>
                             <constraint firstItem="C9m-gs-Zsw" firstAttribute="leading" secondItem="IIO-VW-MjS" secondAttribute="trailing" constant="16" id="mSP-a8-q97"/>
@@ -295,6 +296,11 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="xPt-MK-ymC"/>
                     </view>
+                    <connections>
+                        <outlet property="userLocation" destination="RJE-Rj-qFe" id="li7-EP-HNB"/>
+                        <outlet property="userName" destination="C9m-gs-Zsw" id="cRz-BC-Ftf"/>
+                        <outlet property="userWaterGoal" destination="pFC-8Q-pSo" id="MjU-Kk-qG2"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9eg-BI-tXy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

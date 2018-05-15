@@ -11,12 +11,28 @@ import Firebase
 
 class SettingsViewController: UIViewController {
 
+    let defaults = UserDefaults.standard
     let db = Firestore.firestore()
+    let storage = Storage.storage()
     
-   
+    @IBOutlet weak var userName: UITextField!
+    @IBOutlet weak var userLocation: UITextField!
+    @IBOutlet weak var userWaterGoal: UITextField!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        let user = db.collection("users").document(defaults.string(forKey: "user_id")!)
+        user.getDocument { (document, error) in
+            if let document = document, document.exists {
+                self.userName.text = (document.data()!["name"] as! String)
+                self.userLocation.text = (document.data()!["location"] as! String)
+                self.userWaterGoal.text = (document.data()!["waterGoal"] as! String)
+                
+                
+            } else {
+                print("Document does not exist")
+            }
+        }
         // Do any additional setup after loading the view.
     }
 
@@ -29,4 +45,21 @@ class SettingsViewController: UIViewController {
         self.navigationController?.popViewController(animated: true)
     }
     
+    @IBAction func onSaveSettingsPressed(_ sender: Any) {
+        let user = db.collection("users").document(defaults.string(forKey: "user_id")!)
+        
+        if (userName.text != "" && userLocation.text != "" && userWaterGoal.text != "") {
+            user.setData(["name": userName.text!], options: SetOptions.merge())
+            user.setData(["location": userLocation.text!], options: SetOptions.merge())
+            user.setData(["waterGoal": userWaterGoal.text!], options: SetOptions.merge())
+            
+        } else {
+            print ("You must fill all fields")
+            let alert = UIAlertController(title: "All information not filled in", message: "Please make sure to fill out all of your information", preferredStyle: .alert)
+            
+            alert.addAction(UIAlertAction(title: "Okay", style: .cancel, handler: nil))
+            
+            self.present(alert, animated: true)
+        }
+    }
 }
