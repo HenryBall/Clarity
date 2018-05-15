@@ -67,14 +67,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
             }
             
             let db = Firestore.firestore()
+            
+            let userID = GIDSignIn.sharedInstance().currentUser.userID
+            
+            //let usersRef = db.collection('users').document(userID).value(forKey: "location")
+
+            
             let document = db.collection("users").document(GIDSignIn.sharedInstance().currentUser.userID)
             document.setData(["logged-in": true], options: SetOptions.merge())
-            
             UserDefaults.standard.set(GIDSignIn.sharedInstance().currentUser.userID, forKey: "user_id")
+            document.getDocument { (document, error) in
+                if let document = document, document.exists {
+                    let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
+                    if(document.data()?.count == 1){
+                        let destination = self.s.instantiateViewController(withIdentifier: "GettingStartedViewController") as! GettingStartedViewController
+                        let nv = self.window.rootViewController as! UINavigationController
+                        nv.viewControllers = [destination]
+                    } else {
+                        let destination = self.s.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
+                        let nv = self.window.rootViewController as! UINavigationController
+                        nv.viewControllers = [destination]
+                    }
+                    
+                    print("Document data: \(dataDescription) \(String(describing: document.data()?.count))")
+                    
+                } else {
+                    print("Document does not exist")
+                }
+            }
             
-            let destination = self.s.instantiateViewController(withIdentifier: "GettingStartedViewController") as! GettingStartedViewController
-            let nv = self.window.rootViewController as! UINavigationController
-            nv.viewControllers = [destination]
+            
         }
 
     }

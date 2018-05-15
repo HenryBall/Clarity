@@ -22,7 +22,7 @@ class GettingStartedViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.hideKeyboard()
-        userName.backgroundColor = UIColor.clear
+       
     
     
     }

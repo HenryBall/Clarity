@@ -61,6 +61,7 @@ class HomeViewController: UIViewController {
             if let document = document, document.exists {
                 self.userName.text = (document.data()!["name"] as! String)
                 self.userLocation.text = (document.data()!["location"] as! String)
+    
             } else {
                 print("Document does not exist")
             }
