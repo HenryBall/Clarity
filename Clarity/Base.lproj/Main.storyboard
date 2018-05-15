@@ -97,20 +97,14 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ike-5x-tpu">
-                                <rect key="frame" x="62" y="562" width="250" height="56"/>
+                                <rect key="frame" x="62" y="542" width="250" height="56"/>
                                 <state key="normal" image="loginBtn"/>
                                 <connections>
                                     <segue destination="glx-cc-HIe" kind="show" id="dtV-b6-24K"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Signup" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zpx-o9-5ns">
-                                <rect key="frame" x="165" y="632" width="45" height="17"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Login or signup with you Google account" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fnb-1S-5Aj">
-                                <rect key="frame" x="68.5" y="655" width="239" height="17"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Login or signup with your Google account" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fnb-1S-5Aj">
+                                <rect key="frame" x="66.5" y="610" width="243" height="17"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="14"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -118,10 +112,8 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="Fnb-1S-5Aj" firstAttribute="top" secondItem="Zpx-o9-5ns" secondAttribute="bottom" constant="6" id="58A-9b-6R6"/>
-                            <constraint firstItem="Zpx-o9-5ns" firstAttribute="top" secondItem="ike-5x-tpu" secondAttribute="bottom" constant="14" id="9ne-vS-hSp"/>
-                            <constraint firstItem="ike-5x-tpu" firstAttribute="top" secondItem="1MF-cF-GWE" secondAttribute="bottom" constant="145" id="Fa2-qO-pdU"/>
-                            <constraint firstItem="Zpx-o9-5ns" firstAttribute="centerX" secondItem="Ciu-zF-Ma5" secondAttribute="centerX" id="MTD-4u-6tI"/>
+                            <constraint firstItem="KcM-mf-e6x" firstAttribute="bottom" secondItem="Fnb-1S-5Aj" secondAttribute="bottom" constant="40" id="3kZ-rR-v7X"/>
+                            <constraint firstItem="Fnb-1S-5Aj" firstAttribute="top" secondItem="ike-5x-tpu" secondAttribute="bottom" constant="12" id="IQT-DF-ZU6"/>
                             <constraint firstItem="ike-5x-tpu" firstAttribute="centerX" secondItem="Ciu-zF-Ma5" secondAttribute="centerX" id="Ma2-Z3-XiU"/>
                             <constraint firstItem="1MF-cF-GWE" firstAttribute="top" secondItem="mus-ye-dJE" secondAttribute="bottom" constant="17" id="TFJ-Sp-bMN"/>
                             <constraint firstItem="mus-ye-dJE" firstAttribute="centerX" secondItem="Ciu-zF-Ma5" secondAttribute="centerX" id="Tdi-dF-Lor"/>
