@@ -13,7 +13,7 @@ class SettingsViewController: UIViewController {
 
     let db = Firestore.firestore()
     
-    @IBOutlet weak var nameTxtField: UITextField!
+   
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -26,7 +26,7 @@ class SettingsViewController: UIViewController {
     }
     
     @IBAction func backBtnPressed(_ sender: Any) {
-        print(nameTxtField.text)
+        
     }
     
 }
