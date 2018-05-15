@@ -26,7 +26,7 @@ class SettingsViewController: UIViewController {
     }
     
     @IBAction func backBtnPressed(_ sender: Any) {
-        
+        self.navigationController?.popViewController(animated: true)
     }
     
 }
