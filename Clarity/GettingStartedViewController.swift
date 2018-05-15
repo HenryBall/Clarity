@@ -30,7 +30,7 @@ class GettingStartedViewController: UIViewController {
     @IBAction func getStartedTapped(_ sender: Any) {
         let user = db.collection("users").document(defaults.string(forKey: "user_id")!)
         
-        if (userName.text != nil && userLocation.text != nil && waterGoal.text != nil) {
+        if (userName.text != "" && userLocation.text != "" && waterGoal.text != "") {
             user.setData(["name": userName.text!], options: SetOptions.merge())
             user.setData(["location": userLocation.text!], options: SetOptions.merge())
             user.setData(["waterGoal": waterGoal.text!], options: SetOptions.merge())
@@ -39,6 +39,11 @@ class GettingStartedViewController: UIViewController {
             self.navigationController?.pushViewController(destination, animated: true)
         } else {
             print ("You must fill all fields")
+            let alert = UIAlertController(title: "All information not filled in", message: "Please make sure to fill out all of your information", preferredStyle: .alert)
+            
+            alert.addAction(UIAlertAction(title: "Okay", style: .cancel, handler: nil))
+            
+            self.present(alert, animated: true)
         }
     }
     
