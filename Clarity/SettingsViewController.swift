@@ -9,18 +9,21 @@
 import UIKit
 import Firebase
 
-class SettingsViewController: UIViewController {
+class SettingsViewController: UIViewController, UITextFieldDelegate {
 
     let defaults = UserDefaults.standard
     let db = Firestore.firestore()
     let storage = Storage.storage()
     
+    
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var userName: UITextField!
     @IBOutlet weak var userLocation: UITextField!
     @IBOutlet weak var userWaterGoal: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.hideKeyboard()
         let user = db.collection("users").document(defaults.string(forKey: "user_id")!)
         user.getDocument { (document, error) in
             if let document = document, document.exists {
@@ -61,5 +64,13 @@ class SettingsViewController: UIViewController {
             
             self.present(alert, animated: true)
         }
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        scrollView.setContentOffset(CGPoint(x:0, y:200), animated: true)
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        scrollView.setContentOffset(CGPoint(x:0, y:0), animated: true)
     }
 }
