@@ -12,6 +12,9 @@
 		9CB90C3620AA108B00BEADCA /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB90C3520AA108A00BEADCA /* HomeViewController.swift */; };
 		9CB90C3820AA11B500BEADCA /* MealViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB90C3720AA11B400BEADCA /* MealViewController.swift */; };
 		9CDC1FEC20AA02CD00503BAB /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CDC1FEB20AA02CD00503BAB /* LoginViewController.swift */; };
+		9CFD02CE20AE9CCE007D4BEF /* Ingredient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFD02CD20AE9CCE007D4BEF /* Ingredient.swift */; };
+		9CFD02D120AEAE85007D4BEF /* AddFromDatabaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFD02D020AEAE85007D4BEF /* AddFromDatabaseViewController.swift */; };
+		9CFD02D320AEB1F9007D4BEF /* addDatabaseIngredientCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFD02D220AEB1F9007D4BEF /* addDatabaseIngredientCell.swift */; };
 		E7C0A5E920A9F23E007A8F39 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C0A5E820A9F23E007A8F39 /* AppDelegate.swift */; };
 		E7C0A5EE20A9F23E007A8F39 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E7C0A5EC20A9F23E007A8F39 /* Main.storyboard */; };
 		E7C0A5F020A9F23F007A8F39 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E7C0A5EF20A9F23F007A8F39 /* Assets.xcassets */; };
@@ -52,6 +55,9 @@
 		9CB90C3520AA108A00BEADCA /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		9CB90C3720AA11B400BEADCA /* MealViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MealViewController.swift; sourceTree = "<group>"; };
 		9CDC1FEB20AA02CD00503BAB /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		9CFD02CD20AE9CCE007D4BEF /* Ingredient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Ingredient.swift; path = Clarity/Model/Ingredient.swift; sourceTree = "<group>"; };
+		9CFD02D020AEAE85007D4BEF /* AddFromDatabaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFromDatabaseViewController.swift; sourceTree = "<group>"; };
+		9CFD02D220AEB1F9007D4BEF /* addDatabaseIngredientCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = addDatabaseIngredientCell.swift; sourceTree = "<group>"; };
 		CDD35D5BF6B1106C6A550085 /* Pods_ClarityTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ClarityTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E274A5A283688D6A31B4A23D /* Pods-ClarityUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ClarityUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ClarityUITests/Pods-ClarityUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		E7C0A5E520A9F23E007A8F39 /* Clarity.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Clarity.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -114,6 +120,24 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		9CFD02CC20AE9CC1007D4BEF /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				9CFD02CD20AE9CCE007D4BEF /* Ingredient.swift */,
+			);
+			name = Model;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		9CFD02CF20AEACBA007D4BEF /* Meal VC */ = {
+			isa = PBXGroup;
+			children = (
+				9CB90C3720AA11B400BEADCA /* MealViewController.swift */,
+				EB13408920AA51400084B79B /* IngredientCell.swift */,
+			);
+			path = "Meal VC";
+			sourceTree = "<group>";
+		};
 		B7AEFEDC64FFBF4505A2E7F4 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -153,18 +177,20 @@
 			isa = PBXGroup;
 			children = (
 				EB13409520AAB2B40084B79B /* Info.plist */,
+				9CFD02CC20AE9CC1007D4BEF /* Model */,
+				9CFD02CF20AEACBA007D4BEF /* Meal VC */,
 				E7C0A5E820A9F23E007A8F39 /* AppDelegate.swift */,
 				9CB90C3520AA108A00BEADCA /* HomeViewController.swift */,
 				E7F7DB0620AA251500252AA1 /* SettingsViewController.swift */,
-				9CB90C3720AA11B400BEADCA /* MealViewController.swift */,
 				EB13408720AA512C0084B79B /* MealAddItemViewController.swift */,
-				EB13408920AA51400084B79B /* IngredientCell.swift */,
 				E7C0A5EC20A9F23E007A8F39 /* Main.storyboard */,
 				9CDC1FEB20AA02CD00503BAB /* LoginViewController.swift */,
 				E7C0A5EF20A9F23F007A8F39 /* Assets.xcassets */,
 				E7C0A5F120A9F23F007A8F39 /* LaunchScreen.storyboard */,
 				E7EF6D2620AB23AF0022D7E1 /* GoogleService-Info.plist */,
 				EB13408F20AA985C0084B79B /* GettingStartedViewController.swift */,
+				9CFD02D020AEAE85007D4BEF /* AddFromDatabaseViewController.swift */,
+				9CFD02D220AEB1F9007D4BEF /* addDatabaseIngredientCell.swift */,
 			);
 			path = Clarity;
 			sourceTree = "<group>";
@@ -454,10 +480,13 @@
 			files = (
 				9CDC1FEC20AA02CD00503BAB /* LoginViewController.swift in Sources */,
 				EB13409020AA985C0084B79B /* GettingStartedViewController.swift in Sources */,
+				9CFD02CE20AE9CCE007D4BEF /* Ingredient.swift in Sources */,
 				9CB90C3820AA11B500BEADCA /* MealViewController.swift in Sources */,
 				EB13408820AA512C0084B79B /* MealAddItemViewController.swift in Sources */,
+				9CFD02D320AEB1F9007D4BEF /* addDatabaseIngredientCell.swift in Sources */,
 				E7C0A5E920A9F23E007A8F39 /* AppDelegate.swift in Sources */,
 				E7F7DB0720AA251500252AA1 /* SettingsViewController.swift in Sources */,
+				9CFD02D120AEAE85007D4BEF /* AddFromDatabaseViewController.swift in Sources */,
 				9CB90C3620AA108B00BEADCA /* HomeViewController.swift in Sources */,
 				EB13408A20AA51410084B79B /* IngredientCell.swift in Sources */,
 			);
@@ -634,14 +663,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = Q38YCXN8XD;
+				DEVELOPMENT_TEAM = GX825LSHK4;
 				INFOPLIST_FILE = Clarity/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.Clarity.Henry;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Clarity;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -654,14 +683,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = Q38YCXN8XD;
+				DEVELOPMENT_TEAM = GX825LSHK4;
 				INFOPLIST_FILE = Clarity/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.Clarity.Henry;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Clarity;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

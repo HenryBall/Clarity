@@ -12,6 +12,8 @@ import GoogleSignIn
 
 let defaults = UserDefaults.standard
 let db = Firestore.firestore()
+let storage = Storage.storage()
+var ingredientsFromDatabase = [Ingredient]()
 
 class HomeViewController: UIViewController {
     
@@ -71,12 +73,32 @@ class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        queryIngredientsFromFirebase()
         self.navigationController?.isNavigationBarHidden = true
         fillUserInfo()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         fillUserInfo()
+    }
+    
+    func queryIngredientsFromFirebase(){
+        db.collection("water-footprint-data").getDocuments { (querySnapshot, err) in
+            if let err = err {
+                print(err)
+            }else{
+                for document in querySnapshot!.documents {
+                    let name = document.documentID.uppercased()
+                    let waterData = document.data()["gallons_water"] as! Double
+                    let description = document.data()["description"] as! String
+                    let servingSize = document.data()["average_weight_oz"] as! Double
+                    let category = document.data()["category"] as! String
+                    let current_ingredient = Ingredient(name: name, waterData: waterData, description: description, servingSize: servingSize, category: category)
+                    ingredientsFromDatabase.append(current_ingredient)
+                    //ingredientsFromDatabaseString.append(name)
+                }
+            }
+        }
     }
 
 }

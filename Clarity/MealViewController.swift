@@ -41,11 +41,11 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
         case "breakfast":
             bannerImage.image = #imageLiteral(resourceName: "breakfastBanner")
         case "lunch":
-            bannerImage.image = #imageLiteral(resourceName: "breakfastBanner")
+            bannerImage.image = #imageLiteral(resourceName: "lunchBanner")
         case "dinner":
-            bannerImage.image = #imageLiteral(resourceName: "breakfastBanner")
+            bannerImage.image = #imageLiteral(resourceName: "dinnerBanner")
         case "snacks":
-            bannerImage.image = #imageLiteral(resourceName: "breakfastBanner")
+            bannerImage.image = #imageLiteral(resourceName: "snacksBanner")
         default:
             print("error")
         }
@@ -90,6 +90,7 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     @IBAction func addTapped(_ sender: UIButton) {
         let destination = self.storyboard?.instantiateViewController(withIdentifier: "MealAddItemViewController") as! MealAddItemViewController
+        destination.mealType = mealType
         self.navigationController?.pushViewController(destination, animated: true)
     }
     
@@ -101,6 +102,7 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
         let cell = tableView.dequeueReusableCell(withIdentifier: "IngredientCell") as! IngredientCell
         cell.label.text = ingredientsInMeal[indexPath.row].name
         let imagePath = "food-icons/" + ingredientsInMeal[indexPath.row].name.uppercased() + ".jpg"
+
         let imageRef = storage.reference().child(imagePath)
         cell.icon.sd_setImage(with: imageRef, placeholderImage: #imageLiteral(resourceName: "Breakfast"))
         return cell
