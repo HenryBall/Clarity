@@ -10,37 +10,36 @@ import UIKit
 import Firebase
 import GoogleSignIn
 
-class HomeViewController: UIViewController {
+let defaults = UserDefaults.standard
+let db = Firestore.firestore()
 
-    let defaults = UserDefaults.standard
-    let db = Firestore.firestore()
+class HomeViewController: UIViewController {
     
     @IBOutlet weak var userName: UILabel!
     @IBOutlet weak var userLocation: UILabel!
-    
-   
+
     
     @IBAction func breakfastTapped(_ sender: Any) {
         let destination = self.storyboard?.instantiateViewController(withIdentifier: "MealViewController") as! MealViewController
-        destination.selectedOption = 0
+        destination.mealType = "breakfast"
         self.navigationController?.pushViewController(destination, animated: true)
     }
     
     @IBAction func lunchTapped(_ sender: Any) {
         let destination = self.storyboard?.instantiateViewController(withIdentifier: "MealViewController") as! MealViewController
-        destination.selectedOption = 1
+        destination.mealType = "lunch"
         self.navigationController?.pushViewController(destination, animated: true)
     }
     
     @IBAction func dinnerTapped(_ sender: Any) {
         let destination = self.storyboard?.instantiateViewController(withIdentifier: "MealViewController") as! MealViewController
-        destination.selectedOption = 2
+        destination.mealType = "dinner"
         self.navigationController?.pushViewController(destination, animated: true)
     }
     
     @IBAction func snacksTapped(_ sender: Any) {
         let destination = self.storyboard?.instantiateViewController(withIdentifier: "MealViewController") as! MealViewController
-        destination.selectedOption = 3
+        destination.mealType = "snacks"
         self.navigationController?.pushViewController(destination, animated: true)
     }
     

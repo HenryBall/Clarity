@@ -659,11 +659,11 @@
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <subviews>
                                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="VtH-TJ-295">
-                                                                    <rect key="frame" x="15" y="19" width="50" height="50"/>
+                                                                    <rect key="frame" x="15" y="14" width="60" height="60"/>
                                                                     <color key="backgroundColor" red="0.59215686270000001" green="0.59215686270000001" blue="0.59215686270000001" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <constraints>
-                                                                        <constraint firstAttribute="width" constant="50" id="9nk-Rk-b7h"/>
-                                                                        <constraint firstAttribute="height" constant="50" id="SCi-0t-uGc"/>
+                                                                        <constraint firstAttribute="width" constant="60" id="9nk-Rk-b7h"/>
+                                                                        <constraint firstAttribute="height" constant="60" id="SCi-0t-uGc"/>
                                                                     </constraints>
                                                                     <userDefinedRuntimeAttributes>
                                                                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -672,12 +672,24 @@
                                                                         <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                                                                     </userDefinedRuntimeAttributes>
                                                                 </imageView>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2 pieces of bread" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="om7-dH-0k8">
+                                                                    <rect key="frame" x="90" y="35" width="124.5" height="19"/>
+                                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
+                                                                    <nil key="textColor"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
                                                             </subviews>
                                                             <constraints>
                                                                 <constraint firstItem="VtH-TJ-295" firstAttribute="centerY" secondItem="vbe-8t-NIk" secondAttribute="centerY" id="Sqp-Yw-XBO"/>
+                                                                <constraint firstItem="om7-dH-0k8" firstAttribute="centerY" secondItem="vbe-8t-NIk" secondAttribute="centerY" id="VFE-h1-Ndp"/>
+                                                                <constraint firstItem="om7-dH-0k8" firstAttribute="leading" secondItem="VtH-TJ-295" secondAttribute="trailing" constant="15" id="lFG-kA-FC3"/>
                                                                 <constraint firstItem="VtH-TJ-295" firstAttribute="leading" secondItem="vbe-8t-NIk" secondAttribute="leading" constant="15" id="mO5-gW-B1I"/>
                                                             </constraints>
                                                         </tableViewCellContentView>
+                                                        <connections>
+                                                            <outlet property="icon" destination="VtH-TJ-295" id="uBd-t8-ZyH"/>
+                                                            <outlet property="label" destination="om7-dH-0k8" id="mpb-Ai-F1L"/>
+                                                        </connections>
                                                     </tableViewCell>
                                                 </prototypes>
                                             </tableView>
