@@ -42,7 +42,6 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
     }
     
     @IBAction func backTapped(_ sender: UIButton) {
-        print(ingredientsInMeal)
         let today = Date()
         let formatter = DateFormatter()
         formatter.timeStyle = .none
@@ -50,7 +49,6 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
         formatter.string(from: today)
         
         let day = db.collection("users").document(defaults.string(forKey: "user_id")!).collection("meals").document(formatter.string(from: today))
-        
         var refArray = [DocumentReference]()
         for i in ingredientsInMeal{
             let ref = db.document("water-footprint-data/" + i.name.capitalized)
@@ -83,7 +81,17 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath){
         let currentIngredient = ingredientsFromDatabase[indexPath.row]
-        ingredientsInMeal.append(currentIngredient)
+        //let cell = tableView.dequeueReusableCell(withIdentifier: "addDatabaseIngredientCell") as! addDatabaseIngredientCell
+        //print(cell.count.text)
+        //if let count = Int(cell.count.text!){
+            //if(count > 1){
+                //for i in 0 ... count{
+                  //  ingredientsInMeal.append(currentIngredient)
+                //}
+            //}else{
+                ingredientsInMeal.append(currentIngredient)
+            //}
+        //}
     }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {

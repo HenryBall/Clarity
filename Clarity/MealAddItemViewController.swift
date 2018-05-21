@@ -34,11 +34,6 @@ class MealAddItemViewController: UIViewController {
         }
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
     @IBAction func backTapped(_ sender: UIButton) {
         self.navigationController?.popViewController(animated: true)
     }
@@ -47,6 +42,12 @@ class MealAddItemViewController: UIViewController {
         let destination = storyboard?.instantiateViewController(withIdentifier: "AddFromDatabase") as! AddFromDatabaseViewController
         destination.mealType = mealType
         destination.ingredientsInMeal = ingredientsInMeal
+        navigationController?.pushViewController(destination, animated: true)
+    }
+    
+    @IBAction func search(_ sender: UIButton) {
+        let destination = storyboard?.instantiateViewController(withIdentifier: "searchViewController") as! searchViewController
+        destination.mealType = mealType
         navigationController?.pushViewController(destination, animated: true)
     }
     

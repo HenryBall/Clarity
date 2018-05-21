@@ -21,6 +21,7 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tableViewHeight: NSLayoutConstraint!
     var ingredientsInMeal = [Ingredient]()
+    var itemsInMeal = [Food]()
     let storage = Storage.storage()
     
     override func viewDidLoad() {
@@ -61,9 +62,11 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
         let day = db.collection("users").document(defaults.string(forKey: "user_id")!).collection("meals").document(formatter.string(from: today))
         
         var ingredientReferences = [DocumentReference]()
+        var food = [Food]()
         
         day.getDocument { (document, error) in
             if(document?.exists)!{
+                //get ingredients
                 if(document?.data()?.keys.contains(self.mealType))!{
                  ingredientReferences = document?.data()![self.mealType] as! [DocumentReference]
                 
@@ -76,6 +79,18 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
                                 print("Document does not exist")
                             }
                         }
+                    }
+                }
+                
+                //get food
+                if(document?.data()?.keys.contains(self.mealType + "-meals"))!{
+                    for doc in (document?.data())!{
+                       //food.append(Food(document: doc))
+                        print("------")
+                        print(doc.key)
+                        print("------")
+                        print(doc.value)
+                        print("------")
                     }
                 }
             } else {
