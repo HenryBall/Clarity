@@ -51,4 +51,10 @@ class MealAddItemViewController: UIViewController {
         navigationController?.pushViewController(destination, animated: true)
     }
     
+    @IBAction func scanTapped(_ sender: Any) {
+        let destination = storyboard?.instantiateViewController(withIdentifier: "CameraViewController") as! CameraViewController
+        destination.mealType = mealType
+        destination.ingredientsInMeal = ingredientsInMeal
+        navigationController?.pushViewController(destination, animated: true)
+    }
 }
