@@ -18,12 +18,17 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
     var mealType: String!
     var ingredientsInMeal = [Ingredient]()
     
+    let today = Date()
+    let formatter = DateFormatter()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
-        print("ingredients in meal:")
-        print(ingredientsInMeal)
+        formatter.timeStyle = .none
+        formatter.dateStyle = .long
+        formatter.string(from: today)
+
         setBanner()
     }
     
@@ -47,11 +52,6 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
     }
     
     @IBAction func doneTapped(_ sender: UIButton) {
-        let today = Date()
-        let formatter = DateFormatter()
-        formatter.timeStyle = .none
-        formatter.dateStyle = .long
-        formatter.string(from: today)
         
         let day = db.collection("users").document(defaults.string(forKey: "user_id")!).collection("meals").document(formatter.string(from: today))
         
@@ -60,9 +60,12 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
             let ref = db.document("water-footprint-data/" + i.name.capitalized)
             refArray.append(ref)
         }
-
+        let total = ingredientsInMeal.map({$0.waterData}).reduce(0, +)
+        day.setData([mealType + "_total" : total], options: SetOptions.merge())
         day.setData([mealType : refArray], options: SetOptions.merge())
-
+   
+        //day.setData(["total_water_day" : totalWaterDay], options: SetOptions.merge())
+        
         if let destination = self.navigationController?.viewControllers[1] {
             self.navigationController?.popToViewController(destination, animated: true)
         }
