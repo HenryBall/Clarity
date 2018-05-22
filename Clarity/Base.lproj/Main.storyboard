@@ -912,6 +912,16 @@
                                     <action selector="search:" destination="DUc-oq-TLH" eventType="touchUpInside" id="SH3-ZQ-rP4"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l6x-1a-XEs">
+                                <rect key="frame" x="148" y="425" width="78" height="55"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="36"/>
+                                <state key="normal" title="Scan">
+                                    <color key="titleColor" red="0.0" green="0.72941176470000002" blue="0.81176470590000005" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="scanTapped:" destination="DUc-oq-TLH" eventType="touchUpInside" id="hAl-eB-5kE"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -920,7 +930,9 @@
                             <constraint firstItem="CSJ-e7-2Mc" firstAttribute="trailing" secondItem="lhF-ZE-htZ" secondAttribute="trailing" id="AAE-oc-e6Y"/>
                             <constraint firstItem="HHX-JQ-p2g" firstAttribute="top" secondItem="lhF-ZE-htZ" secondAttribute="bottom" constant="27" id="D7H-JB-bAd"/>
                             <constraint firstItem="ZD0-EI-meP" firstAttribute="centerX" secondItem="Mie-i7-u0z" secondAttribute="centerX" id="MGi-PH-KRE"/>
+                            <constraint firstItem="l6x-1a-XEs" firstAttribute="top" secondItem="v3e-IM-K5B" secondAttribute="bottom" constant="30" id="SLf-oq-FjY"/>
                             <constraint firstItem="HHX-JQ-p2g" firstAttribute="centerX" secondItem="Mie-i7-u0z" secondAttribute="centerX" id="VIv-OU-39H"/>
+                            <constraint firstItem="l6x-1a-XEs" firstAttribute="centerX" secondItem="Mie-i7-u0z" secondAttribute="centerX" id="Ycp-DY-nWT"/>
                             <constraint firstItem="v3e-IM-K5B" firstAttribute="centerX" secondItem="ZD0-EI-meP" secondAttribute="centerX" id="c4I-mM-GCY"/>
                             <constraint firstItem="lhF-ZE-htZ" firstAttribute="leading" secondItem="CSJ-e7-2Mc" secondAttribute="leading" id="fj7-gX-kHW"/>
                             <constraint firstItem="ZD0-EI-meP" firstAttribute="top" secondItem="HHX-JQ-p2g" secondAttribute="bottom" constant="40" id="k1s-4t-TNf"/>
@@ -1052,6 +1064,41 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6uL-M0-T1P" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3616.8000000000002" y="26.53673163418291"/>
+        </scene>
+        <!--Camera View Controller-->
+        <scene sceneID="5nN-dk-uir">
+            <objects>
+                <viewController storyboardIdentifier="CameraViewController" id="Fd2-Yf-3WJ" customClass="CameraViewController" customModule="Clarity" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="3nC-9V-bzA">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="greenBlueBkgdSettings" translatesAutoresizingMaskIntoConstraints="NO" id="dTm-6L-HfB">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pyn-4H-OA2">
+                                <rect key="frame" x="15" y="35" width="14" height="24"/>
+                                <state key="normal" image="backButton"/>
+                                <connections>
+                                    <action selector="backTapped:" destination="Fd2-Yf-3WJ" eventType="touchUpInside" id="Wk9-6t-gMk"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="Pyn-4H-OA2" firstAttribute="top" secondItem="UNp-r6-Nif" secondAttribute="top" constant="15" id="Loh-wO-mQ4"/>
+                            <constraint firstItem="dTm-6L-HfB" firstAttribute="top" secondItem="3nC-9V-bzA" secondAttribute="top" id="bx8-Sh-4sl"/>
+                            <constraint firstItem="dTm-6L-HfB" firstAttribute="trailing" secondItem="UNp-r6-Nif" secondAttribute="trailing" id="fdJ-t4-DR0"/>
+                            <constraint firstItem="Pyn-4H-OA2" firstAttribute="leading" secondItem="UNp-r6-Nif" secondAttribute="leading" constant="15" id="huM-VY-O3D"/>
+                            <constraint firstItem="dTm-6L-HfB" firstAttribute="leading" secondItem="UNp-r6-Nif" secondAttribute="leading" id="l6o-w5-u7M"/>
+                            <constraint firstItem="dTm-6L-HfB" firstAttribute="bottom" secondItem="UNp-r6-Nif" secondAttribute="bottom" id="zv9-kh-iuL"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="UNp-r6-Nif"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="g2D-Sl-w9A" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3616.8000000000002" y="711.99400299850083"/>
         </scene>
         <!--Search View Controller-->
         <scene sceneID="mXy-vE-Pf0">
