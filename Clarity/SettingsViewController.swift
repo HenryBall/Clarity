@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import GoogleSignIn
 
 class SettingsViewController: UIViewController, UITextFieldDelegate {
 
@@ -17,8 +18,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     
     
     @IBOutlet weak var scrollView: UIScrollView!
-    @IBOutlet weak var userName: UITextField!
-    @IBOutlet weak var userLocation: UITextField!
+ 
     @IBOutlet weak var userWaterGoal: UITextField!
     
     override func viewDidLoad() {
@@ -27,8 +27,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         let user = db.collection("users").document(defaults.string(forKey: "user_id")!)
         user.getDocument { (document, error) in
             if let document = document, document.exists {
-                self.userName.text = (document.data()!["name"] as! String)
-                self.userLocation.text = (document.data()!["location"] as! String)
+                
                 self.userWaterGoal.text = String(Int((document.data()!["water_goal"] as! Double)))
             } else {
                 print("Document does not exist")
@@ -49,10 +48,9 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     @IBAction func onSaveSettingsPressed(_ sender: Any) {
         let user = db.collection("users").document(defaults.string(forKey: "user_id")!)
         
-        if (userName.text != "" && userLocation.text != "" && userWaterGoal.text != "") {
-            user.setData(["name": userName.text!], options: SetOptions.merge())
-            user.setData(["location": userLocation.text!], options: SetOptions.merge())
-            user.setData(["waterGoal": Double(userWaterGoal.text!)], options: SetOptions.merge())
+        if (userWaterGoal.text != "") {
+            
+            user.setData(["water_goal": Double(userWaterGoal.text!)], options: SetOptions.merge())
             
         } else {
             print ("You must fill all fields")
@@ -70,5 +68,11 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         scrollView.setContentOffset(CGPoint(x:0, y:0), animated: true)
+    }
+    @IBAction func logoutButtunPressed(_ sender: Any) {
+        GIDSignIn.sharedInstance().signOut()
+        let s = UIStoryboard(name: "Main", bundle: nil)
+        let loginViewController = s.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
+        self.navigationController?.viewControllers = [loginViewController]
     }
 }

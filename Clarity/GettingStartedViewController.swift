@@ -15,8 +15,7 @@ class GettingStartedViewController: UIViewController {
     let db = Firestore.firestore()
     let storage = Storage.storage()
     
-    @IBOutlet weak var userName: UITextField!
-    @IBOutlet weak var userLocation: UITextField!
+
     @IBOutlet weak var waterGoal: UITextField!
     
     override func viewDidLoad() {
@@ -27,16 +26,15 @@ class GettingStartedViewController: UIViewController {
     @IBAction func getStartedTapped(_ sender: Any) {
         let user = db.collection("users").document(defaults.string(forKey: "user_id")!)
         
-        if (userName.text != "" && userLocation.text != "" && waterGoal.text != "") {
-            user.setData(["name": userName.text!], options: SetOptions.merge())
-            user.setData(["location": userLocation.text!], options: SetOptions.merge())
+        if (waterGoal.text != "") {
+            
             user.setData(["water_goal": Double(waterGoal.text!)], options: SetOptions.merge())
             
             let destination = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
             self.navigationController?.pushViewController(destination, animated: true)
         } else {
             print ("You must fill all fields")
-            let alert = UIAlertController(title: "All information not filled in", message: "Please make sure to fill out all of your information", preferredStyle: .alert)
+            let alert = UIAlertController(title: "Water Goal Not Set", message: "Please make sure pick a daily water goal", preferredStyle: .alert)
             
             alert.addAction(UIAlertAction(title: "Okay", style: .cancel, handler: nil))
             

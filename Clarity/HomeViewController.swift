@@ -185,6 +185,7 @@ class HomeViewController: UIViewController {
 
                 let total = breakfastTotal + lunchTotal + dinnerTotal + snacksTotal
                 self.dailyTotalLabel.text = String(Int(total))
+                print(total)
                 self.drawCircle(greenRating: CGFloat(total))
             }
         }
@@ -234,6 +235,11 @@ class HomeViewController: UIViewController {
         basicAnimation.fillMode = kCAFillModeForwards
         basicAnimation.isRemovedOnCompletion = false
         shapeLayer.add(basicAnimation, forKey: "urSoBasic")
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        queryDailyGoal()
+        queryTotal()
     }
     
 
