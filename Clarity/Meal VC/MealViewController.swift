@@ -31,8 +31,6 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
         tableView.delegate = self
         tableView.dataSource = self
         setBannerImage()
-        //label showing gallons doesn't currently work
-        self.gallonsInMeal.text = String(Int(self.ingredientsInMeal.map({$0.waterData}).reduce(0, +)))
         // Do any additional setup after loading the view.
     }
     
@@ -74,9 +72,8 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
                     ingredientReferences = document?.data()![self.mealType] as! [DocumentReference]
                 }
                 
-                if(document?.data()?.keys.contains("total_water_day"))!{
-                    //self.mealWaterTotal = document?.data()!["total_water_day"] as! Double
-                    self.gallonsInMeal.text = String(Int(document?.data()!["total_water_day"] as! Double))
+                if(document?.data()?.keys.contains(self.mealType + "_total"))!{
+                    self.gallonsInMeal.text = String(Int(document?.data()![self.mealType + "_total"] as! Double))
                 }
                 
                 self.ingredientsInMeal = []
@@ -90,7 +87,7 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
                         }
                     }
                 }
-                
+    
                 //get food
                 if(document?.data()?.keys.contains(self.mealType + "-meals"))!{
                     for doc in (document?.data())!{

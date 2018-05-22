@@ -20,17 +20,47 @@ class HomeViewController: UIViewController {
     
     @IBOutlet weak var barChart: BarChartView!
     @IBOutlet weak var dailyTotalLabel: UILabel!
+    @IBOutlet weak var percentLabel: UILabel!
     @IBOutlet weak var circleView: UIView!
+    @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet weak var dailyGoalLabel: UILabel!
     
     let shapeLayer = CAShapeLayer()
     
+    let today = Date()
+    let databaseDateFormatter = DateFormatter()
+    let labelDateFormatter = DateFormatter()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        databaseDateFormatter.timeStyle = .none
+        databaseDateFormatter.dateStyle = .long
+        databaseDateFormatter.string(from: today)
+        labelDateFormatter.timeStyle = .none
+        labelDateFormatter.dateStyle = .long
+        labelDateFormatter.dateFormat = "EEEE, MMM d"
+        dateLabel.text = labelDateFormatter.string(from: today)
+        
+        queryTotal()
+        queryDailyGoal()
         queryIngredientsFromFirebase()
         self.navigationController?.isNavigationBarHidden = true
         getBarGraphData()
-        drawCircle(greenRating: 40.0)
-        // fillUserInfo()
+        
+    }
+    
+    func queryDailyGoal(){
+        let user = db.collection("users").document(defaults.string(forKey: "user_id")!)
+
+        user.getDocument { (document, error) in
+            if let document = document, document.exists {
+                if(document.data()?.keys.contains("water_goal"))!{
+                    self.dailyGoalLabel.text = String((Int(document.data()!["water_goal"] as! Double)))
+                }
+            } else {
+                print("Document does not exist")
+            }
+        }
     }
     
     func getBarGraphData(){
@@ -109,24 +139,6 @@ class HomeViewController: UIViewController {
         self.navigationController?.viewControllers = [loginViewController]
     }
     
-//    func fillUserInfo() {
-//        let user = db.collection("users").document(defaults.string(forKey: "user_id")!)
-//
-//        user.getDocument { (document, error) in
-//            if let document = document, document.exists {
-//                self.userName.text = (document.data()!["name"] as! String)
-//                self.userLocation.text = (document.data()!["location"] as! String)
-//
-//            } else {
-//                print("Document does not exist")
-//            }
-//        }
-//    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-       // fillUserInfo()
-    }
-    
     func queryIngredientsFromFirebase(){
         db.collection("water-footprint-data").getDocuments { (querySnapshot, err) in
             if let err = err {
@@ -140,8 +152,40 @@ class HomeViewController: UIViewController {
                     let category = document.data()["category"] as! String
                     let current_ingredient = Ingredient(name: name, waterData: waterData, description: description, servingSize: servingSize, category: category)
                     ingredientsFromDatabase.append(current_ingredient)
-                    //ingredientsFromDatabaseString.append(name)
                 }
+            }
+        }
+    }
+    
+    func queryTotal(){
+        var breakfastTotal = 0.0
+        var lunchTotal = 0.0
+        var dinnerTotal = 0.0
+        var snacksTotal = 0.0
+        
+        let day = db.collection("users").document(defaults.string(forKey: "user_id")!).collection("meals").document(databaseDateFormatter.string(from: today))
+        
+        day.getDocument { (document, error) in
+            if(document?.exists)!{
+                if let breakfast_total = document?.data()!["breakfast_total"]{
+                    breakfastTotal = breakfast_total as! Double
+                }
+                
+                if let lunch_total = document?.data()!["lunch_total"]{
+                    lunchTotal = lunch_total as! Double
+                }
+                
+                if let dinner_total = document?.data()!["dinner_total"]{
+                    dinnerTotal = dinner_total as! Double
+                }
+                
+                if let snacks_total = document?.data()!["snacks_total"]{
+                    snacksTotal = snacks_total as! Double
+                }
+
+                let total = breakfastTotal + lunchTotal + dinnerTotal + snacksTotal
+                self.dailyTotalLabel.text = String(Int(total))
+                self.drawCircle(greenRating: CGFloat(total))
             }
         }
     }
@@ -152,7 +196,7 @@ class HomeViewController: UIViewController {
         let endAngle = CGFloat.pi / 2 + CGFloat.pi * (greenRating / 180)
         //Converting the Green Rating to a percentage out of 360 for the score label
         let percentage = Int(( greenRating / 360 ) * 100)
-        dailyTotalLabel.text = String(describing: percentage)
+        percentLabel.text = String(describing: percentage) + "% of your daily total"
         //Tracklayer is the gray layer behind the animation color for the green rating
         // Code for the Rating Circle comes from: https://www.letsbuildthatapp.com/course_video?id=2342
         let trackLayer = CAShapeLayer()
@@ -162,7 +206,7 @@ class HomeViewController: UIViewController {
         trackLayer.path = circularPath.cgPath
         
         trackLayer.strokeColor = UIColor(red: 216/255, green: 216/255, blue: 216/255, alpha: 216/255).cgColor
-        trackLayer.lineWidth = 15
+        trackLayer.lineWidth = 20
         trackLayer.fillColor = UIColor.clear.cgColor
         trackLayer.lineCap = kCALineCapRound
         view.layer.addSublayer(trackLayer)
@@ -172,7 +216,7 @@ class HomeViewController: UIViewController {
         shapeLayer.path = motionPath.cgPath
         
         shapeLayer.strokeColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1.0).cgColor
-        shapeLayer.lineWidth = 15
+        shapeLayer.lineWidth = 20
         shapeLayer.fillColor = UIColor.clear.cgColor
         shapeLayer.lineCap = kCALineCapRound
         shapeLayer.strokeEnd = 0

@@ -29,9 +29,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
             if let document = document, document.exists {
                 self.userName.text = (document.data()!["name"] as! String)
                 self.userLocation.text = (document.data()!["location"] as! String)
-                self.userWaterGoal.text = (document.data()!["waterGoal"] as! String)
-                
-                
+                self.userWaterGoal.text = String(Int((document.data()!["water_goal"] as! Double)))
             } else {
                 print("Document does not exist")
             }
@@ -54,7 +52,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         if (userName.text != "" && userLocation.text != "" && userWaterGoal.text != "") {
             user.setData(["name": userName.text!], options: SetOptions.merge())
             user.setData(["location": userLocation.text!], options: SetOptions.merge())
-            user.setData(["waterGoal": userWaterGoal.text!], options: SetOptions.merge())
+            user.setData(["waterGoal": Double(userWaterGoal.text!)], options: SetOptions.merge())
             
         } else {
             print ("You must fill all fields")

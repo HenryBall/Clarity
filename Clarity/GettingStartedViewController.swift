@@ -22,9 +22,6 @@ class GettingStartedViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.hideKeyboard()
-       
-    
-    
     }
     
     @IBAction func getStartedTapped(_ sender: Any) {
@@ -33,7 +30,7 @@ class GettingStartedViewController: UIViewController {
         if (userName.text != "" && userLocation.text != "" && waterGoal.text != "") {
             user.setData(["name": userName.text!], options: SetOptions.merge())
             user.setData(["location": userLocation.text!], options: SetOptions.merge())
-            user.setData(["waterGoal": waterGoal.text!], options: SetOptions.merge())
+            user.setData(["water_goal": Double(waterGoal.text!)], options: SetOptions.merge())
             
             let destination = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
             self.navigationController?.pushViewController(destination, animated: true)
