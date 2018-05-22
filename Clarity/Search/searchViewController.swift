@@ -173,5 +173,4 @@ class searchViewController: UIViewController, UITableViewDataSource, UITableView
         searchProducts(searchText: searchText)
         self.tableView.reloadData()
     }
-    
 }

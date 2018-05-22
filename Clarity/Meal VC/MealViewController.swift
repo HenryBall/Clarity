@@ -23,21 +23,24 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
     var ingredientsInMeal = [Ingredient]()
     var itemsInMeal = [Food]()
     let storage = Storage.storage()
+    var mealWaterTotal: Double!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         tableView.delegate = self
         tableView.dataSource = self
-        setUpView()
-        queryIngredients()
+        setBannerImage()
         //label showing gallons doesn't currently work
         self.gallonsInMeal.text = String(Int(self.ingredientsInMeal.map({$0.waterData}).reduce(0, +)))
         // Do any additional setup after loading the view.
     }
     
-    func setUpView(){
-        
+    override func viewDidAppear(_ animated: Bool) {
+        queryIngredients()
+    }
+    
+    func setBannerImage(){
         switch mealType {
         case "breakfast":
             bannerImage.image = #imageLiteral(resourceName: "breakfastBanner")
@@ -62,22 +65,28 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
         let day = db.collection("users").document(defaults.string(forKey: "user_id")!).collection("meals").document(formatter.string(from: today))
         
         var ingredientReferences = [DocumentReference]()
-        var food = [Food]()
+        //var food = [Food]()
         
         day.getDocument { (document, error) in
             if(document?.exists)!{
                 //get ingredients
                 if(document?.data()?.keys.contains(self.mealType))!{
-                 ingredientReferences = document?.data()![self.mealType] as! [DocumentReference]
+                    ingredientReferences = document?.data()![self.mealType] as! [DocumentReference]
+                }
                 
-                    for ref in ingredientReferences {
-                        ref.getDocument { (document, error) in
-                            if let document = document {
-                                self.ingredientsInMeal.append(Ingredient(document: document))
-                                self.tableView.reloadData()
-                            } else {
-                                print("Document does not exist")
-                            }
+                if(document?.data()?.keys.contains("total_water_day"))!{
+                    //self.mealWaterTotal = document?.data()!["total_water_day"] as! Double
+                    self.gallonsInMeal.text = String(Int(document?.data()!["total_water_day"] as! Double))
+                }
+                
+                self.ingredientsInMeal = []
+                for ref in ingredientReferences {
+                    ref.getDocument { (document, error) in
+                        if let document = document {
+                            self.ingredientsInMeal.append(Ingredient(document: document))
+                            self.tableView.reloadData()
+                        } else {
+                            print("Document does not exist")
                         }
                     }
                 }

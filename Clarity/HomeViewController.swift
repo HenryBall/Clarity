@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import GoogleSignIn
+import Charts
 
 let defaults = UserDefaults.standard
 let db = Firestore.firestore()
@@ -17,9 +18,60 @@ var ingredientsFromDatabase = [Ingredient]()
 
 class HomeViewController: UIViewController {
     
-    @IBOutlet weak var userName: UILabel!
-    @IBOutlet weak var userLocation: UILabel!
-
+    @IBOutlet weak var barChart: BarChartView!
+    @IBOutlet weak var dailyTotalLabel: UILabel!
+    @IBOutlet weak var circleView: UIView!
+    
+    let shapeLayer = CAShapeLayer()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        queryIngredientsFromFirebase()
+        self.navigationController?.isNavigationBarHidden = true
+        getBarGraphData()
+        drawCircle(greenRating: 40.0)
+        // fillUserInfo()
+    }
+    
+    func getBarGraphData(){
+        var allWaterData = [Double]()
+        
+        let day = db.collection("users").document(defaults.string(forKey: "user_id")!).collection("meals")
+        
+       // var ingredientReferences = [DocumentReference]()
+        day.getDocuments { (querySnapshot, err) in
+            if let err = err {
+                print(err)
+            }else{
+                for document in querySnapshot!.documents.reversed() {
+                    if(allWaterData.count > 10){
+                        return
+                    }else{
+                        if(document.data().keys.contains("total_water_day")){
+                            allWaterData.append(document.data()["total_water_day"] as! Double)
+                            print(allWaterData)
+                        }
+                    }
+                }
+                self.updateChartWithData(allWaterData: allWaterData.reversed())
+            }
+        }
+    }
+    
+    func updateChartWithData(allWaterData: [Double]) {
+        var dataEntries: [BarChartDataEntry] = []
+        
+        for i in 0..<allWaterData.count {
+            let dataEntry = BarChartDataEntry(x: Double(i), y: Double(allWaterData[i]))
+            dataEntries.append(dataEntry)
+        }
+        let chartDataSet = BarChartDataSet(values: dataEntries, label: "Gallons of water per day")
+        let chartData = BarChartData(dataSet: chartDataSet)
+        barChart.xAxis.drawGridLinesEnabled = false
+        barChart.xAxis.drawLabelsEnabled = false
+        barChart.drawValueAboveBarEnabled = true
+        barChart.data = chartData
+    }
     
     @IBAction func breakfastTapped(_ sender: Any) {
         let destination = self.storyboard?.instantiateViewController(withIdentifier: "MealViewController") as! MealViewController
@@ -57,29 +109,22 @@ class HomeViewController: UIViewController {
         self.navigationController?.viewControllers = [loginViewController]
     }
     
-    func fillUserInfo() {
-        let user = db.collection("users").document(defaults.string(forKey: "user_id")!)
-        
-        user.getDocument { (document, error) in
-            if let document = document, document.exists {
-                self.userName.text = (document.data()!["name"] as! String)
-                self.userLocation.text = (document.data()!["location"] as! String)
-    
-            } else {
-                print("Document does not exist")
-            }
-        }
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        queryIngredientsFromFirebase()
-        self.navigationController?.isNavigationBarHidden = true
-        fillUserInfo()
-    }
+//    func fillUserInfo() {
+//        let user = db.collection("users").document(defaults.string(forKey: "user_id")!)
+//
+//        user.getDocument { (document, error) in
+//            if let document = document, document.exists {
+//                self.userName.text = (document.data()!["name"] as! String)
+//                self.userLocation.text = (document.data()!["location"] as! String)
+//
+//            } else {
+//                print("Document does not exist")
+//            }
+//        }
+//    }
     
     override func viewDidAppear(_ animated: Bool) {
-        fillUserInfo()
+       // fillUserInfo()
     }
     
     func queryIngredientsFromFirebase(){
@@ -100,6 +145,53 @@ class HomeViewController: UIViewController {
             }
         }
     }
+    
+    /* Circle Animation ************************************************************************************************/
+    func drawCircle(greenRating: CGFloat) {
+        // Green Rating is out of 360 to make the caculations for the circle right.
+        let endAngle = CGFloat.pi / 2 + CGFloat.pi * (greenRating / 180)
+        //Converting the Green Rating to a percentage out of 360 for the score label
+        let percentage = Int(( greenRating / 360 ) * 100)
+        dailyTotalLabel.text = String(describing: percentage)
+        //Tracklayer is the gray layer behind the animation color for the green rating
+        // Code for the Rating Circle comes from: https://www.letsbuildthatapp.com/course_video?id=2342
+        let trackLayer = CAShapeLayer()
+        let center = circleView.center
+        let circularPath = UIBezierPath(arcCenter: center, radius: 90, startAngle: 0, endAngle: 2 * CGFloat.pi, clockwise: true)
+        
+        trackLayer.path = circularPath.cgPath
+        
+        trackLayer.strokeColor = UIColor(red: 216/255, green: 216/255, blue: 216/255, alpha: 216/255).cgColor
+        trackLayer.lineWidth = 15
+        trackLayer.fillColor = UIColor.clear.cgColor
+        trackLayer.lineCap = kCALineCapRound
+        view.layer.addSublayer(trackLayer)
+        
+        //ShapeLayer is the green layer used for the animation color for the green rating
+        let motionPath = UIBezierPath(arcCenter: center, radius: 90, startAngle: CGFloat.pi / 2, endAngle: endAngle , clockwise: true)
+        shapeLayer.path = motionPath.cgPath
+        
+        shapeLayer.strokeColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1.0).cgColor
+        shapeLayer.lineWidth = 15
+        shapeLayer.fillColor = UIColor.clear.cgColor
+        shapeLayer.lineCap = kCALineCapRound
+        shapeLayer.strokeEnd = 0
+        
+        //This will be the score we give the rating.
+        view.layer.addSublayer(shapeLayer)
+        animateBar()
+    }
+    
+    //Function to Animate the Green Rating. Code used from https://www.letsbuildthatapp.com/course_video?id=2342
+    @objc private func animateBar() {
+        let basicAnimation = CABasicAnimation(keyPath: "strokeEnd")
+        basicAnimation.toValue = 1
+        basicAnimation.duration = 1
+        basicAnimation.fillMode = kCAFillModeForwards
+        basicAnimation.isRemovedOnCompletion = false
+        shapeLayer.add(basicAnimation, forKey: "urSoBasic")
+    }
+    
 
 }
 

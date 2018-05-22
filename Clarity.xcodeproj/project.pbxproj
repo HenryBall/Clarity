@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		007319F02321ABF02802DC78 /* Pods_ClarityUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDDB8AEEFE050573C461D29B /* Pods_ClarityUITests.framework */; };
 		4A3C89E96AAD5B51EED42B15 /* Pods_Clarity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F01538DE5D7B296F77D75B8 /* Pods_Clarity.framework */; };
+		9C1C29BB20B25585004B7953 /* Food.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1C29BA20B25585004B7953 /* Food.swift */; };
+		9C1C29BD20B262EC004B7953 /* searchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1C29BC20B262EC004B7953 /* searchViewController.swift */; };
+		9C1C29C020B267CA004B7953 /* SearchProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1C29BF20B267CA004B7953 /* SearchProduct.swift */; };
+		9C1C29C320B2683E004B7953 /* searchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1C29C220B2683E004B7953 /* searchCell.swift */; };
 		9CB90C3620AA108B00BEADCA /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB90C3520AA108A00BEADCA /* HomeViewController.swift */; };
 		9CB90C3820AA11B500BEADCA /* MealViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB90C3720AA11B400BEADCA /* MealViewController.swift */; };
 		9CDC1FEC20AA02CD00503BAB /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CDC1FEB20AA02CD00503BAB /* LoginViewController.swift */; };
@@ -52,6 +56,10 @@
 		27045314FA5F22880CB76D03 /* Pods-ClarityUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ClarityUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ClarityUITests/Pods-ClarityUITests.release.xcconfig"; sourceTree = "<group>"; };
 		5060E24991B215836FF205D4 /* Pods-ClarityTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ClarityTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ClarityTests/Pods-ClarityTests.debug.xcconfig"; sourceTree = "<group>"; };
 		731279D8CB126C6DD31848EB /* Pods-ClarityTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ClarityTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ClarityTests/Pods-ClarityTests.release.xcconfig"; sourceTree = "<group>"; };
+		9C1C29BA20B25585004B7953 /* Food.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Food.swift; sourceTree = "<group>"; };
+		9C1C29BC20B262EC004B7953 /* searchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = searchViewController.swift; path = Search/searchViewController.swift; sourceTree = "<group>"; };
+		9C1C29BF20B267CA004B7953 /* SearchProduct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchProduct.swift; sourceTree = "<group>"; };
+		9C1C29C220B2683E004B7953 /* searchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = searchCell.swift; sourceTree = "<group>"; };
 		9CB90C3520AA108A00BEADCA /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		9CB90C3720AA11B400BEADCA /* MealViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MealViewController.swift; sourceTree = "<group>"; };
 		9CDC1FEB20AA02CD00503BAB /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -124,6 +132,8 @@
 			isa = PBXGroup;
 			children = (
 				9CFD02CD20AE9CCE007D4BEF /* Ingredient.swift */,
+				9C1C29BA20B25585004B7953 /* Food.swift */,
+				9C1C29BF20B267CA004B7953 /* SearchProduct.swift */,
 			);
 			name = Model;
 			path = ..;
@@ -191,6 +201,8 @@
 				EB13408F20AA985C0084B79B /* GettingStartedViewController.swift */,
 				9CFD02D020AEAE85007D4BEF /* AddFromDatabaseViewController.swift */,
 				9CFD02D220AEB1F9007D4BEF /* addDatabaseIngredientCell.swift */,
+				9C1C29BC20B262EC004B7953 /* searchViewController.swift */,
+				9C1C29C220B2683E004B7953 /* searchCell.swift */,
 			);
 			path = Clarity;
 			sourceTree = "<group>";
@@ -480,12 +492,16 @@
 			files = (
 				9CDC1FEC20AA02CD00503BAB /* LoginViewController.swift in Sources */,
 				EB13409020AA985C0084B79B /* GettingStartedViewController.swift in Sources */,
+				9C1C29BD20B262EC004B7953 /* searchViewController.swift in Sources */,
 				9CFD02CE20AE9CCE007D4BEF /* Ingredient.swift in Sources */,
 				9CB90C3820AA11B500BEADCA /* MealViewController.swift in Sources */,
+				9C1C29C020B267CA004B7953 /* SearchProduct.swift in Sources */,
 				EB13408820AA512C0084B79B /* MealAddItemViewController.swift in Sources */,
+				9C1C29BB20B25585004B7953 /* Food.swift in Sources */,
 				9CFD02D320AEB1F9007D4BEF /* addDatabaseIngredientCell.swift in Sources */,
 				E7C0A5E920A9F23E007A8F39 /* AppDelegate.swift in Sources */,
 				E7F7DB0720AA251500252AA1 /* SettingsViewController.swift in Sources */,
+				9C1C29C320B2683E004B7953 /* searchCell.swift in Sources */,
 				9CFD02D120AEAE85007D4BEF /* AddFromDatabaseViewController.swift in Sources */,
 				9CB90C3620AA108B00BEADCA /* HomeViewController.swift in Sources */,
 				EB13408A20AA51410084B79B /* IngredientCell.swift in Sources */,
