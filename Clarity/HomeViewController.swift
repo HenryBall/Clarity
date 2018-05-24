@@ -16,7 +16,7 @@ let db = Firestore.firestore()
 let storage = Storage.storage()
 var ingredientsFromDatabase = [Ingredient]()
 
-class HomeViewController: UIViewController {
+class HomeViewController: UIViewController, UIScrollViewDelegate {
     
     @IBOutlet weak var barChart: BarChartView!
     @IBOutlet weak var dailyTotalLabel: UILabel!
@@ -24,7 +24,9 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var circleView: UIView!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var dailyGoalLabel: UILabel!
+    @IBOutlet weak var pageControl: UIPageControl!
     
+    @IBOutlet weak var scrollView: UIScrollView!
     let shapeLayer = CAShapeLayer()
     
     let today = Date()
@@ -33,6 +35,7 @@ class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.scrollView.delegate = self
         databaseDateFormatter.timeStyle = .none
         databaseDateFormatter.dateStyle = .long
         databaseDateFormatter.string(from: today)
@@ -41,6 +44,11 @@ class HomeViewController: UIViewController {
         labelDateFormatter.dateFormat = "EEEE, MMM d"
         dateLabel.text = labelDateFormatter.string(from: today)
         
+        self.scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width * 3, height:self.scrollView.frame.height)
+        barChart.center = CGPoint(x: UIScreen.main.bounds.width * 3, y: 159)
+        circleView.center = CGPoint(x: UIScreen.main.bounds.width * 0.5, y: 159)
+        scrollView.addSubview(circleView)
+        scrollView.addSubview(barChart)
         queryTotal()
         queryDailyGoal()
         queryIngredientsFromFirebase()
@@ -132,13 +140,6 @@ class HomeViewController: UIViewController {
           self.navigationController?.pushViewController(destination, animated: true)
     }
     
-    @IBAction func logoutTapped(_ sender: Any) {
-        GIDSignIn.sharedInstance().signOut()
-        let s = UIStoryboard(name: "Main", bundle: nil)
-        let loginViewController = s.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
-        self.navigationController?.viewControllers = [loginViewController]
-    }
-    
     func queryIngredientsFromFirebase(){
         db.collection("water-footprint-data").getDocuments { (querySnapshot, err) in
             if let err = err {
@@ -211,6 +212,7 @@ class HomeViewController: UIViewController {
         trackLayer.fillColor = UIColor.clear.cgColor
         trackLayer.lineCap = kCALineCapRound
         view.layer.addSublayer(trackLayer)
+        scrollView.layer.addSublayer(trackLayer)
         
         //ShapeLayer is the green layer used for the animation color for the green rating
         let motionPath = UIBezierPath(arcCenter: center, radius: 90, startAngle: CGFloat.pi / 2, endAngle: endAngle , clockwise: true)
@@ -224,6 +226,7 @@ class HomeViewController: UIViewController {
         
         //This will be the score we give the rating.
         view.layer.addSublayer(shapeLayer)
+        scrollView.layer.addSublayer(shapeLayer)
         animateBar()
     }
     
@@ -240,6 +243,13 @@ class HomeViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         queryDailyGoal()
         queryTotal()
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView){
+        // Test the offset and calculate the current page after scrolling ends
+        let pageWidth:CGFloat = scrollView.frame.width
+        let currentPage:CGFloat = floor((scrollView.contentOffset.x-pageWidth/2)/pageWidth)+1
+        self.pageControl.currentPage = Int(currentPage) // Change the indicator
     }
     
 
