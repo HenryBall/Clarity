@@ -49,25 +49,21 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         let user = db.collection("users").document(defaults.string(forKey: "user_id")!)
         
         if (userWaterGoal.text != "") {
-            
             user.setData(["water_goal": Double(userWaterGoal.text!)], options: SetOptions.merge())
             
         } else {
-            print ("You must fill all fields")
-            let alert = UIAlertController(title: "All information not filled in", message: "Please make sure to fill out all of your information", preferredStyle: .alert)
-            
-            alert.addAction(UIAlertAction(title: "Okay", style: .cancel, handler: nil))
-            
+            let alert = UIAlertController(title: "Oops!", message: "Please enter a water goal", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
             self.present(alert, animated: true)
         }
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        scrollView.setContentOffset(CGPoint(x:0, y:200), animated: true)
+        scrollView.setContentOffset(CGPoint(x:0, y: 190), animated: true)
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        scrollView.setContentOffset(CGPoint(x:0, y:0), animated: true)
+        scrollView.setContentOffset(CGPoint(x:0, y:-20), animated: true)
     }
     @IBAction func logoutButtunPressed(_ sender: Any) {
         GIDSignIn.sharedInstance().signOut()

@@ -23,7 +23,6 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var percentLabel: UILabel!
     @IBOutlet weak var circleView: UIView!
     @IBOutlet weak var dateLabel: UILabel!
-    @IBOutlet weak var dailyGoalLabel: UILabel!
     @IBOutlet weak var pageControl: UIPageControl!
     
     @IBOutlet weak var scrollView: UIScrollView!
@@ -50,26 +49,25 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         scrollView.addSubview(circleView)
         scrollView.addSubview(barChart)
         queryTotal()
-        queryDailyGoal()
         queryIngredientsFromFirebase()
         self.navigationController?.isNavigationBarHidden = true
         getBarGraphData()
         
     }
     
-    func queryDailyGoal(){
-        let user = db.collection("users").document(defaults.string(forKey: "user_id")!)
-
-        user.getDocument { (document, error) in
-            if let document = document, document.exists {
-                if(document.data()?.keys.contains("water_goal"))!{
-                    self.dailyGoalLabel.text = String((Int(document.data()!["water_goal"] as! Double)))
-                }
-            } else {
-                print("Document does not exist")
-            }
-        }
-    }
+//    func queryDailyGoal(){
+//        let user = db.collection("users").document(defaults.string(forKey: "user_id")!)
+//
+//        user.getDocument { (document, error) in
+//            if let document = document, document.exists {
+//                if(document.data()?.keys.contains("water_goal"))!{
+//                    self.dailyGoalLabel.text = String((Int(document.data()!["water_goal"] as! Double)))
+//                }
+//            } else {
+//                print("Document does not exist")
+//            }
+//        }
+//    }
     
     func getBarGraphData(){
         var allWaterData = [Double]()
@@ -241,7 +239,6 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        queryDailyGoal()
         queryTotal()
     }
     
