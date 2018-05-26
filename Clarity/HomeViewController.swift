@@ -24,6 +24,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var circleView: UIView!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var pageControl: UIPageControl!
+    @IBOutlet weak var pieChart: PieChartView!
     
     @IBOutlet weak var scrollView: UIScrollView!
     let shapeLayer = CAShapeLayer()
@@ -44,15 +45,14 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         dateLabel.text = labelDateFormatter.string(from: today)
         
         self.scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width * 3, height:self.scrollView.frame.height)
-        barChart.center = CGPoint(x: UIScreen.main.bounds.width * 3, y: 159)
-        circleView.center = CGPoint(x: UIScreen.main.bounds.width * 0.5, y: 159)
-        scrollView.addSubview(circleView)
-        scrollView.addSubview(barChart)
         queryTotal()
         queryIngredientsFromFirebase()
         self.navigationController?.isNavigationBarHidden = true
         getBarGraphData()
-        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        queryTotal()
     }
     
 //    func queryDailyGoal(){
@@ -68,28 +68,140 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
 //            }
 //        }
 //    }
+ 
+    func updatePieChart(breakfast: Double, lunch: Double, dinner: Double, snacks: Double)  {
+        
+        let meals = [breakfast, lunch, dinner, snacks]
+        let track = ["Breakfast", "Lunch", "Dinner", "Snacks"]
+        var entries = [PieChartDataEntry]()
+        for (index, value) in meals.enumerated() {
+            let entry = PieChartDataEntry()
+            entry.y = value
+            entry.label = track[index]
+            entries.append( entry)
+        }
+        
+        // 3. chart setup
+        let set = PieChartDataSet(values: entries, label: "")
+        // this is custom extension method. Download the code for more details.
+
+        set.colors = ChartColorTemplates.joyful()
+     
+        let data = PieChartData(dataSet: set)
+        pieChart.data = data
+        pieChart.chartDescription?.text = ""
+        pieChart.noDataText = "No data available"
+        pieChart.legend.horizontalAlignment = .right
+        pieChart.legend.verticalAlignment = .center
+        pieChart.legend.orientation = .vertical
+        pieChart.drawEntryLabelsEnabled = false
+        pieChart.isUserInteractionEnabled = false
+        
+        pieChart.holeRadiusPercent = 0.5
+        pieChart.holeColor = UIColor.clear
+        pieChart.transparentCircleColor = UIColor.clear
+    }
     
+//    func setDataCount(_ count: Int, range: UInt32) {
+//        let entries = (0..<count).map { (i) -> PieChartDataEntry in
+//            // IMPORTANT: In a PieChart, no values (Entry) should have the same xIndex (even if from different DataSets), since no values can be drawn above each other.
+//            return PieChartDataEntry(value: Double(arc4random_uniform(range) + range / 5),
+//                                     label: "hi",
+//                                     icon: #imageLiteral(resourceName: "settingsBtn"))
+//        }
+//
+//        let set = PieChartDataSet(values: entries, label: "Election Results")
+//        set.drawIconsEnabled = false
+//        set.sliceSpace = 2
+//
+//
+//        set.colors = ChartColorTemplates.vordiplom()
+//            + ChartColorTemplates.joyful()
+//            + ChartColorTemplates.colorful()
+//            + ChartColorTemplates.liberty()
+//            + ChartColorTemplates.pastel()
+//            + [UIColor(red: 51/255, green: 181/255, blue: 229/255, alpha: 1)]
+//
+//        let data = PieChartData(dataSet: set)
+//
+//        let pFormatter = NumberFormatter()
+//        pFormatter.numberStyle = .percent
+//        pFormatter.maximumFractionDigits = 1
+//        pFormatter.multiplier = 1
+//        pFormatter.percentSymbol = " %"
+//        data.setValueFormatter(DefaultValueFormatter(formatter: pFormatter))
+//
+//        data.setValueFont(.systemFont(ofSize: 11, weight: .light))
+//        data.setValueTextColor(.white)
+//
+//        pieChart.data = data
+//        pieChart.highlightValues(nil)
+//    }
+    
+    
+//    func getBarGraphData(){
+//        var allWaterData = [Double]()
+//
+//
+//        let day = db.collection("users").document(defaults.string(forKey: "user_id")!).collection("meals")
+//
+//       // var ingredientReferences = [DocumentReference]()
+//        day.getDocuments { (querySnapshot, err) in
+//            if let err = err {
+//                print(err)
+//            }else{
+//                for document in querySnapshot!.documents.reversed() {
+//                    if(allWaterData.count > 10){
+//                        return
+//                    }else{
+//                        if(document.data().keys.contains("total_water_day")){
+//                            allWaterData.append(document.data()["total_water_day"] as! Double)
+//                            print(allWaterData)
+//                        }
+//                    }
+//                }
+//                self.updateChartWithData(allWaterData: allWaterData.reversed())
+//            }
+//        }
+//    }
+//
     func getBarGraphData(){
-        var allWaterData = [Double]()
+        var waterData = [Double]()
+        var breakfastTotal = 0.0
+        var lunchTotal = 0.0
+        var dinnerTotal = 0.0
+        var snacksTotal = 0.0
         
         let day = db.collection("users").document(defaults.string(forKey: "user_id")!).collection("meals")
-        
-       // var ingredientReferences = [DocumentReference]()
         day.getDocuments { (querySnapshot, err) in
             if let err = err {
-                print(err)
+                print("error getting bar graph data")
             }else{
-                for document in querySnapshot!.documents.reversed() {
-                    if(allWaterData.count > 10){
+                for document in querySnapshot!.documents.reversed(){
+                    if(waterData.count == 10){
                         return
                     }else{
-                        if(document.data().keys.contains("total_water_day")){
-                            allWaterData.append(document.data()["total_water_day"] as! Double)
-                            print(allWaterData)
+                        if let breakfast_total = document.data()["breakfast_total"]{
+                            breakfastTotal = breakfast_total as! Double
                         }
+                        
+                        if let lunch_total = document.data()["lunch_total"]{
+                            lunchTotal = lunch_total as! Double
+                        }
+                        
+                        if let dinner_total = document.data()["dinner_total"]{
+                            dinnerTotal = dinner_total as! Double
+                        }
+                        
+                        if let snacks_total = document.data()["snacks_total"]{
+                            snacksTotal = snacks_total as! Double
+                        }
+                        
+                        let total = breakfastTotal + lunchTotal + dinnerTotal + snacksTotal
+                        waterData.append(total)
                     }
                 }
-                self.updateChartWithData(allWaterData: allWaterData.reversed())
+                self.updateChartWithData(allWaterData: waterData.reversed())
             }
         }
     }
@@ -103,7 +215,13 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         }
         let chartDataSet = BarChartDataSet(values: dataEntries, label: "Gallons of water per day")
         let chartData = BarChartData(dataSet: chartDataSet)
+        barChart.chartDescription?.text = ""
+    
         barChart.xAxis.drawGridLinesEnabled = false
+        barChart.rightAxis.drawGridLinesEnabled = false
+        barChart.leftAxis.drawLabelsEnabled = false
+        barChart.leftAxis.drawGridLinesEnabled = false
+        barChart.noDataTextColor = UIColor.white
         barChart.xAxis.drawLabelsEnabled = false
         barChart.drawValueAboveBarEnabled = true
         barChart.data = chartData
@@ -161,7 +279,6 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         var lunchTotal = 0.0
         var dinnerTotal = 0.0
         var snacksTotal = 0.0
-        
         let day = db.collection("users").document(defaults.string(forKey: "user_id")!).collection("meals").document(databaseDateFormatter.string(from: today))
         
         day.getDocument { (document, error) in
@@ -171,7 +288,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
                 }
                 
                 if let lunch_total = document?.data()!["lunch_total"]{
-                    lunchTotal = lunch_total as! Double
+                   lunchTotal = lunch_total as! Double
                 }
                 
                 if let dinner_total = document?.data()!["dinner_total"]{
@@ -184,8 +301,8 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
 
                 let total = breakfastTotal + lunchTotal + dinnerTotal + snacksTotal
                 self.dailyTotalLabel.text = String(Int(total))
-                print(total)
                 self.drawCircle(greenRating: CGFloat(total))
+                self.updatePieChart(breakfast: breakfastTotal, lunch: lunchTotal, dinner: dinnerTotal, snacks: snacksTotal)
             }
         }
     }
@@ -238,17 +355,11 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         shapeLayer.add(basicAnimation, forKey: "urSoBasic")
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        queryTotal()
-    }
-    
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView){
         // Test the offset and calculate the current page after scrolling ends
         let pageWidth:CGFloat = scrollView.frame.width
         let currentPage:CGFloat = floor((scrollView.contentOffset.x-pageWidth/2)/pageWidth)+1
         self.pageControl.currentPage = Int(currentPage) // Change the indicator
     }
-    
-
 }
 
