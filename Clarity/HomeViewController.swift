@@ -94,6 +94,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         pieChart.legend.horizontalAlignment = .right
         pieChart.legend.verticalAlignment = .center
         pieChart.legend.orientation = .vertical
+        pieChart.legend.textColor = UIColor.white
         pieChart.drawEntryLabelsEnabled = false
         pieChart.isUserInteractionEnabled = false
         
@@ -102,69 +103,6 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         pieChart.transparentCircleColor = UIColor.clear
     }
     
-//    func setDataCount(_ count: Int, range: UInt32) {
-//        let entries = (0..<count).map { (i) -> PieChartDataEntry in
-//            // IMPORTANT: In a PieChart, no values (Entry) should have the same xIndex (even if from different DataSets), since no values can be drawn above each other.
-//            return PieChartDataEntry(value: Double(arc4random_uniform(range) + range / 5),
-//                                     label: "hi",
-//                                     icon: #imageLiteral(resourceName: "settingsBtn"))
-//        }
-//
-//        let set = PieChartDataSet(values: entries, label: "Election Results")
-//        set.drawIconsEnabled = false
-//        set.sliceSpace = 2
-//
-//
-//        set.colors = ChartColorTemplates.vordiplom()
-//            + ChartColorTemplates.joyful()
-//            + ChartColorTemplates.colorful()
-//            + ChartColorTemplates.liberty()
-//            + ChartColorTemplates.pastel()
-//            + [UIColor(red: 51/255, green: 181/255, blue: 229/255, alpha: 1)]
-//
-//        let data = PieChartData(dataSet: set)
-//
-//        let pFormatter = NumberFormatter()
-//        pFormatter.numberStyle = .percent
-//        pFormatter.maximumFractionDigits = 1
-//        pFormatter.multiplier = 1
-//        pFormatter.percentSymbol = " %"
-//        data.setValueFormatter(DefaultValueFormatter(formatter: pFormatter))
-//
-//        data.setValueFont(.systemFont(ofSize: 11, weight: .light))
-//        data.setValueTextColor(.white)
-//
-//        pieChart.data = data
-//        pieChart.highlightValues(nil)
-//    }
-    
-    
-//    func getBarGraphData(){
-//        var allWaterData = [Double]()
-//
-//
-//        let day = db.collection("users").document(defaults.string(forKey: "user_id")!).collection("meals")
-//
-//       // var ingredientReferences = [DocumentReference]()
-//        day.getDocuments { (querySnapshot, err) in
-//            if let err = err {
-//                print(err)
-//            }else{
-//                for document in querySnapshot!.documents.reversed() {
-//                    if(allWaterData.count > 10){
-//                        return
-//                    }else{
-//                        if(document.data().keys.contains("total_water_day")){
-//                            allWaterData.append(document.data()["total_water_day"] as! Double)
-//                            print(allWaterData)
-//                        }
-//                    }
-//                }
-//                self.updateChartWithData(allWaterData: allWaterData.reversed())
-//            }
-//        }
-//    }
-//
     func getBarGraphData(){
         var waterData = [Double]()
         var breakfastTotal = 0.0
@@ -279,6 +217,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         var lunchTotal = 0.0
         var dinnerTotal = 0.0
         var snacksTotal = 0.0
+        
         let day = db.collection("users").document(defaults.string(forKey: "user_id")!).collection("meals").document(databaseDateFormatter.string(from: today))
         
         day.getDocument { (document, error) in

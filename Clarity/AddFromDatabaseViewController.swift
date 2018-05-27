@@ -77,7 +77,7 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "addDatabaseIngredientCell") as! addDatabaseIngredientCell
-        cell.label.text = ingredientsFromDatabase[indexPath.row].name
+        cell.label.text = ingredientsFromDatabase[indexPath.row].name.capitalized
         let imagePath = "food-icons/" + ingredientsFromDatabase[indexPath.row].name.uppercased() + ".jpg"
         
         let imageRef = storage.reference().child(imagePath)
