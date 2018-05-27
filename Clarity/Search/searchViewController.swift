@@ -9,6 +9,7 @@
 import UIKit
 import Alamofire
 import SwiftyJSON
+import Foundation
 
 class searchViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
 
@@ -22,7 +23,13 @@ class searchViewController: UIViewController, UITableViewDataSource, UITableView
     var searchedProducts = [SearchProduct]()
     var foodInMeal = [Food]()
     var mealType: String!
-
+    
+    // NLP stuffs
+    let tagger = NSLinguisticTagger(tagSchemes:[.tokenType, .language, .lexicalClass, .nameType, .lemma], options: 0)
+    let options: NSLinguisticTagger.Options = [.omitPunctuation, .omitWhitespace, .joinNames]
+    var ingredientsText: JSON = []
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,14 +70,10 @@ class searchViewController: UIViewController, UITableViewDataSource, UITableView
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = self.tableView.dequeueReusableCell(withIdentifier: "searchCell") as! searchCell
-        cell.label.text = searchedProducts[indexPath.row].name
+        cell.label.text = searchedProducts[indexPath.row].name.capitalized
         return cell
     }
     
-//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        searchItem(number: searchedProducts[indexPath.row].ndbno, name: searchedProducts[indexPath.row].name)
-//    }
-//
     func searchItem(number: String, name: String){
         //let destination = self.storyboard?.instantiateViewController(withIdentifier: "ProductViewController") as! ProductViewController
         let params : [String : String] = ["api_key" : API_KEY, "format": "JSON", "type": "b", "ndbno" : number]
@@ -91,7 +94,14 @@ class searchViewController: UIViewController, UITableViewDataSource, UITableView
                 
                 let day = db.collection("users").document(defaults.string(forKey: "user_id")!).collection("meals").document(formatter.string(from: today))
                 
-                //day.setData([self.mealType + "-meals" : self.foodInMeal])
+                var updateMap = [String : Double]()
+                updateMap[name] = 60.0
+        
+//                FirebaseFirestore.getInstance().collection("myCollection")
+//                .document("doc1").update(updateMap);
+                //day.setData(updateMap)
+                
+                day.setData([self.mealType + "-meals" : updateMap])
             } else {
                 print("Request: \(String(describing: response.request))")
                 print("Error \(String(describing: response.result.error))")

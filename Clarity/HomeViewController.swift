@@ -25,6 +25,8 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var pageControl: UIPageControl!
     @IBOutlet weak var pieChart: PieChartView!
+    var totalGallonsToday: Double!
+    var dailyGoal: Double!
     
     @IBOutlet weak var scrollView: UIScrollView!
     let shapeLayer = CAShapeLayer()
@@ -45,6 +47,8 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         dateLabel.text = labelDateFormatter.string(from: today)
         
         self.scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width * 3, height:self.scrollView.frame.height)
+        totalGallonsToday = 0.0
+        queryDailyGoal()
         queryTotal()
         queryIngredientsFromFirebase()
         self.navigationController?.isNavigationBarHidden = true
@@ -55,19 +59,20 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         queryTotal()
     }
     
-//    func queryDailyGoal(){
-//        let user = db.collection("users").document(defaults.string(forKey: "user_id")!)
-//
-//        user.getDocument { (document, error) in
-//            if let document = document, document.exists {
-//                if(document.data()?.keys.contains("water_goal"))!{
-//                    self.dailyGoalLabel.text = String((Int(document.data()!["water_goal"] as! Double)))
-//                }
-//            } else {
-//                print("Document does not exist")
-//            }
-//        }
-//    }
+    func queryDailyGoal(){
+        let user = db.collection("users").document(defaults.string(forKey: "user_id")!)
+
+        user.getDocument { (document, error) in
+            if let document = document, document.exists {
+                if(document.data()?.keys.contains("water_goal"))!{
+                    self.dailyGoal = document.data()!["water_goal"] as! Double
+                   // self.dailyGoalLabel.text = String((Int(document.data()!["water_goal"] as! Double)))
+                }
+            } else {
+                print("Document does not exist")
+            }
+        }
+    }
  
     func updatePieChart(breakfast: Double, lunch: Double, dinner: Double, snacks: Double)  {
         
@@ -81,10 +86,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
             entries.append( entry)
         }
         
-        // 3. chart setup
         let set = PieChartDataSet(values: entries, label: "")
-        // this is custom extension method. Download the code for more details.
-
         set.colors = ChartColorTemplates.joyful()
      
         let data = PieChartData(dataSet: set)
@@ -217,6 +219,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         var lunchTotal = 0.0
         var dinnerTotal = 0.0
         var snacksTotal = 0.0
+        var total = 0.0
         
         let day = db.collection("users").document(defaults.string(forKey: "user_id")!).collection("meals").document(databaseDateFormatter.string(from: today))
         
@@ -238,20 +241,24 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
                     snacksTotal = snacks_total as! Double
                 }
 
-                let total = breakfastTotal + lunchTotal + dinnerTotal + snacksTotal
+                total = breakfastTotal + lunchTotal + dinnerTotal + snacksTotal
                 self.dailyTotalLabel.text = String(Int(total))
-                self.drawCircle(greenRating: CGFloat(total))
-                self.updatePieChart(breakfast: breakfastTotal, lunch: lunchTotal, dinner: dinnerTotal, snacks: snacksTotal)
+                if(total != self.totalGallonsToday){
+                    self.drawCircle(greenRating: CGFloat(total))
+                    self.updatePieChart(breakfast: breakfastTotal, lunch: lunchTotal, dinner: dinnerTotal, snacks: snacksTotal)
+                    self.totalGallonsToday = total
+                }
             }
         }
     }
     
     /* Circle Animation ************************************************************************************************/
     func drawCircle(greenRating: CGFloat) {
-        // Green Rating is out of 360 to make the caculations for the circle right.
-        let endAngle = CGFloat.pi / 2 + CGFloat.pi * (greenRating / 180)
+    
+            let endAngle = (CGFloat.pi / 2) + (CGFloat.pi * 2 * (greenRating / CGFloat(dailyGoal)))
+
         //Converting the Green Rating to a percentage out of 360 for the score label
-        let percentage = Int(( greenRating / 360 ) * 100)
+        let percentage = Int(( greenRating / CGFloat(dailyGoal )) * 100)
         percentLabel.text = String(describing: percentage) + "% of your daily total"
         //Tracklayer is the gray layer behind the animation color for the green rating
         // Code for the Rating Circle comes from: https://www.letsbuildthatapp.com/course_video?id=2342
