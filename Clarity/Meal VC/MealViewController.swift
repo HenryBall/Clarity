@@ -24,6 +24,8 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
     let today = Date()
     let formatter = DateFormatter()
     var ingredientsList = [String]()
+    var day : DocumentReference!
+    
     
     // Camera stuff
     let imagePicker = UIImagePickerController()
@@ -45,13 +47,19 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet weak var gallonsInMeal: UILabel!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tableViewHeight: NSLayoutConstraint!
+    
     var ingredientsInMeal = [Ingredient]()
+    var waterInMeal : Double! = 0.0
     var itemsInMeal = [Food]()
-    var mealWaterTotal: Double!
     
     @IBOutlet weak var addIngredientsView: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        formatter.timeStyle = .none
+        formatter.dateStyle = .long
+        formatter.string(from: today)
+        day = db.collection("users").document(defaults.string(forKey: "user_id")!).collection("meals").document(formatter.string(from: today))
         
         tableView.delegate = self
         tableView.dataSource = self
@@ -85,16 +93,8 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func queryIngredients() {
-        let today = Date()
-        let formatter = DateFormatter()
-        formatter.timeStyle = .none
-        formatter.dateStyle = .long
-        formatter.string(from: today)
-        
-        let day = db.collection("users").document(defaults.string(forKey: "user_id")!).collection("meals").document(formatter.string(from: today))
         
         var ingredientReferences = [DocumentReference]()
-        //var food = [Food]()
         
         day.getDocument { (document, error) in
             if(document?.exists)!{
@@ -104,7 +104,8 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
                 }
                 
                 if(document?.data()?.keys.contains(self.mealType + "_total"))!{
-                    self.gallonsInMeal.text = String(Int(document?.data()![self.mealType + "_total"] as! Double))
+                    self.waterInMeal = document?.data()![self.mealType + "_total"] as! Double
+                    self.gallonsInMeal.text = String(Int(self.waterInMeal))
                 }
                 
                 self.ingredientsInMeal = []
@@ -120,7 +121,7 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
                 }
     
                 //get food
-                if(document?.data()?.keys.contains(self.mealType + "-meals"))!{
+                /*if(document?.data()?.keys.contains(self.mealType + "-meals"))!{
                     for doc in (document?.data())!{
                        //food.append(Food(document: doc))
                         print("------")
@@ -129,7 +130,7 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
                         print(doc.value)
                         print("------")
                     }
-                }
+                }*/
             } else {
                 print("No ingredients")
             }
@@ -166,15 +167,13 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
         setView(hidden: true, angle: -CGFloat.pi)
         navigationController?.pushViewController(destination, animated: true)
     }
+    
     @IBAction func backTapped(_ sender: UIButton) {
         self.navigationController?.popViewController(animated: true)
     }
+    
     @IBAction func addTapped(_ sender: UIButton) {
         setView(hidden: false, angle: CGFloat.pi)
-//        let destination = self.storyboard?.instantiateViewController(withIdentifier: "MealAddItemViewController") as! MealAddItemViewController
-//        destination.mealType = mealType
-//        destination.ingredientsInMeal = ingredientsInMeal
-//        self.navigationController?.pushViewController(destination, animated: true)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -197,6 +196,7 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
 }
 
+/*************************************** Scanning Stuff ***************************************/
 extension MealViewController {
     
     func tokenizeText(for text: String) -> [String] {
@@ -218,7 +218,7 @@ extension MealViewController {
         if text != JSON.null{
             ingredientsList = text.string!.lowercased().components(separatedBy: ", ")
             for ingredient in ingredientsList {
-                ingredientsList.append(ingredient)
+                //ingredientsList.append(ingredient)
                 matchIngredient (name: ingredient)
             }
         }else{
@@ -271,20 +271,21 @@ extension MealViewController {
                     }
                 }
                 
-                let day = self.db.collection("users").document(defaults.string(forKey: "user_id")!).collection("meals").document(self.formatter.string(from: self.today))
-                var refArray = [DocumentReference]()
                 var water = 0.0
+                var refArray = [DocumentReference]()
+                
                 let matchedRef = self.ingredientDB.document(matchedItem!)
                 matchedRef.getDocument(completion: { (doc, err) in
                     water = doc?.data()!["gallons_water"] as! Double
+                    let ingr = Ingredient(document: doc!)
+                    self.ingredientsInMeal.append(ingr)
                     for i in self.ingredientsInMeal{
                         let ref = self.db.document("water-footprint-data/" + i.name.capitalized)
                         refArray.append(ref)
                     }
-                    refArray.append(matchedRef)
-                    let total = (self.ingredientsInMeal.map({$0.waterData}).reduce(0, +)) + water
-                    day.setData([self.mealType + "_total" : total], options: SetOptions.merge())
-                    day.setData([self.mealType : refArray], options: SetOptions.merge())
+                    self.waterInMeal = self.waterInMeal + water
+                    self.day.setData([self.mealType + "_total" : self.waterInMeal], options: SetOptions.merge())
+                    self.day.setData([self.mealType : refArray], options: SetOptions.merge())
                 })
             }
         }

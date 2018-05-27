@@ -68,7 +68,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
             
             let db = Firestore.firestore()
             
-            let userID = GIDSignIn.sharedInstance().currentUser.userID
+            //let userID = GIDSignIn.sharedInstance().currentUser.userID
             
             //let usersRef = db.collection('users').document(userID).value(forKey: "location")
 
