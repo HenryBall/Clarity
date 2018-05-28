@@ -275,7 +275,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         if(dailyGoal != nil){
             
             let percentage = Int(( greenRating / CGFloat(dailyGoal )) * 100)
-            percentLabel.text = String(describing: percentage) + "% of your daily total"
+            percentLabel.text = String(describing: percentage) + "% of your daily limit"
 
             let endAngle = (CGFloat.pi / 2) + (CGFloat.pi * 2 * (greenRating / CGFloat(dailyGoal)))
             let motionPath = UIBezierPath(arcCenter: center, radius: 90, startAngle: CGFloat.pi / 2, endAngle: endAngle , clockwise: true)

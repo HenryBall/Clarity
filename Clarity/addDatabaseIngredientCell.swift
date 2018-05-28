@@ -13,6 +13,7 @@ class addDatabaseIngredientCell: UITableViewCell {
     @IBOutlet weak var icon: UIImageView!
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var count: UITextField!
+    @IBOutlet weak var gallonsWaterLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
