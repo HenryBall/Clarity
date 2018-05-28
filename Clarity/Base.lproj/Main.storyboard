@@ -649,8 +649,12 @@
                                     <action selector="backTapped:" destination="CKn-jp-20y" eventType="touchUpInside" id="hR8-DE-wB6"/>
                                 </connections>
                             </button>
+                            <searchBar contentMode="redraw" searchBarStyle="minimal" translatesAutoresizingMaskIntoConstraints="NO" id="b6M-9v-fZP">
+                                <rect key="frame" x="0.0" y="169" width="375" height="56"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </searchBar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsMultipleSelection="YES" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="UBp-ap-0Cg">
-                                <rect key="frame" x="0.0" y="169" width="375" height="498"/>
+                                <rect key="frame" x="0.0" y="225" width="375" height="442"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="addDatabaseIngredientCell" rowHeight="85" id="KKJ-q2-jS8" customClass="addDatabaseIngredientCell" customModule="Clarity" customModuleProvider="target">
@@ -723,12 +727,15 @@
                         <constraints>
                             <constraint firstItem="VNx-X5-qeA" firstAttribute="top" secondItem="IdB-sO-hzs" secondAttribute="top" id="0it-uo-8SA"/>
                             <constraint firstItem="UBp-ap-0Cg" firstAttribute="leading" secondItem="WmH-NL-QEu" secondAttribute="leading" id="4GY-om-1YZ"/>
+                            <constraint firstItem="b6M-9v-fZP" firstAttribute="top" secondItem="VNx-X5-qeA" secondAttribute="bottom" id="7rm-rX-dap"/>
                             <constraint firstItem="VNx-X5-qeA" firstAttribute="height" secondItem="IdB-sO-hzs" secondAttribute="width" multiplier="45/100" id="CDf-sn-kwD"/>
+                            <constraint firstItem="b6M-9v-fZP" firstAttribute="trailing" secondItem="WmH-NL-QEu" secondAttribute="trailing" id="EkN-Y2-31u"/>
+                            <constraint firstItem="b6M-9v-fZP" firstAttribute="leading" secondItem="WmH-NL-QEu" secondAttribute="leading" id="TBR-lr-Eqx"/>
                             <constraint firstItem="WmH-NL-QEu" firstAttribute="bottom" secondItem="UBp-ap-0Cg" secondAttribute="bottom" id="U1O-Ye-0iN"/>
                             <constraint firstItem="ffz-uD-cjY" firstAttribute="leading" secondItem="WmH-NL-QEu" secondAttribute="leading" constant="15" id="b7F-Bs-7hd"/>
                             <constraint firstItem="WmH-NL-QEu" firstAttribute="trailing" secondItem="L6o-dB-y8d" secondAttribute="trailing" constant="15" id="f9D-J0-c6T"/>
                             <constraint firstItem="VNx-X5-qeA" firstAttribute="trailing" secondItem="WmH-NL-QEu" secondAttribute="trailing" id="jxm-28-0Ek"/>
-                            <constraint firstItem="UBp-ap-0Cg" firstAttribute="top" secondItem="VNx-X5-qeA" secondAttribute="bottom" id="nGF-I1-gTt"/>
+                            <constraint firstItem="UBp-ap-0Cg" firstAttribute="top" secondItem="b6M-9v-fZP" secondAttribute="bottom" id="nGF-I1-gTt"/>
                             <constraint firstItem="WmH-NL-QEu" firstAttribute="trailing" secondItem="UBp-ap-0Cg" secondAttribute="trailing" id="oGf-7Q-0Ey"/>
                             <constraint firstItem="L6o-dB-y8d" firstAttribute="top" secondItem="WmH-NL-QEu" secondAttribute="top" constant="8" id="pO9-N5-zrV"/>
                             <constraint firstItem="ffz-uD-cjY" firstAttribute="top" secondItem="IdB-sO-hzs" secondAttribute="top" constant="15" id="qvO-Ic-DD4"/>
@@ -738,6 +745,7 @@
                     </view>
                     <connections>
                         <outlet property="bannerImage" destination="VNx-X5-qeA" id="EnV-Jb-769"/>
+                        <outlet property="searchBar" destination="b6M-9v-fZP" id="ZB4-zS-apd"/>
                         <outlet property="tableView" destination="UBp-ap-0Cg" id="Api-1p-9Qs"/>
                     </connections>
                 </viewController>

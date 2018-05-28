@@ -11,7 +11,7 @@ import SDWebImage
 import FirebaseStorageUI
 import Firebase
 
-class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var bannerImage: UIImageView!
@@ -21,8 +21,10 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
     let today = Date()
     let formatter = DateFormatter()
     
+    @IBOutlet weak var searchBar: UISearchBar!
     override func viewDidLoad() {
         super.viewDidLoad()
+        searchBar.delegate = self
         tableView.delegate = self
         tableView.dataSource = self
         formatter.timeStyle = .none

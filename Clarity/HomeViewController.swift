@@ -91,6 +91,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         pieChart.data = data
         pieChart.chartDescription?.text = ""
         pieChart.noDataText = "No data available"
+        pieChart.noDataTextColor = UIColor.white
         pieChart.legend.horizontalAlignment = .right
         pieChart.legend.verticalAlignment = .center
         pieChart.legend.orientation = .vertical
