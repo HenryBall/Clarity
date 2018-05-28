@@ -80,9 +80,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
                 if let document = document, document.exists {
                     let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
                     if(document.data()?.count == 1){
-                        let destination = self.s.instantiateViewController(withIdentifier: "GettingStartedViewController") as! GettingStartedViewController
+                        let destination = self.s.instantiateViewController(withIdentifier: "SettingsViewController") as! SettingsViewController
+                        let home = self.s.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
                         let nv = self.window.rootViewController as! UINavigationController
-                        nv.viewControllers = [destination]
+                        nv.viewControllers = [home, destination]
                     } else {
                         let destination = self.s.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
                         let nv = self.window.rootViewController as! UINavigationController
@@ -95,10 +96,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
                     print("Document does not exist")
                 }
             }
-            
-            
         }
-
     }
     
     func applicationWillResignActive(_ application: UIApplication) {

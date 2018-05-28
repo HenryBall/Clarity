@@ -18,7 +18,6 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     
     
     @IBOutlet weak var scrollView: UIScrollView!
- 
     @IBOutlet weak var userWaterGoal: UITextField!
     
     override func viewDidLoad() {
@@ -26,21 +25,18 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         self.hideKeyboard()
         let user = db.collection("users").document(defaults.string(forKey: "user_id")!)
         user.getDocument { (document, error) in
-            if let document = document, document.exists {
-                
-                self.userWaterGoal.text = String(Int((document.data()!["water_goal"] as! Double)))
-            } else {
-                print("Document does not exist")
+            if(document?.exists)!{
+                if (document?.data()!["water_goal"]) != nil{
+                    self.userWaterGoal.text = String(Int((document?.data()!["water_goal"] as! Double)))
+                }else{
+                    self.userWaterGoal.placeholder = "1000"
+                }
+            }else{
+                print("This user does not exist in the database")
             }
         }
-        // Do any additional setup after loading the view.
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
     @IBAction func backBtnPressed(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
     }
@@ -50,7 +46,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         
         if (userWaterGoal.text != "") {
             user.setData(["water_goal": Double(userWaterGoal.text!)], options: SetOptions.merge())
-            
+            self.navigationController?.popViewController(animated: true)
         } else {
             let alert = UIAlertController(title: "Oops!", message: "Please enter a water goal", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
