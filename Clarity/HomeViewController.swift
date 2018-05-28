@@ -48,25 +48,23 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         
         self.scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width * 3, height:self.scrollView.frame.height)
         totalGallonsToday = 0.0
-        queryDailyGoal()
-        queryTotal()
+        //queryTotal()
         queryIngredientsFromFirebase()
         self.navigationController?.isNavigationBarHidden = true
         getBarGraphData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        queryDailyGoal()
         queryTotal()
     }
     
     func queryDailyGoal(){
         let user = db.collection("users").document(defaults.string(forKey: "user_id")!)
-
         user.getDocument { (document, error) in
             if let document = document, document.exists {
                 if(document.data()?.keys.contains("water_goal"))!{
                     self.dailyGoal = document.data()!["water_goal"] as! Double
-                   // self.dailyGoalLabel.text = String((Int(document.data()!["water_goal"] as! Double)))
                 }
             } else {
                 print("Document does not exist")
@@ -248,6 +246,8 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
                     self.updatePieChart(breakfast: breakfastTotal, lunch: lunchTotal, dinner: dinnerTotal, snacks: snacksTotal)
                     self.totalGallonsToday = total
                 }
+            }else{
+                self.drawCircle(greenRating: 0.0)
             }
         }
     }
@@ -255,11 +255,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     /* Circle Animation ************************************************************************************************/
     func drawCircle(greenRating: CGFloat) {
     
-            let endAngle = (CGFloat.pi / 2) + (CGFloat.pi * 2 * (greenRating / CGFloat(dailyGoal)))
 
-        //Converting the Green Rating to a percentage out of 360 for the score label
-        let percentage = Int(( greenRating / CGFloat(dailyGoal )) * 100)
-        percentLabel.text = String(describing: percentage) + "% of your daily total"
         //Tracklayer is the gray layer behind the animation color for the green rating
         // Code for the Rating Circle comes from: https://www.letsbuildthatapp.com/course_video?id=2342
         let trackLayer = CAShapeLayer()
@@ -275,20 +271,26 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         view.layer.addSublayer(trackLayer)
         scrollView.layer.addSublayer(trackLayer)
         
-        //ShapeLayer is the green layer used for the animation color for the green rating
-        let motionPath = UIBezierPath(arcCenter: center, radius: 90, startAngle: CGFloat.pi / 2, endAngle: endAngle , clockwise: true)
-        shapeLayer.path = motionPath.cgPath
-        
-        shapeLayer.strokeColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1.0).cgColor
-        shapeLayer.lineWidth = 20
-        shapeLayer.fillColor = UIColor.clear.cgColor
-        shapeLayer.lineCap = kCALineCapRound
-        shapeLayer.strokeEnd = 0
-        
-        //This will be the score we give the rating.
-        view.layer.addSublayer(shapeLayer)
-        scrollView.layer.addSublayer(shapeLayer)
-        animateBar()
+        if(dailyGoal != nil){
+            
+            let percentage = Int(( greenRating / CGFloat(dailyGoal )) * 100)
+            percentLabel.text = String(describing: percentage) + "% of your daily total"
+
+            let endAngle = (CGFloat.pi / 2) + (CGFloat.pi * 2 * (greenRating / CGFloat(dailyGoal)))
+            let motionPath = UIBezierPath(arcCenter: center, radius: 90, startAngle: CGFloat.pi / 2, endAngle: endAngle , clockwise: true)
+            shapeLayer.path = motionPath.cgPath
+            
+            shapeLayer.strokeColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1.0).cgColor
+            shapeLayer.lineWidth = 20
+            shapeLayer.fillColor = UIColor.clear.cgColor
+            shapeLayer.lineCap = kCALineCapRound
+            shapeLayer.strokeEnd = 0
+            
+            //This will be the score we give the rating.
+            view.layer.addSublayer(shapeLayer)
+            scrollView.layer.addSublayer(shapeLayer)
+            animateBar()
+        }
     }
     
     //Function to Animate the Green Rating. Code used from https://www.letsbuildthatapp.com/course_video?id=2342
