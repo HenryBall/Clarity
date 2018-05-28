@@ -176,10 +176,6 @@ class searchViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        updateTable(searchText: searchText)
-    }
-    
-    func updateTable(searchText: String){
         searchProducts(searchText: searchText)
         self.tableView.reloadData()
     }

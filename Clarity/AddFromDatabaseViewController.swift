@@ -17,6 +17,7 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
     @IBOutlet weak var bannerImage: UIImageView!
     var mealType: String!
     var ingredientsInMeal = [Ingredient]()
+    var displayedIngredients = [Ingredient]()
     
     let today = Date()
     let formatter = DateFormatter()
@@ -24,6 +25,7 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
     @IBOutlet weak var searchBar: UISearchBar!
     override func viewDidLoad() {
         super.viewDidLoad()
+        displayedIngredients = ingredientsFromDatabase
         searchBar.delegate = self
         tableView.delegate = self
         tableView.dataSource = self
@@ -79,9 +81,9 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "addDatabaseIngredientCell") as! addDatabaseIngredientCell
-        cell.label.text = ingredientsFromDatabase[indexPath.row].name.capitalized
-        cell.gallonsWaterLabel.text = String(Int(ingredientsFromDatabase[indexPath.row].waterData))
-        let imagePath = "food-icons/" + ingredientsFromDatabase[indexPath.row].name.uppercased() + ".jpg"
+        cell.label.text = displayedIngredients[indexPath.row].name.capitalized
+        cell.gallonsWaterLabel.text = String(Int(displayedIngredients[indexPath.row].waterData))
+        let imagePath = "food-icons/" + displayedIngredients[indexPath.row].name.uppercased() + ".jpg"
         
         let imageRef = storage.reference().child(imagePath)
         cell.icon.sd_setImage(with: imageRef, placeholderImage: #imageLiteral(resourceName: "Food"))
@@ -89,11 +91,11 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return ingredientsFromDatabase.count
+        return displayedIngredients.count
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath){
-        let currentIngredient = ingredientsFromDatabase[indexPath.row]
+        let currentIngredient = displayedIngredients[indexPath.row]
         ingredientsInMeal.append(currentIngredient)
         //let cell = tableView.dequeueReusableCell(withIdentifier: "addDatabaseIngredientCell") as! addDatabaseIngredientCell
         //print(cell.count.text)
@@ -109,9 +111,20 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
     }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        let item = ingredientsFromDatabase[indexPath.row]
+        let item = displayedIngredients[indexPath.row]
         if let index = ingredientsInMeal.index(where: { $0.name == item.name }) {
             ingredientsInMeal.remove(at: index)
         }
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        //searchProducts(searchText: searchText)
+        if(searchText == ""){
+            displayedIngredients = ingredientsFromDatabase
+        } else {
+            // Filter the results
+            displayedIngredients = ingredientsFromDatabase.filter({$0.name.lowercased().contains(searchText.lowercased())})
+        }
+        self.tableView.reloadData()
     }
 }
