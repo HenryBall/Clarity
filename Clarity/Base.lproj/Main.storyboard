@@ -564,14 +564,6 @@ to improve your water usage</string>
                                     <constraint firstItem="kAj-dq-OWs" firstAttribute="leading" secondItem="31i-Ny-fiY" secondAttribute="leading" id="utj-Qa-dRS"/>
                                 </constraints>
                             </scrollView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Og-c1-VA6" userLabel="Back Button">
-                                <rect key="frame" x="15" y="15" width="54" height="74"/>
-                                <inset key="contentEdgeInsets" minX="0.0" minY="20" maxX="40" maxY="30"/>
-                                <state key="normal" image="backButton"/>
-                                <connections>
-                                    <action selector="backTapped:" destination="zwc-1z-ew1" eventType="touchUpInside" id="UrF-Sv-Uw7"/>
-                                </connections>
-                            </button>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LnF-wG-JaF">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
@@ -618,6 +610,39 @@ to improve your water usage</string>
                                     <constraint firstItem="6n7-eo-9fQ" firstAttribute="centerX" secondItem="csW-SI-Xwh" secondAttribute="centerX" id="wSe-Zq-RmR"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fg3-z8-FU3" userLabel="Loading Screen">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="loadingIcon" translatesAutoresizingMaskIntoConstraints="NO" id="PaP-xx-UbV">
+                                        <rect key="frame" x="162" y="298" width="50" height="70"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="50" id="KEz-hi-mEt"/>
+                                            <constraint firstAttribute="height" constant="70" id="auO-ag-DC2"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y3f-xV-hul">
+                                        <rect key="frame" x="150" y="388" width="75" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.0" green="0.72941176470000002" blue="0.81176470590000005" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="y3f-xV-hul" firstAttribute="centerX" secondItem="fg3-z8-FU3" secondAttribute="centerX" id="TwU-we-eWh"/>
+                                    <constraint firstItem="y3f-xV-hul" firstAttribute="top" secondItem="PaP-xx-UbV" secondAttribute="bottom" constant="20" id="lou-Il-D4A"/>
+                                    <constraint firstItem="PaP-xx-UbV" firstAttribute="centerX" secondItem="fg3-z8-FU3" secondAttribute="centerX" id="mNt-KO-8WA"/>
+                                    <constraint firstItem="PaP-xx-UbV" firstAttribute="centerY" secondItem="fg3-z8-FU3" secondAttribute="centerY" id="zOv-Qx-f1y"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Og-c1-VA6" userLabel="Back Button">
+                                <rect key="frame" x="15" y="15" width="54" height="74"/>
+                                <inset key="contentEdgeInsets" minX="0.0" minY="20" maxX="40" maxY="30"/>
+                                <state key="normal" image="backButton"/>
+                                <connections>
+                                    <action selector="backTapped:" destination="zwc-1z-ew1" eventType="touchUpInside" id="UrF-Sv-Uw7"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -626,13 +651,17 @@ to improve your water usage</string>
                             <constraint firstAttribute="bottom" secondItem="LnF-wG-JaF" secondAttribute="bottom" id="54r-pO-jxH"/>
                             <constraint firstItem="kAj-dq-OWs" firstAttribute="height" secondItem="vnD-pB-AEv" secondAttribute="height" id="6Sp-aT-rTW"/>
                             <constraint firstItem="c4N-Qu-39L" firstAttribute="bottom" secondItem="31i-Ny-fiY" secondAttribute="bottom" id="Akt-2M-8mw"/>
+                            <constraint firstItem="fg3-z8-FU3" firstAttribute="leading" secondItem="c4N-Qu-39L" secondAttribute="leading" id="Aqm-Lo-rX8"/>
+                            <constraint firstItem="fg3-z8-FU3" firstAttribute="top" secondItem="DZc-CB-Tyj" secondAttribute="top" id="MsG-3f-jzb"/>
                             <constraint firstItem="LnF-wG-JaF" firstAttribute="top" secondItem="DZc-CB-Tyj" secondAttribute="top" id="NmF-hh-oxx"/>
                             <constraint firstItem="LnF-wG-JaF" firstAttribute="leading" secondItem="c4N-Qu-39L" secondAttribute="leading" id="XxV-Np-5Zj"/>
                             <constraint firstItem="c4N-Qu-39L" firstAttribute="trailing" secondItem="31i-Ny-fiY" secondAttribute="trailing" id="ZSy-Fx-DCK"/>
                             <constraint firstItem="31i-Ny-fiY" firstAttribute="leading" secondItem="c4N-Qu-39L" secondAttribute="leading" id="axq-uL-28z"/>
                             <constraint firstItem="9Og-c1-VA6" firstAttribute="leading" secondItem="c4N-Qu-39L" secondAttribute="leading" constant="15" id="e1i-VG-Au8"/>
                             <constraint firstItem="9Og-c1-VA6" firstAttribute="top" secondItem="DZc-CB-Tyj" secondAttribute="top" constant="15" id="g9V-pc-Oef"/>
+                            <constraint firstItem="fg3-z8-FU3" firstAttribute="bottom" secondItem="c4N-Qu-39L" secondAttribute="bottom" id="iRR-bM-0S5"/>
                             <constraint firstItem="vnD-pB-AEv" firstAttribute="top" secondItem="DZc-CB-Tyj" secondAttribute="top" id="lMc-Iv-NJ2"/>
+                            <constraint firstItem="c4N-Qu-39L" firstAttribute="trailing" secondItem="fg3-z8-FU3" secondAttribute="trailing" id="u2r-NJ-DZ4"/>
                             <constraint firstItem="vnD-pB-AEv" firstAttribute="height" secondItem="DZc-CB-Tyj" secondAttribute="width" multiplier="45/100" id="uIF-uS-VKT"/>
                             <constraint firstItem="31i-Ny-fiY" firstAttribute="top" secondItem="DZc-CB-Tyj" secondAttribute="top" id="ub0-k2-MRl"/>
                             <constraint firstItem="c4N-Qu-39L" firstAttribute="trailing" secondItem="LnF-wG-JaF" secondAttribute="trailing" id="vQl-Sk-Zsb"/>
@@ -644,13 +673,15 @@ to improve your water usage</string>
                         <outlet property="bannerImage" destination="vnD-pB-AEv" id="5yA-LT-tJT"/>
                         <outlet property="closeButton" destination="GOe-cN-r6K" id="LdI-Ke-oeF"/>
                         <outlet property="gallonsInMeal" destination="0ct-Ae-KFe" id="xza-sO-M46"/>
+                        <outlet property="loadingIcon" destination="PaP-xx-UbV" id="mWf-6y-T4h"/>
+                        <outlet property="loadingScreen" destination="fg3-z8-FU3" id="OTV-Z3-rws"/>
                         <outlet property="tableView" destination="gUJ-zW-wNn" id="717-Wh-C80"/>
                         <outlet property="tableViewHeight" destination="8VY-IB-ONb" id="jDe-kF-wfU"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xRi-Ey-qS8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1426" y="27"/>
+            <point key="canvasLocation" x="1424.8" y="26.53673163418291"/>
         </scene>
         <!--Ingredients Details View Controller-->
         <scene sceneID="MzM-JR-QEY">
@@ -1086,6 +1117,7 @@ to improve your water usage</string>
         <image name="gradientNavBar" width="375" height="81"/>
         <image name="greenBlueBackground" width="375" height="317"/>
         <image name="greenBlueBkgdSettings" width="375" height="667"/>
+        <image name="loadingIcon" width="90" height="91"/>
         <image name="loginBtn" width="250" height="56"/>
         <image name="saveSettingsbtn" width="250" height="56"/>
         <image name="scanButton" width="65" height="65"/>

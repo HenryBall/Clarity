@@ -26,7 +26,6 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
     var ingredientsList = [String]()
     var day : DocumentReference!
     
-    
     // Camera stuff
     let imagePicker = UIImagePickerController()
     let session = URLSession.shared
@@ -53,8 +52,13 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
     var itemsInMeal = [Food]()
     
     @IBOutlet weak var addIngredientsView: UIView!
+    @IBOutlet weak var loadingScreen: UIView!
+    @IBOutlet weak var loadingIcon: UIImageView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        loadingScreen.isHidden = true
         
         formatter.timeStyle = .none
         formatter.dateStyle = .long
@@ -74,7 +78,6 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        print ("view appeard")
         queryIngredients()
     }
     
@@ -234,6 +237,8 @@ extension MealViewController {
                 //ingredientsList.append(ingredient)
                 matchIngredient (name: ingredient)
             }
+            loadingScreen.isHidden = true
+            loadingIcon.layer.removeAllAnimations()
         }else{
             print("Sorry, the ingredients for this item are unavailable")
         }
@@ -327,6 +332,8 @@ extension MealViewController {
         dismiss(animated: true, completion: nil)
         if let destination = self.navigationController?.viewControllers[1] {
             self.navigationController?.popToViewController(destination, animated: true)
+            loadingScreen.isHidden = false
+            loadingIcon.rotate()
         }
     }
     
@@ -405,6 +412,18 @@ extension MealViewController {
         }
         
         task.resume()
+    }
+}
+
+extension UIView {
+    func rotate(duration: CFTimeInterval = 1) {
+        let animation = CABasicAnimation(keyPath: "transform.rotation")
+        animation.fromValue = 0.0
+        animation.toValue = CGFloat(Double.pi * 2)
+        animation.isRemovedOnCompletion = false
+        animation.duration = duration
+        animation.repeatCount = Float.infinity
+        self.layer.add(animation, forKey: nil)
     }
 }
 
