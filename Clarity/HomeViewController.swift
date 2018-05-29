@@ -56,12 +56,11 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         totalGallonsToday = 0.0
         queryIngredientsFromFirebase()
         self.navigationController?.isNavigationBarHidden = true
-        getBarGraphData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        dailyGoal = defaults.double(forKey: "water_limit")
         queryTotal()
+        getBarGraphData()
     }
     
     /* Queries ************************************************************************************************/
@@ -101,6 +100,11 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
                         
                         let total = breakfastTotal + lunchTotal + dinnerTotal + snacksTotal
                         waterData.append(total)
+                    }
+                }
+                if (waterData.count < 10) {
+                    for _ in 1...(10 - waterData.count) {
+                        waterData.append(0.0)
                     }
                 }
                 self.updateChartWithData(allWaterData: waterData.reversed())
@@ -166,7 +170,8 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
                 
                 total = breakfastTotal + lunchTotal + dinnerTotal + snacksTotal
                 self.dailyTotalLabel.text = String(Int(total))
-                if(total != self.totalGallonsToday){
+                if(total != self.totalGallonsToday || self.dailyGoal != defaults.double(forKey: "water_limit")){
+                    self.dailyGoal = defaults.double(forKey: "water_limit")
                     self.drawCircle(greenRating: CGFloat(total))
                     self.updatePieChart(breakfast: breakfastTotal, lunch: lunchTotal, dinner: dinnerTotal, snacks: snacksTotal)
                     self.totalGallonsToday = total
@@ -189,7 +194,9 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
             dataEntries.append(dataEntry)
         }
         
+        
         let chartDataSet = BarChartDataSet(values: dataEntries, label: "Gallons of water per day")
+        barChart.xAxis.labelPosition = .bottom
         chartDataSet.drawValuesEnabled = false
         
         let colors = Array(repeating: UIColor.white, count: allWaterData.count)
@@ -201,8 +208,9 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         
         barChart.xAxis.drawGridLinesEnabled = false //hide vertical grid lines
         barChart.xAxis.drawLabelsEnabled = false //hide x axis labels
+        barChart.drawValueAboveBarEnabled = false
         
-        barChart.rightAxis.addLimitLine(limitLine) //show daily limit line on graph
+        //barChart.rightAxis.addLimitLine(limitLine) //show daily limit line on graph
         barChart.rightAxis.drawGridLinesEnabled = false //hide vertical line on right side
         barChart.rightAxis.drawAxisLineEnabled = false //hide horizontal axis lines
         barChart.rightAxis.labelTextColor = UIColor.white

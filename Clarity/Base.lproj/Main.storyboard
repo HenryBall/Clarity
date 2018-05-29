@@ -128,7 +128,7 @@ to improve your water usage</string>
                                                     <action selector="onSaveSettingsPressed:" destination="ZJG-13-QC9" eventType="touchUpInside" id="gHL-Xh-vWM"/>
                                                 </connections>
                                             </button>
-                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="1000" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="DA4-pd-0mx">
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="DA4-pd-0mx">
                                                 <rect key="frame" x="15" y="414.5" width="337" height="40"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="40" id="Fyx-AF-tH3"/>
@@ -147,7 +147,7 @@ to improve your water usage</string>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4o3-sA-uYY">
-                                                <rect key="frame" x="156" y="577.5" width="54" height="32"/>
+                                                <rect key="frame" x="156" y="582.5" width="54" height="32"/>
                                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                                                 <state key="normal" title="Logout">
                                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -178,7 +178,7 @@ to improve your water usage</string>
                                             <constraint firstItem="JT7-sP-ivZ" firstAttribute="leading" secondItem="nP2-La-UgP" secondAttribute="leading" constant="15" id="Qsw-Zn-zZ5"/>
                                             <constraint firstItem="0Zu-pc-tPE" firstAttribute="top" secondItem="kA3-J5-sVO" secondAttribute="bottom" constant="30" id="RfF-c3-bCH"/>
                                             <constraint firstItem="0Zu-pc-tPE" firstAttribute="centerX" secondItem="nP2-La-UgP" secondAttribute="centerX" id="Tye-AA-4E5"/>
-                                            <constraint firstItem="4o3-sA-uYY" firstAttribute="top" secondItem="u59-J0-d7u" secondAttribute="bottom" constant="15" id="YbP-7x-SxZ"/>
+                                            <constraint firstItem="4o3-sA-uYY" firstAttribute="top" secondItem="u59-J0-d7u" secondAttribute="bottom" constant="20" id="YbP-7x-SxZ"/>
                                             <constraint firstItem="DA4-pd-0mx" firstAttribute="leading" secondItem="nP2-La-UgP" secondAttribute="leading" constant="15" id="bpA-yA-E3G"/>
                                             <constraint firstItem="DA4-pd-0mx" firstAttribute="centerX" secondItem="nP2-La-UgP" secondAttribute="centerX" id="dDC-EK-XYQ"/>
                                             <constraint firstItem="kA3-J5-sVO" firstAttribute="centerX" secondItem="nP2-La-UgP" secondAttribute="centerX" id="eGS-Ci-0Cr"/>
@@ -620,17 +620,9 @@ to improve your water usage</string>
                                             <constraint firstAttribute="height" constant="70" id="auO-ag-DC2"/>
                                         </constraints>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y3f-xV-hul">
-                                        <rect key="frame" x="150" y="388" width="75" height="21"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" red="0.0" green="0.72941176470000002" blue="0.81176470590000005" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstItem="y3f-xV-hul" firstAttribute="centerX" secondItem="fg3-z8-FU3" secondAttribute="centerX" id="TwU-we-eWh"/>
-                                    <constraint firstItem="y3f-xV-hul" firstAttribute="top" secondItem="PaP-xx-UbV" secondAttribute="bottom" constant="20" id="lou-Il-D4A"/>
                                     <constraint firstItem="PaP-xx-UbV" firstAttribute="centerX" secondItem="fg3-z8-FU3" secondAttribute="centerX" id="mNt-KO-8WA"/>
                                     <constraint firstItem="PaP-xx-UbV" firstAttribute="centerY" secondItem="fg3-z8-FU3" secondAttribute="centerY" id="zOv-Qx-f1y"/>
                                 </constraints>
