@@ -15,20 +15,23 @@ class Ingredient {
     var description : String
     var servingSize : Double
     var category : String
+    var source : String
     
-    init(name: String, waterData: Double, description: String, servingSize: Double, category: String) {
+    init(name: String, waterData: Double, description: String, servingSize: Double, category: String, source: String) {
         self.name = name
         self.waterData = waterData
         self.description = description
         self.servingSize = servingSize
         self.category = category
+        self.source = source
     }
     
     init(document: DocumentSnapshot){
-        self.name = document.documentID
+        self.name = document.documentID.uppercased()
         self.waterData = document.data()!["gallons_water"] as! Double
         self.description = document.data()!["description"] as! String
         self.servingSize = document.data()!["average_weight_oz"] as! Double
         self.category = document.data()!["category"] as! String
+        self.source = document.data()!["source"] as! String
     }
 }

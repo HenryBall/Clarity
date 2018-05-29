@@ -180,6 +180,12 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
         return 75.0
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let destination = storyboard?.instantiateViewController(withIdentifier: "IngredientsDetailsViewController") as! IngredientsDetailsViewController
+        destination.ingredientToShow = ingredientsInMeal[indexPath.row]
+        navigationController?.pushViewController(destination, animated: true)
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "IngredientCell") as! IngredientCell
         cell.label.text = ingredientsInMeal[indexPath.row].name
