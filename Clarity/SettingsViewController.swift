@@ -45,6 +45,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         let user = db.collection("users").document(defaults.string(forKey: "user_id")!)
         
         if (userWaterGoal.text != "") {
+            UserDefaults.standard.set(Double(userWaterGoal.text!), forKey: "water_limit")
             user.setData(["water_goal": Double(userWaterGoal.text!)], options: SetOptions.merge())
             self.navigationController?.popViewController(animated: true)
         } else {

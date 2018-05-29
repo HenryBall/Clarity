@@ -31,7 +31,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var pageControl: UIPageControl!
     @IBOutlet weak var pieChart: PieChartView!
     var totalGallonsToday: Double!
-    var dailyGoal: Double!
+    var dailyGoal = 0.0
     
     @IBOutlet weak var scrollView: UIScrollView!
     let shapeLayer = CAShapeLayer()
@@ -43,6 +43,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.scrollView.delegate = self
+
         databaseDateFormatter.timeStyle = .none
         databaseDateFormatter.dateStyle = .long
         databaseDateFormatter.string(from: today)
@@ -59,26 +60,11 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        queryDailyGoal()
+        dailyGoal = defaults.double(forKey: "water_limit")
         queryTotal()
     }
     
     /* Queries ************************************************************************************************/
-    
-    ///Queries the user's daily goal/limit from firebase
-    func queryDailyGoal(){
-        let user = db.collection("users").document(defaults.string(forKey: "user_id")!)
-        user.getDocument { (document, error) in
-            if let document = document, document.exists {
-                if(document.data()?.keys.contains("water_goal"))!{
-                    self.dailyGoal = document.data()!["water_goal"] as! Double
-                    print("daily goal is ::::: " + String(self.dailyGoal))
-                }
-            } else {
-                print("Water limit not found")
-            }
-        }
-    }
     
     ///Queries the user's last 10 days total water intake
     func getBarGraphData(){
@@ -185,11 +171,10 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
                     self.updatePieChart(breakfast: breakfastTotal, lunch: lunchTotal, dinner: dinnerTotal, snacks: snacksTotal)
                     self.totalGallonsToday = total
                 }
+            }else{
+                print("called draw circle with 0")
+                self.drawCircle(greenRating: 0.0)
             }
-//            }else{
-//                print("called draw circle with 0")
-//                self.drawCircle(greenRating: 0.0)
-//            }
         }
     }
     
@@ -303,7 +288,6 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     /* Circle Animation ************************************************************************************************/
     func drawCircle(greenRating: CGFloat) {
     
-
         //Tracklayer is the gray layer behind the animation color for the green rating
         // Code for the Rating Circle comes from: https://www.letsbuildthatapp.com/course_video?id=2342
         let trackLayer = CAShapeLayer()
@@ -319,27 +303,23 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         view.layer.addSublayer(trackLayer)
         scrollView.layer.addSublayer(trackLayer)
         
-        if(dailyGoal != nil){
-            let percentage = Int(( greenRating / CGFloat(dailyGoal )) * 100)
-            percentLabel.text = String(describing: percentage) + "% of your daily limit"
+        let percentage = Int(( greenRating / CGFloat(dailyGoal )) * 100)
+        percentLabel.text = String(describing: percentage) + "% of your daily limit"
 
-            let endAngle = (CGFloat.pi / 2) + (CGFloat.pi * 2 * (greenRating / CGFloat(dailyGoal)))
-            let motionPath = UIBezierPath(arcCenter: center, radius: 90, startAngle: CGFloat.pi / 2, endAngle: endAngle , clockwise: true)
-            shapeLayer.path = motionPath.cgPath
-            
-            shapeLayer.strokeColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1.0).cgColor
-            shapeLayer.lineWidth = 20
-            shapeLayer.fillColor = UIColor.clear.cgColor
-            shapeLayer.lineCap = kCALineCapRound
-            shapeLayer.strokeEnd = 0
-            
-            //This will be the score we give the rating.
-            view.layer.addSublayer(shapeLayer)
-            scrollView.layer.addSublayer(shapeLayer)
-            animateBar()
-        }else{
-            print("daily goal is nil")
-        }
+        let endAngle = (CGFloat.pi / 2) + (CGFloat.pi * 2 * (greenRating / CGFloat(dailyGoal)))
+        let motionPath = UIBezierPath(arcCenter: center, radius: 90, startAngle: CGFloat.pi / 2, endAngle: endAngle , clockwise: true)
+        shapeLayer.path = motionPath.cgPath
+        
+        shapeLayer.strokeColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1.0).cgColor
+        shapeLayer.lineWidth = 20
+        shapeLayer.fillColor = UIColor.clear.cgColor
+        shapeLayer.lineCap = kCALineCapRound
+        shapeLayer.strokeEnd = 0
+        
+        //This will be the score we give the rating.
+        view.layer.addSublayer(shapeLayer)
+        scrollView.layer.addSublayer(shapeLayer)
+        animateBar()
     }
     
     //Function to Animate the Green Rating. Code used from https://www.letsbuildthatapp.com/course_video?id=2342
