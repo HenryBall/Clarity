@@ -12,10 +12,10 @@ import Firebase
 class Ingredient {
     var name : String
     var waterData : Double
-    var description : String
-    var servingSize : Double
-    var category : String
-    var source : String
+    var description : String?
+    var servingSize : Double?
+    var category : String?
+    var source : String?
     
     init(name: String, waterData: Double, description: String, servingSize: Double, category: String, source: String) {
         self.name = name

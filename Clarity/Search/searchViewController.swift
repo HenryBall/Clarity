@@ -22,14 +22,18 @@ class searchViewController: UIViewController, UITableViewDataSource, UITableView
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
     var searchedProducts = [SearchProduct]()
+    let today = Date()
+    let formatter = DateFormatter()
     //var foodInMeal = [Food]()
     var mealType: String!
-    var foodInMeal: [[String : Any]]!
+    var foodInMeal = [[String : Any]]()
+    var currentTotal = 0.0
     
     // NLP stuffs
     let tagger = NSLinguisticTagger(tagSchemes:[.tokenType, .language, .lexicalClass, .nameType, .lemma], options: 0)
     let options: NSLinguisticTagger.Options = [.omitPunctuation, .omitWhitespace, .joinNames]
     var ingredientsText: JSON = []
+    var day: DocumentReference!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,6 +41,11 @@ class searchViewController: UIViewController, UITableViewDataSource, UITableView
         tableView.delegate = self
         tableView.dataSource = self
         searchBar.delegate = self
+        formatter.timeStyle = .none
+        formatter.dateStyle = .long
+        formatter.string(from: today)
+        day = db.collection("users").document(defaults.string(forKey: "user_id")!).collection("meals").document(formatter.string(from: today))
+        
         queryFoodInMeal()
         setBanner()
     }
@@ -83,11 +92,15 @@ class searchViewController: UIViewController, UITableViewDataSource, UITableView
         formatter.dateStyle = .long
         formatter.string(from: today)
         
-        let day = db.collection("users").document(defaults.string(forKey: "user_id")!).collection("meals").document(formatter.string(from: today))
+        //let day = db.collection("users").document(defaults.string(forKey: "user_id")!).collection("meals").document(formatter.string(from: today))
         day.getDocument { (document, error) in
             if(document?.exists)!{
                 if(document?.data()?.keys.contains(self.mealType + "-meals"))!{
                     self.foodInMeal = document?.data()![self.mealType + "-meals"] as! [[String : Any]]
+                }
+                
+                if(document?.data()?.keys.contains(self.mealType + "_total"))!{
+                    self.currentTotal = document?.data()![self.mealType + "_total"] as! Double
                 }
             } else {
                 print("No food exists for this meal")
@@ -139,7 +152,6 @@ class searchViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     func searchItem(number: String, name: String){
-        //let destination = self.storyboard?.instantiateViewController(withIdentifier: "ProductViewController") as! ProductViewController
         let params : [String : String] = ["api_key" : API_KEY, "format": "JSON", "type": "b", "ndbno" : number]
         Alamofire.request(report_url, method: .get, parameters: params).responseJSON{
             response in
@@ -148,30 +160,12 @@ class searchViewController: UIViewController, UITableViewDataSource, UITableView
                 
                 let totalGallons = self.compareIngredients(text: itemJSON["report"]["food"]["ing"]["desc"])
                 
-//                let item = Food(name: name, totalGallons: totalGallons)
-//                self.foodInMeal.append(item)
-                //destination.ingredientsText = itemJSON["report"]["food"]["ing"]["desc"]
-                //destination.productName = name
-                //self.show(destination, sender: nil)
-                let today = Date()
-                let formatter = DateFormatter()
-                formatter.timeStyle = .none
-                formatter.dateStyle = .long
-                formatter.string(from: today)
-                
-                let day = db.collection("users").document(defaults.string(forKey: "user_id")!).collection("meals").document(formatter.string(from: today))
-                
-                //var updateMap = [String : Double]()
                 var map = [String : Any]()
                 map = ["name" : name, "total" : totalGallons]
                 self.foodInMeal.append(map)
-                //let myArray = [map]
         
-//                FirebaseFirestore.getInstance().collection("myCollection")
-//                .document("doc1").update(updateMap);
-                //day.setData(updateMap)
+                self.currentTotal = self.currentTotal + totalGallons
                 
-                day.setData([self.mealType + "-meals" : self.foodInMeal], options: SetOptions.merge())
             } else {
                 print("Request: \(String(describing: response.request))")
                 print("Error \(String(describing: response.result.error))")
@@ -248,5 +242,13 @@ class searchViewController: UIViewController, UITableViewDataSource, UITableView
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         searchProducts(searchText: searchText)
         self.tableView.reloadData()
+    }
+    
+    @IBAction func doneTapped(_ sender: UIButton) {
+        day.setData([self.mealType + "-meals" : self.foodInMeal], options: SetOptions.merge())
+        day.setData([self.mealType + "_total" : self.currentTotal], options: SetOptions.merge())
+        if let destination = self.navigationController?.viewControllers[1] {
+            self.navigationController?.popToViewController(destination, animated: true)
+        }
     }
 }

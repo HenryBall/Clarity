@@ -34,11 +34,11 @@ class IngredientsDetailsViewController: UIViewController {
         if(ingredientToShow.category == "other"){
             compareLabel.text = "How does this compare to other food?"
         }else{
-            compareLabel.text = "How does this compare to other " + ingredientToShow.category + "?"
+            compareLabel.text = "How does this compare to other " + ingredientToShow.category! + "?"
         }
         
-        sourceLabel.text = "Source: " + ingredientToShow.source
-        servingSizeLabel.text = String(ingredientToShow.servingSize) + " oz"
+        sourceLabel.text = "Source: " + ingredientToShow.source!
+        servingSizeLabel.text = String(ingredientToShow.servingSize!) + " oz"
         
         switch(ingredientToShow.category){
         case "protein":
@@ -49,6 +49,8 @@ class IngredientsDetailsViewController: UIViewController {
             updateChartWithData(dataToShow: vegetables)
         case "dairy":
             updateChartWithData(dataToShow: dairy)
+        case "drinks":
+            updateChartWithData(dataToShow: drinks)
         case "other":
             updateChartWithData(dataToShow: other)
         default:
