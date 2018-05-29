@@ -48,6 +48,7 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet weak var tableViewHeight: NSLayoutConstraint!
 
     var ingredientsInMeal = [Ingredient]()
+
     var waterInMeal : Double! = 0.0
     var itemsInMeal = [Food]()
     
@@ -74,7 +75,6 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
         imagePicker.allowsEditing = false
         imagePicker.sourceType = .camera
         setBannerImage()
-        // Do any additional setup after loading the view.
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -99,6 +99,7 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
     func queryIngredients() {
         
         var ingredientReferences = [DocumentReference]()
+        var foodInMeal = [[String : Any]]()
         
         day.getDocument { (document, error) in
             if(document?.exists)!{
@@ -112,7 +113,19 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
                     self.gallonsInMeal.text = String(Int(self.waterInMeal))
                 }
                 
+                if(document?.data()?.keys.contains(self.mealType + "-meals"))!{
+                    foodInMeal = document?.data()![self.mealType + "-meals"] as! [[String : Any]]
+                    print(foodInMeal)
+                }
+                
                 self.ingredientsInMeal = []
+                
+                for i in foodInMeal{
+                    let ing = Ingredient(name: i["name"] as! String, waterData: i["total"] as! Double, description: "", servingSize: 0.0, category: "", source: "")
+                    self.ingredientsInMeal.append(ing)
+                    //self.tableView.reloadData()
+                }
+                
                 for ref in ingredientReferences {
                     ref.getDocument { (document, error) in
                         if let document = document {
@@ -175,12 +188,13 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let destination = storyboard?.instantiateViewController(withIdentifier: "IngredientsDetailsViewController") as! IngredientsDetailsViewController
         destination.ingredientToShow = ingredientsInMeal[indexPath.row]
+        tableView.deselectRow(at: indexPath, animated: true)
         navigationController?.pushViewController(destination, animated: true)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "IngredientCell") as! IngredientCell
-        cell.label.text = ingredientsInMeal[indexPath.row].name
+        cell.label.text = ingredientsInMeal[indexPath.row].name.capitalized
         
         cell.gallonsWaterLabel.text = String(Int(ingredientsInMeal[indexPath.row].waterData))
         let imagePath = "food-icons/" + ingredientsInMeal[indexPath.row].name.uppercased() + ".jpg"
@@ -202,8 +216,10 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
             self.ingredientsInMeal.remove(at: indexPath.row)
             var refArray = [DocumentReference]()
             for i in self.ingredientsInMeal{
-                let ref = self.db.document("water-footprint-data/" + i.name.capitalized)
-                refArray.append(ref)
+                if(i.source != ""){
+                    let ref = self.db.document("water-footprint-data/" + i.name.capitalized)
+                    refArray.append(ref)
+                }
             }
             self.day.setData([self.mealType : refArray], options: SetOptions.merge())
             self.day.setData([self.mealType + "_total" : self.waterInMeal], options: SetOptions.merge())

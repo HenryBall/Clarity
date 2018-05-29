@@ -19,6 +19,7 @@ var proteins = [Ingredient]()
 var fruits = [Ingredient]()
 var vegetables = [Ingredient]()
 var dairy = [Ingredient]()
+var drinks = [Ingredient]()
 var other = [Ingredient]()
 
 class HomeViewController: UIViewController, UIScrollViewDelegate {
@@ -131,6 +132,8 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
                         vegetables.append(current_ingredient)
                     case "dairy":
                         dairy.append(current_ingredient)
+                    case "drinks":
+                        drinks.append(current_ingredient)
                     case "other":
                         other.append(current_ingredient)
                     default:
@@ -209,8 +212,9 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         barChart.xAxis.drawGridLinesEnabled = false //hide vertical grid lines
         barChart.xAxis.drawLabelsEnabled = false //hide x axis labels
         barChart.drawValueAboveBarEnabled = false
-        
         //barChart.rightAxis.addLimitLine(limitLine) //show daily limit line on graph
+ 
+        barChart.rightAxis.addLimitLine(limitLine) //show daily limit line on graph
         barChart.rightAxis.drawGridLinesEnabled = false //hide vertical line on right side
         barChart.rightAxis.drawAxisLineEnabled = false //hide horizontal axis lines
         barChart.rightAxis.labelTextColor = UIColor.white

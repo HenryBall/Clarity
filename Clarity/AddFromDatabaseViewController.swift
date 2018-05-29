@@ -61,14 +61,14 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
         
         var refArray = [DocumentReference]()
         for i in ingredientsInMeal{
-            let ref = db.document("water-footprint-data/" + i.name.capitalized)
-            refArray.append(ref)
+            if(i.source != ""){
+                let ref = db.document("water-footprint-data/" + i.name.capitalized)
+                refArray.append(ref)
+            }
         }
         let total = ingredientsInMeal.map({$0.waterData}).reduce(0, +)
         day.setData([mealType + "_total" : total], options: SetOptions.merge())
         day.setData([mealType : refArray], options: SetOptions.merge())
-   
-        //day.setData(["total_water_day" : totalWaterDay], options: SetOptions.merge())
         
         if let destination = self.navigationController?.viewControllers[1] {
             self.navigationController?.popToViewController(destination, animated: true)

@@ -12,18 +12,15 @@ import Firebase
 class Food {
     
     var name : String
-    //var ingredients = [Ingredient]()
     var totalGallons: Double
     
     init(name: String, totalGallons: Double) {
         self.name = name
         self.totalGallons = totalGallons
-        //self.ingredients = ingredients
     }
     
-//    init(document: DocumentSnapshot){
-//        self.name = document.data()!["name"] as! String
-//        self.ingredients = document.data()!["ingredients"] as! Array
-//    
-//    }
+    init(document: DocumentSnapshot){
+        self.name = document.data()!["name"] as! String
+        self.totalGallons = document.data()!["total"] as! Double
+    }
 }

@@ -276,6 +276,10 @@ to improve your water usage</string>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Sh-3a-Qhu" userLabel="Pie Chart" customClass="PieChartView" customModule="Charts">
                                         <rect key="frame" x="366.5" y="60" width="355" height="217"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="217" id="6Br-CU-sRd"/>
+                                            <constraint firstAttribute="width" constant="355" id="zxO-RG-Gh5"/>
+                                        </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aPy-eZ-j83" customClass="BarChartView" customModule="Charts">
                                         <rect key="frame" x="765" y="70" width="345" height="207"/>
@@ -291,10 +295,8 @@ to improve your water usage</string>
                                     <constraint firstItem="aPy-eZ-j83" firstAttribute="centerY" secondItem="bJt-SV-E21" secondAttribute="centerY" constant="15" id="7Mo-Gi-R9d"/>
                                     <constraint firstItem="aPy-eZ-j83" firstAttribute="centerX" secondItem="bJt-SV-E21" secondAttribute="centerX" multiplier="5" id="BUy-qc-yhG"/>
                                     <constraint firstItem="vGv-Rl-VJC" firstAttribute="centerX" secondItem="bJt-SV-E21" secondAttribute="centerX" id="FHo-lt-vYk"/>
-                                    <constraint firstItem="4Sh-3a-Qhu" firstAttribute="width" secondItem="aPy-eZ-j83" secondAttribute="width" constant="10" id="RQi-D8-hal"/>
                                     <constraint firstItem="4Sh-3a-Qhu" firstAttribute="centerY" secondItem="bJt-SV-E21" secondAttribute="centerY" constant="10" id="VxL-Xb-2Sn"/>
                                     <constraint firstItem="vGv-Rl-VJC" firstAttribute="centerY" secondItem="bJt-SV-E21" secondAttribute="centerY" constant="10" id="ZCU-v5-hVz"/>
-                                    <constraint firstItem="4Sh-3a-Qhu" firstAttribute="height" secondItem="aPy-eZ-j83" secondAttribute="height" constant="10" id="mYc-Di-pJO"/>
                                 </constraints>
                             </scrollView>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="33F-81-tXV" userLabel="Top Row">
@@ -480,8 +482,8 @@ to improve your water usage</string>
                                                                         <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                                                                     </userDefinedRuntimeAttributes>
                                                                 </imageView>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="om7-dH-0k8" userLabel="Name">
-                                                                    <rect key="frame" x="90" y="34.5" width="46" height="20"/>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="om7-dH-0k8" userLabel="Name">
+                                                                    <rect key="frame" x="90" y="34.5" width="204" height="20"/>
                                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
@@ -506,6 +508,7 @@ to improve your water usage</string>
                                                                 <constraint firstAttribute="trailing" secondItem="e65-Gs-7uH" secondAttribute="trailing" constant="15" id="egq-PT-uta"/>
                                                                 <constraint firstItem="om7-dH-0k8" firstAttribute="leading" secondItem="VtH-TJ-295" secondAttribute="trailing" constant="15" id="lFG-kA-FC3"/>
                                                                 <constraint firstItem="VtH-TJ-295" firstAttribute="leading" secondItem="vbe-8t-NIk" secondAttribute="leading" constant="15" id="mO5-gW-B1I"/>
+                                                                <constraint firstItem="om7-dH-0k8" firstAttribute="trailing" secondItem="vbe-8t-NIk" secondAttribute="trailing" constant="-80" id="ovf-xN-mup"/>
                                                                 <constraint firstItem="Js5-z0-FRc" firstAttribute="trailing" secondItem="e65-Gs-7uH" secondAttribute="leading" constant="-5" id="paJ-k8-g1Q"/>
                                                                 <constraint firstItem="Js5-z0-FRc" firstAttribute="centerY" secondItem="vbe-8t-NIk" secondAttribute="centerY" id="x91-xI-dyF"/>
                                                             </constraints>
@@ -588,24 +591,48 @@ to improve your water usage</string>
                                             <action selector="scanTapped:" destination="zwc-1z-ew1" eventType="touchUpInside" id="Cds-1m-KjO"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6n7-eo-9fQ">
-                                        <rect key="frame" x="294.5" y="379" width="65" height="30"/>
-                                        <state key="normal" title="Database">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6n7-eo-9fQ">
+                                        <rect key="frame" x="295" y="379" width="65" height="65"/>
+                                        <state key="normal" image="databaseIcon">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
                                         <connections>
                                             <action selector="firestoreTapped:" destination="zwc-1z-ew1" eventType="touchUpInside" id="Nbd-uB-2qv"/>
                                         </connections>
                                     </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Search USDA" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wkP-i0-LR9">
+                                        <rect key="frame" x="169.5" y="241.5" width="104.5" height="20"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Scan Ingredients" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E9z-xq-cJB">
+                                        <rect key="frame" x="145.5" y="321" width="128" height="20"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Search Ingredients" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b5E-BB-caS">
+                                        <rect key="frame" x="131.5" y="401.5" width="142.5" height="20"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
-                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.79871808978873238" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.8980248679577465" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstItem="GOe-cN-r6K" firstAttribute="top" secondItem="LnF-wG-JaF" secondAttribute="top" constant="139" id="3bw-vL-Bbj"/>
                                     <constraint firstItem="rHc-Fb-sZW" firstAttribute="top" secondItem="GOe-cN-r6K" secondAttribute="bottom" constant="15" id="6gV-SZ-ZvR"/>
+                                    <constraint firstItem="wkP-i0-LR9" firstAttribute="centerY" secondItem="rHc-Fb-sZW" secondAttribute="centerY" id="BWs-Qm-MY3"/>
                                     <constraint firstItem="csW-SI-Xwh" firstAttribute="centerX" secondItem="rHc-Fb-sZW" secondAttribute="centerX" id="Ioo-hS-F9U"/>
                                     <constraint firstItem="csW-SI-Xwh" firstAttribute="top" secondItem="rHc-Fb-sZW" secondAttribute="bottom" constant="15" id="O5Q-34-Skh"/>
+                                    <constraint firstItem="rHc-Fb-sZW" firstAttribute="leading" secondItem="wkP-i0-LR9" secondAttribute="trailing" constant="20" id="TYy-Jy-cJb"/>
                                     <constraint firstAttribute="trailing" secondItem="GOe-cN-r6K" secondAttribute="trailing" constant="16" id="XTI-7H-KqY"/>
+                                    <constraint firstItem="E9z-xq-cJB" firstAttribute="trailing" secondItem="wkP-i0-LR9" secondAttribute="trailing" id="b3h-mT-2Yj"/>
+                                    <constraint firstItem="b5E-BB-caS" firstAttribute="trailing" secondItem="wkP-i0-LR9" secondAttribute="trailing" id="dd3-3q-3gS"/>
                                     <constraint firstItem="rHc-Fb-sZW" firstAttribute="centerX" secondItem="GOe-cN-r6K" secondAttribute="centerX" id="fnv-lp-kwy"/>
+                                    <constraint firstItem="E9z-xq-cJB" firstAttribute="centerY" secondItem="csW-SI-Xwh" secondAttribute="centerY" id="iwc-qm-62e"/>
+                                    <constraint firstItem="b5E-BB-caS" firstAttribute="centerY" secondItem="6n7-eo-9fQ" secondAttribute="centerY" id="u5R-rl-xXY"/>
                                     <constraint firstItem="6n7-eo-9fQ" firstAttribute="top" secondItem="csW-SI-Xwh" secondAttribute="bottom" constant="15" id="wQD-DZ-zBf"/>
                                     <constraint firstItem="6n7-eo-9fQ" firstAttribute="centerX" secondItem="csW-SI-Xwh" secondAttribute="centerX" id="wSe-Zq-RmR"/>
                                 </constraints>
@@ -916,7 +943,7 @@ to improve your water usage</string>
                                                     <rect key="frame" x="335" y="30" width="25" height="24"/>
                                                     <state key="normal" image="Add"/>
                                                 </button>
-                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="1" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="SQK-Jn-km4">
+                                                <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="1" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="SQK-Jn-km4">
                                                     <rect key="frame" x="288.5" y="27.5" width="30.5" height="30"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
@@ -1016,6 +1043,16 @@ to improve your water usage</string>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="UOf-bF-uz6">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="169"/>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tb2-AD-GjW">
+                                <rect key="frame" x="323" y="30" width="37" height="30"/>
+                                <state key="normal" title="Done">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="doneTapped:" destination="CKn-jp-20y" eventType="touchUpInside" id="Q4z-DK-6N7"/>
+                                    <action selector="doneTapped:" destination="C2R-Lb-P31" eventType="touchUpInside" id="r9n-N2-Mvm"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K12-YM-Wxm" userLabel="Back Button">
                                 <rect key="frame" x="15" y="10" width="54" height="74"/>
                                 <inset key="contentEdgeInsets" minX="0.0" minY="20" maxX="40" maxY="30"/>
@@ -1046,7 +1083,7 @@ to improve your water usage</string>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="1" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3qM-Ld-WYd">
+                                                <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="1" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3qM-Ld-WYd">
                                                     <rect key="frame" x="304.5" y="29" width="30.5" height="30"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
@@ -1082,6 +1119,8 @@ to improve your water usage</string>
                             <constraint firstItem="K12-YM-Wxm" firstAttribute="leading" secondItem="Tbn-yX-VUf" secondAttribute="leading" constant="15" id="j4l-5y-equ"/>
                             <constraint firstItem="UOf-bF-uz6" firstAttribute="trailing" secondItem="Tbn-yX-VUf" secondAttribute="trailing" id="kYF-jl-Dxa"/>
                             <constraint firstItem="gig-Ry-Tce" firstAttribute="leading" secondItem="Tbn-yX-VUf" secondAttribute="leading" id="ljV-jA-Mjz"/>
+                            <constraint firstItem="tb2-AD-GjW" firstAttribute="top" secondItem="Tbn-yX-VUf" secondAttribute="top" constant="10" id="npH-Ks-Whi"/>
+                            <constraint firstItem="Tbn-yX-VUf" firstAttribute="trailing" secondItem="tb2-AD-GjW" secondAttribute="trailing" constant="15" id="tu3-CI-pff"/>
                             <constraint firstItem="UOf-bF-uz6" firstAttribute="leading" secondItem="Tbn-yX-VUf" secondAttribute="leading" id="uO1-dt-kWn"/>
                             <constraint firstItem="Zat-EQ-U0I" firstAttribute="trailing" secondItem="Tbn-yX-VUf" secondAttribute="trailing" id="zib-nY-7Zo"/>
                         </constraints>
@@ -1095,7 +1134,7 @@ to improve your water usage</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pfg-tg-hNz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3642" y="27"/>
+            <point key="canvasLocation" x="2950" y="27"/>
         </scene>
     </scenes>
     <resources>
@@ -1106,6 +1145,7 @@ to improve your water usage</string>
         <image name="Snacks" width="135" height="135"/>
         <image name="addButton" width="65" height="65"/>
         <image name="backButton" width="14" height="24"/>
+        <image name="databaseIcon" width="65" height="65"/>
         <image name="gradientNavBar" width="375" height="81"/>
         <image name="greenBlueBackground" width="375" height="317"/>
         <image name="greenBlueBkgdSettings" width="375" height="667"/>
