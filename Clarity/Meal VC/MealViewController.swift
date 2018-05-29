@@ -47,7 +47,7 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet weak var gallonsInMeal: UILabel!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tableViewHeight: NSLayoutConstraint!
-    
+
     var ingredientsInMeal = [Ingredient]()
     var waterInMeal : Double! = 0.0
     var itemsInMeal = [Food]()
@@ -74,6 +74,7 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        print ("view appeard")
         queryIngredients()
     }
     
@@ -119,18 +120,6 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
                         }
                     }
                 }
-    
-                //get food
-                /*if(document?.data()?.keys.contains(self.mealType + "-meals"))!{
-                    for doc in (document?.data())!{
-                       //food.append(Food(document: doc))
-                        print("------")
-                        print(doc.key)
-                        print("------")
-                        print(doc.value)
-                        print("------")
-                    }
-                }*/
             } else {
                 print("No ingredients")
             }
@@ -194,6 +183,23 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         tableViewHeight.constant = CGFloat(Double(ingredientsInMeal.count)*75.0)
         return ingredientsInMeal.count
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let water = self.ingredientsInMeal[indexPath.row].waterData
+            self.waterInMeal = self.waterInMeal - water
+            self.gallonsInMeal.text = String(Int(self.waterInMeal))
+            self.ingredientsInMeal.remove(at: indexPath.row)
+            var refArray = [DocumentReference]()
+            for i in self.ingredientsInMeal{
+                let ref = self.db.document("water-footprint-data/" + i.name.capitalized)
+                refArray.append(ref)
+            }
+            self.day.setData([self.mealType : refArray], options: SetOptions.merge())
+            self.day.setData([self.mealType + "_total" : self.waterInMeal], options: SetOptions.merge())
+            self.tableView.deleteRows(at: [indexPath], with: .automatic)
+        }
     }
 }
 
@@ -287,6 +293,8 @@ extension MealViewController {
                     self.waterInMeal = self.waterInMeal + water
                     self.day.setData([self.mealType + "_total" : self.waterInMeal], options: SetOptions.merge())
                     self.day.setData([self.mealType : refArray], options: SetOptions.merge())
+                    self.gallonsInMeal.text = String(Int(self.waterInMeal))
+                    self.tableView.reloadData()
                 })
             }
         }
