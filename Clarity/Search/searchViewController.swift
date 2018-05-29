@@ -10,6 +10,7 @@ import UIKit
 import Alamofire
 import SwiftyJSON
 import Foundation
+import Firebase
 
 class searchViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
 
@@ -21,15 +22,14 @@ class searchViewController: UIViewController, UITableViewDataSource, UITableView
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
     var searchedProducts = [SearchProduct]()
-    var foodInMeal = [Food]()
+    //var foodInMeal = [Food]()
     var mealType: String!
+    var foodInMeal: [[String : Any]]!
     
     // NLP stuffs
     let tagger = NSLinguisticTagger(tagSchemes:[.tokenType, .language, .lexicalClass, .nameType, .lemma], options: 0)
     let options: NSLinguisticTagger.Options = [.omitPunctuation, .omitWhitespace, .joinNames]
     var ingredientsText: JSON = []
-    
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,6 +37,7 @@ class searchViewController: UIViewController, UITableViewDataSource, UITableView
         tableView.delegate = self
         tableView.dataSource = self
         searchBar.delegate = self
+        queryFoodInMeal()
         setBanner()
     }
     
@@ -74,6 +75,69 @@ class searchViewController: UIViewController, UITableViewDataSource, UITableView
         return cell
     }
     
+    ///Query the items that exist in ""-meals. When we select an item, they will be added to this array
+    func queryFoodInMeal(){
+        let today = Date()
+        let formatter = DateFormatter()
+        formatter.timeStyle = .none
+        formatter.dateStyle = .long
+        formatter.string(from: today)
+        
+        let day = db.collection("users").document(defaults.string(forKey: "user_id")!).collection("meals").document(formatter.string(from: today))
+        day.getDocument { (document, error) in
+            if(document?.exists)!{
+                if(document?.data()?.keys.contains(self.mealType + "-meals"))!{
+                    self.foodInMeal = document?.data()![self.mealType + "-meals"] as! [[String : Any]]
+                }
+            } else {
+                print("No food exists for this meal")
+            }
+        }
+    }
+
+    
+    func compareIngredients(text: JSON) -> Double {
+        var ingredientsList: [String]
+        var matchedIngredients = [Ingredient]()
+        
+        if text != JSON.null{
+            let str = text.string!
+            ingredientsList = tokenizeText(for: str)
+            
+            if(ingredientsFromDatabase.count > 0 && ingredientsList.count > 0){
+                for i in 0 ... ingredientsFromDatabase.count-1{
+                    for j in 0 ... ingredientsList.count-1 where
+                        ingredientsList[j].uppercased().contains(ingredientsFromDatabase[i].name){
+                        if(!matchedIngredients.contains(where: { $0.name == ingredientsFromDatabase[i].name })){
+                            matchedIngredients.append(ingredientsFromDatabase[i])
+                        }
+                    }
+                }
+            }
+            
+           return matchedIngredients.map({$0.waterData}).reduce(0, +)
+            
+        }else{
+            print("Sorry the ingredients for this item are unavailable")
+            return 0.0
+        }
+    }
+    
+    func tokenizeText(for text: String) -> [String] {
+        var arr = [String]()
+        tagger.string = text
+        let range = NSRange(location: 0, length: text.utf16.count)
+        if #available(iOS 11.0, *) {
+            tagger.enumerateTags(in: range, unit: .word, scheme: .tokenType, options: options) { tag, tokenRange, stop in
+                let word = (text as NSString).substring(with: tokenRange)
+                arr.append(word)
+            }
+            return arr
+        } else {
+            return []
+        }
+    }
+    
     func searchItem(number: String, name: String){
         //let destination = self.storyboard?.instantiateViewController(withIdentifier: "ProductViewController") as! ProductViewController
         let params : [String : String] = ["api_key" : API_KEY, "format": "JSON", "type": "b", "ndbno" : number]
@@ -81,8 +145,11 @@ class searchViewController: UIViewController, UITableViewDataSource, UITableView
             response in
             if response.result.isSuccess{
                 let itemJSON : JSON = JSON(response.result.value!)
-                let item = Food(name: name, totalGallons: 60.0)
-                self.foodInMeal.append(item)
+                
+                let totalGallons = self.compareIngredients(text: itemJSON["report"]["food"]["ing"]["desc"])
+                
+//                let item = Food(name: name, totalGallons: totalGallons)
+//                self.foodInMeal.append(item)
                 //destination.ingredientsText = itemJSON["report"]["food"]["ing"]["desc"]
                 //destination.productName = name
                 //self.show(destination, sender: nil)
@@ -94,14 +161,17 @@ class searchViewController: UIViewController, UITableViewDataSource, UITableView
                 
                 let day = db.collection("users").document(defaults.string(forKey: "user_id")!).collection("meals").document(formatter.string(from: today))
                 
-                var updateMap = [String : Double]()
-                updateMap[name] = 60.0
+                //var updateMap = [String : Double]()
+                var map = [String : Any]()
+                map = ["name" : name, "total" : totalGallons]
+                self.foodInMeal.append(map)
+                //let myArray = [map]
         
 //                FirebaseFirestore.getInstance().collection("myCollection")
 //                .document("doc1").update(updateMap);
                 //day.setData(updateMap)
                 
-                day.setData([self.mealType + "-meals" : updateMap])
+                day.setData([self.mealType + "-meals" : self.foodInMeal], options: SetOptions.merge())
             } else {
                 print("Request: \(String(describing: response.request))")
                 print("Error \(String(describing: response.result.error))")

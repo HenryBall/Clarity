@@ -77,7 +77,7 @@ class IngredientsDetailsViewController: UIViewController {
         chartDataSet.drawValuesEnabled = false
         let chartData = BarChartData(dataSet: chartDataSet)
         barChart.chartDescription?.text = ""
-        
+        barChart.isUserInteractionEnabled = false
         barChart.xAxis.drawGridLinesEnabled = false
         barChart.rightAxis.drawGridLinesEnabled = false
         barChart.leftAxis.drawLabelsEnabled = false

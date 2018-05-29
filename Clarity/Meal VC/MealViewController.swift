@@ -49,6 +49,7 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet weak var tableViewHeight: NSLayoutConstraint!
 
     var ingredientsInMeal = [Ingredient]()
+    //var ingredientsInMeal = [
     var waterInMeal : Double! = 0.0
     var itemsInMeal = [Food]()
     
@@ -70,11 +71,9 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
         imagePicker.allowsEditing = false
         imagePicker.sourceType = .camera
         setBannerImage()
-        // Do any additional setup after loading the view.
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        print ("view appeard")
         queryIngredients()
     }
     
@@ -108,6 +107,7 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
                     self.waterInMeal = document?.data()![self.mealType + "_total"] as! Double
                     self.gallonsInMeal.text = String(Int(self.waterInMeal))
                 }
+                
                 
                 self.ingredientsInMeal = []
                 for ref in ingredientReferences {
@@ -172,6 +172,7 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let destination = storyboard?.instantiateViewController(withIdentifier: "IngredientsDetailsViewController") as! IngredientsDetailsViewController
         destination.ingredientToShow = ingredientsInMeal[indexPath.row]
+        tableView.deselectRow(at: indexPath, animated: true)
         navigationController?.pushViewController(destination, animated: true)
     }
     

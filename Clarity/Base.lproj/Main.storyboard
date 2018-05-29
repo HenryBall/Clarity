@@ -276,6 +276,10 @@ to improve your water usage</string>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Sh-3a-Qhu" userLabel="Pie Chart" customClass="PieChartView" customModule="Charts">
                                         <rect key="frame" x="366.5" y="60" width="355" height="217"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="217" id="6Br-CU-sRd"/>
+                                            <constraint firstAttribute="width" constant="355" id="zxO-RG-Gh5"/>
+                                        </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aPy-eZ-j83" customClass="BarChartView" customModule="Charts">
                                         <rect key="frame" x="765" y="70" width="345" height="207"/>
@@ -291,10 +295,8 @@ to improve your water usage</string>
                                     <constraint firstItem="aPy-eZ-j83" firstAttribute="centerY" secondItem="bJt-SV-E21" secondAttribute="centerY" constant="15" id="7Mo-Gi-R9d"/>
                                     <constraint firstItem="aPy-eZ-j83" firstAttribute="centerX" secondItem="bJt-SV-E21" secondAttribute="centerX" multiplier="5" id="BUy-qc-yhG"/>
                                     <constraint firstItem="vGv-Rl-VJC" firstAttribute="centerX" secondItem="bJt-SV-E21" secondAttribute="centerX" id="FHo-lt-vYk"/>
-                                    <constraint firstItem="4Sh-3a-Qhu" firstAttribute="width" secondItem="aPy-eZ-j83" secondAttribute="width" constant="10" id="RQi-D8-hal"/>
                                     <constraint firstItem="4Sh-3a-Qhu" firstAttribute="centerY" secondItem="bJt-SV-E21" secondAttribute="centerY" constant="10" id="VxL-Xb-2Sn"/>
                                     <constraint firstItem="vGv-Rl-VJC" firstAttribute="centerY" secondItem="bJt-SV-E21" secondAttribute="centerY" constant="10" id="ZCU-v5-hVz"/>
-                                    <constraint firstItem="4Sh-3a-Qhu" firstAttribute="height" secondItem="aPy-eZ-j83" secondAttribute="height" constant="10" id="mYc-Di-pJO"/>
                                 </constraints>
                             </scrollView>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="33F-81-tXV" userLabel="Top Row">
@@ -893,7 +895,7 @@ to improve your water usage</string>
                                                     <rect key="frame" x="335" y="30" width="25" height="24"/>
                                                     <state key="normal" image="Add"/>
                                                 </button>
-                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="1" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="SQK-Jn-km4">
+                                                <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="1" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="SQK-Jn-km4">
                                                     <rect key="frame" x="288.5" y="27.5" width="30.5" height="30"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
@@ -1023,7 +1025,7 @@ to improve your water usage</string>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="1" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3qM-Ld-WYd">
+                                                <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="1" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3qM-Ld-WYd">
                                                     <rect key="frame" x="304.5" y="29" width="30.5" height="30"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
@@ -1072,7 +1074,7 @@ to improve your water usage</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pfg-tg-hNz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3642" y="27"/>
+            <point key="canvasLocation" x="2950" y="27"/>
         </scene>
     </scenes>
     <resources>
