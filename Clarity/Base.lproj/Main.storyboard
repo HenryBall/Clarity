@@ -378,13 +378,11 @@ to improve your water usage</string>
                     </view>
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
-                        <outlet property="barChart" destination="aPy-eZ-j83" id="ia2-2c-8Sa"/>
                         <outlet property="circleView" destination="vGv-Rl-VJC" id="gIS-Gd-yZi"/>
                         <outlet property="dailyTotalLabel" destination="hOu-nl-mN0" id="nDH-bk-5UE"/>
                         <outlet property="dateLabel" destination="Qhl-it-joE" id="VDc-ji-Lus"/>
                         <outlet property="pageControl" destination="gwJ-kC-wqx" id="w9y-yD-uke"/>
                         <outlet property="percentLabel" destination="VoZ-cJ-CvH" id="Eng-Wy-aes"/>
-                        <outlet property="pieChart" destination="4Sh-3a-Qhu" id="w4z-nQ-GGp"/>
                         <outlet property="scrollView" destination="bJt-SV-E21" id="L3U-Jc-SJa"/>
                     </connections>
                 </viewController>

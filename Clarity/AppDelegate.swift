@@ -67,12 +67,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
             }
             
             let db = Firestore.firestore()
-            
-            //let userID = GIDSignIn.sharedInstance().currentUser.userID
-            
-            //let usersRef = db.collection('users').document(userID).value(forKey: "location")
-
-            
             let document = db.collection("users").document(GIDSignIn.sharedInstance().currentUser.userID)
             document.setData(["logged-in": true], options: SetOptions.merge())
             UserDefaults.standard.set(GIDSignIn.sharedInstance().currentUser.userID, forKey: "user_id")
