@@ -13,27 +13,32 @@ import Foundation
 class firebaseHelper {
     let db = Firestore.firestore()
     
-    static func getTotalForDay(day: DocumentReference, group: DispatchGroup) -> Double {
-        
+    static func getTotalForDay(day: DocumentReference, completionHandler: @escaping (Double, Error?) -> Void) {
         var total = 0.0
-        
+        let group = DispatchGroup()
+        group.enter()
         day.getDocument { (document, error) in
-            if(document?.exists)!{
+            if (document?.exists)! {
                 let breakfastRef = document?.data()!["breakfast"] as! [DocumentReference]
                 for ref in breakfastRef {
+                    group.enter()
                     ref.getDocument { (doc, error) in
                         if let doc = doc, doc.exists {
                             total = total + (doc.data()!["gallons_water"] as! Double)
                         } else {
                             print("Document does not exist")
                         }
+                        group.leave()
                     }
                 }
-                group.leave()
-            }else{
+            } else {
                 print("Error")
             }
+            group.leave()
         }
-        return total
+        
+        group.notify(queue: .main) {
+            completionHandler(total, nil)
+        }
     }
 }

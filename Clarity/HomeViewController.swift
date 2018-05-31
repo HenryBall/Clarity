@@ -115,13 +115,15 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     }
     
     func getTodaysTotal() {
-        let group = DispatchGroup()
         let day = db.collection("users").document(defaults.string(forKey: "user_id")!).collection("meals").document(databaseDateFormatter.string(from: today))
-        group.enter()
-        let total = firebaseHelper.getTotalForDay(day: day, group: group)
         
-        group.notify(queue: .main) {
+        firebaseHelper.getTotalForDay(day: day) { (total, error) in
+            if let error = error {
+                print ("Error")
+            }
+            
             self.drawCircle(greenRating: CGFloat(total))
+            self.dailyTotalLabel.text = String(Int(total))
         }
     }
     
