@@ -26,6 +26,7 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
     var ingredientsList = [String]()
     var day : DocumentReference!
     
+    @IBOutlet weak var addButton: UIButton!
     // Camera stuff
     let imagePicker = UIImagePickerController()
     let session = URLSession.shared
@@ -59,7 +60,7 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        loadingScreen.isHidden = true
+        //loadingScreen.isHidden = true
         
         formatter.timeStyle = .none
         formatter.dateStyle = .long
@@ -115,15 +116,13 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
                 
                 if(document?.data()?.keys.contains(self.mealType + "-meals"))!{
                     foodInMeal = document?.data()![self.mealType + "-meals"] as! [[String : Any]]
-                    print(foodInMeal)
                 }
                 
                 self.ingredientsInMeal = []
                 
                 for i in foodInMeal{
-                    let ing = Ingredient(name: i["name"] as! String, waterData: i["total"] as! Double, description: "", servingSize: 0.0, category: "", source: "")
+                    let ing = Ingredient(name: i["name"] as! String, waterData: i["total"] as! Double, description: "The water footprint for this item is based on the water footprint for the average serving size of each ingredient. The actual number may be higher or lower depending on how much of each ingredient is actually in this item.", servingSize: 0.0, category: "", source: "")
                     self.ingredientsInMeal.append(ing)
-                    //self.tableView.reloadData()
                 }
                 
                 for ref in ingredientReferences {
@@ -257,6 +256,8 @@ extension MealViewController {
             loadingIcon.layer.removeAllAnimations()
         }else{
             print("Sorry, the ingredients for this item are unavailable")
+            loadingScreen.isHidden = true
+            loadingIcon.layer.removeAllAnimations()
         }
     }
     
@@ -295,8 +296,10 @@ extension MealViewController {
                     let termScores = snapshot.data()!["term_scores"] as! [String : Double]
                     var sum = 0.0
                     
-                    for (_, num) in termScores {
-                        sum += num
+                    for word in arr {
+                        if(termScores[word] != nil){
+                            sum += termScores[word]!
+                        }
                     }
                     
                     if (sum > maxScore) {
@@ -311,11 +314,21 @@ extension MealViewController {
                 let matchedRef = self.ingredientDB.document(matchedItem!)
                 matchedRef.getDocument(completion: { (doc, err) in
                     water = doc?.data()!["gallons_water"] as! Double
+                    print(matchedRef.documentID)
+                    print(doc?.documentID)
                     let ingr = Ingredient(document: doc!)
+//                    if(!ingredientsInMeal.contains(where: { $0.name == ingredientsInMeal.name })){
+//                        
+//                    }
                     self.ingredientsInMeal.append(ingr)
+                    
                     for i in self.ingredientsInMeal{
-                        let ref = self.db.document("water-footprint-data/" + i.name.capitalized)
-                        refArray.append(ref)
+                        if(i.source != ""){
+                            let ref = self.db.document("water-footprint-data/" + i.name.capitalized)
+                            if(!refArray.contains(ref)){
+                                refArray.append(ref)
+                            }
+                        }
                     }
                     self.waterInMeal = self.waterInMeal + water
                     self.day.setData([self.mealType + "_total" : self.waterInMeal], options: SetOptions.merge())

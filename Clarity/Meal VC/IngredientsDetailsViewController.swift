@@ -84,6 +84,7 @@ class IngredientsDetailsViewController: UIViewController {
         barChart.rightAxis.drawGridLinesEnabled = false
         barChart.leftAxis.drawLabelsEnabled = false
         barChart.leftAxis.drawGridLinesEnabled = false
+        barChart.drawValueAboveBarEnabled = false
         barChart.noDataTextColor = UIColor.white
         barChart.xAxis.drawLabelsEnabled = false
         barChart.drawValueAboveBarEnabled = false

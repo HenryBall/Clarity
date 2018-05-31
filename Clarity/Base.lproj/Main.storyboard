@@ -567,6 +567,14 @@ to improve your water usage</string>
                                     <constraint firstItem="kAj-dq-OWs" firstAttribute="leading" secondItem="31i-Ny-fiY" secondAttribute="leading" id="utj-Qa-dRS"/>
                                 </constraints>
                             </scrollView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Og-c1-VA6" userLabel="Back Button">
+                                <rect key="frame" x="15" y="15" width="54" height="74"/>
+                                <inset key="contentEdgeInsets" minX="0.0" minY="20" maxX="40" maxY="30"/>
+                                <state key="normal" image="backButton"/>
+                                <connections>
+                                    <action selector="backTapped:" destination="zwc-1z-ew1" eventType="touchUpInside" id="UrF-Sv-Uw7"/>
+                                </connections>
+                            </button>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LnF-wG-JaF">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
@@ -637,7 +645,7 @@ to improve your water usage</string>
                                     <constraint firstItem="6n7-eo-9fQ" firstAttribute="centerX" secondItem="csW-SI-Xwh" secondAttribute="centerX" id="wSe-Zq-RmR"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fg3-z8-FU3" userLabel="Loading Screen">
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fg3-z8-FU3" userLabel="Loading Screen">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="loadingIcon" translatesAutoresizingMaskIntoConstraints="NO" id="PaP-xx-UbV">
@@ -654,14 +662,6 @@ to improve your water usage</string>
                                     <constraint firstItem="PaP-xx-UbV" firstAttribute="centerY" secondItem="fg3-z8-FU3" secondAttribute="centerY" id="zOv-Qx-f1y"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Og-c1-VA6" userLabel="Back Button">
-                                <rect key="frame" x="15" y="15" width="54" height="74"/>
-                                <inset key="contentEdgeInsets" minX="0.0" minY="20" maxX="40" maxY="30"/>
-                                <state key="normal" image="backButton"/>
-                                <connections>
-                                    <action selector="backTapped:" destination="zwc-1z-ew1" eventType="touchUpInside" id="UrF-Sv-Uw7"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
