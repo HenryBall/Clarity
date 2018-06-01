@@ -249,7 +249,7 @@ to improve your water usage</string>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="GAL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J82-RO-4ar">
-                                                <rect key="frame" x="102.5" y="98" width="24" height="14.5"/>
+                                                <rect key="frame" x="102.5" y="94" width="24" height="14.5"/>
                                                 <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="12"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
@@ -266,7 +266,7 @@ to improve your water usage</string>
                                             <constraint firstItem="hOu-nl-mN0" firstAttribute="centerX" secondItem="vGv-Rl-VJC" secondAttribute="centerX" constant="-10" id="NAg-wC-tcE"/>
                                             <constraint firstAttribute="height" constant="200" id="QSK-Fa-7L7"/>
                                             <constraint firstAttribute="width" constant="200" id="TaM-Rz-Twf"/>
-                                            <constraint firstItem="J82-RO-4ar" firstAttribute="bottom" secondItem="hOu-nl-mN0" secondAttribute="bottom" constant="-3" id="b5P-AA-yj0"/>
+                                            <constraint firstItem="J82-RO-4ar" firstAttribute="bottom" secondItem="hOu-nl-mN0" secondAttribute="bottom" constant="-7" id="b5P-AA-yj0"/>
                                             <constraint firstItem="VoZ-cJ-CvH" firstAttribute="top" secondItem="hOu-nl-mN0" secondAttribute="bottom" id="b9w-tQ-oqr"/>
                                             <constraint firstItem="VoZ-cJ-CvH" firstAttribute="centerX" secondItem="vGv-Rl-VJC" secondAttribute="centerX" id="bLh-h7-lvp"/>
                                             <constraint firstItem="hOu-nl-mN0" firstAttribute="centerY" secondItem="vGv-Rl-VJC" secondAttribute="centerY" constant="-10" id="fRJ-Lm-7l9"/>
