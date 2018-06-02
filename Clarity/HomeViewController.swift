@@ -76,6 +76,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         }
 
         group.notify(queue: .main) {
+            
             self.getTodaysTotal()
             self.queryIngredientsFromFirebase()
         }

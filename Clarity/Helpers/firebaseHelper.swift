@@ -29,14 +29,16 @@ class firebaseHelper {
                             if let doc = doc, doc.exists {
                                 total = total + (doc.data()!["gallons_water"] as! Double)
                             } else {
-                                completion(0.0, ("Breakfast error" as! Error))
+                                print("Error")
+                                //completion(0.0, ("Breakfast error" as! Error))
                             }
                             group.leave()
                         }
                     }
                 }
             } else {
-                completion(0.0, ("Breakfast error" as! Error))
+                print("Error")
+                //completion(0.0, ("Breakfast error" as! Error))
             }
             group.leave()
         }
@@ -61,14 +63,16 @@ class firebaseHelper {
                             if let doc = doc, doc.exists {
                                 total = total + (doc.data()!["gallons_water"] as! Double)
                             } else {
-                                completion(0.0, ("Lunch error" as! Error))
+                                print("Error")
+                                //completion(0.0, ("Lunch error" as! Error))
                             }
                             group.leave()
                         }
                     }
                 }
             } else {
-                completion(0.0, ("Lunch error" as! Error))
+                print("Error")
+                //completion(0.0, ("Lunch error" as! Error))
             }
             group.leave()
         }
@@ -93,14 +97,16 @@ class firebaseHelper {
                             if let doc = doc, doc.exists {
                                 total = total + (doc.data()!["gallons_water"] as! Double)
                             } else {
-                                completion(0.0, ("Dinner error" as! Error))
+                                print("Error")
+                                //completion(0.0, ("Dinner error" as! Error))
                             }
                             group.leave()
                         }
                     }
                 }
             } else {
-                completion(0.0, ("Dinner error" as! Error))
+                print("Error")
+                //completion(0.0, ("Dinner error" as! Error))
             }
             group.leave()
         }
@@ -125,14 +131,16 @@ class firebaseHelper {
                             if let doc = doc, doc.exists {
                                 total = total + (doc.data()!["gallons_water"] as! Double)
                             } else {
-                                completion(0.0, ("Snack error" as! Error))
+                                print("Error")
+                                //completion(0.0, ("Snack error" as! Error))
                             }
                             group.leave()
                         }
                     }
                 }
             } else {
-                completion(0.0, ("Snack error" as! Error))
+                print("Error")
+                //completion(0.0, ("Snack error" as! Error))
             }
             group.leave()
         }
