@@ -40,13 +40,15 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     let databaseDateFormatter = DateFormatter()
     let labelDateFormatter = DateFormatter()
     
-    let user = defaults.string(forKey: "user_id")!
-    let userRef = db.collection("users").document(defaults.string(forKey: "user_id")!)
+    var user: String!
+    var userRef: DocumentReference!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.scrollView.delegate = self
+        user = defaults.string(forKey: "user_id")!
+        userRef = db.collection("users").document(user)
         
         databaseDateFormatter.timeStyle = .none
         databaseDateFormatter.dateStyle = .long
