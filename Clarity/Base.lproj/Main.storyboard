@@ -240,22 +240,22 @@ to improve your water usage</string>
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="317"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vGv-Rl-VJC">
-                                        <rect key="frame" x="87.5" y="68.5" width="200" height="200"/>
+                                        <rect key="frame" x="92.5" y="76" width="190" height="190"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hOu-nl-mN0" userLabel="Rating Label">
-                                                <rect key="frame" x="79" y="65" width="23.5" height="50.5"/>
+                                                <rect key="frame" x="74" y="60" width="23.5" height="50.5"/>
                                                 <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="42"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="GAL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J82-RO-4ar">
-                                                <rect key="frame" x="102.5" y="94" width="24" height="14.5"/>
+                                                <rect key="frame" x="97.5" y="89" width="24" height="14.5"/>
                                                 <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="12"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0% of your daily limit" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VoZ-cJ-CvH">
-                                                <rect key="frame" x="42" y="115.5" width="116.5" height="14.5"/>
+                                                <rect key="frame" x="37" y="110.5" width="116.5" height="14.5"/>
                                                 <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="12"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
@@ -264,8 +264,8 @@ to improve your water usage</string>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstItem="hOu-nl-mN0" firstAttribute="centerX" secondItem="vGv-Rl-VJC" secondAttribute="centerX" constant="-10" id="NAg-wC-tcE"/>
-                                            <constraint firstAttribute="height" constant="200" id="QSK-Fa-7L7"/>
-                                            <constraint firstAttribute="width" constant="200" id="TaM-Rz-Twf"/>
+                                            <constraint firstAttribute="height" constant="190" id="QSK-Fa-7L7"/>
+                                            <constraint firstAttribute="width" constant="190" id="TaM-Rz-Twf"/>
                                             <constraint firstItem="J82-RO-4ar" firstAttribute="bottom" secondItem="hOu-nl-mN0" secondAttribute="bottom" constant="-7" id="b5P-AA-yj0"/>
                                             <constraint firstItem="VoZ-cJ-CvH" firstAttribute="top" secondItem="hOu-nl-mN0" secondAttribute="bottom" id="b9w-tQ-oqr"/>
                                             <constraint firstItem="VoZ-cJ-CvH" firstAttribute="centerX" secondItem="vGv-Rl-VJC" secondAttribute="centerX" id="bLh-h7-lvp"/>
@@ -296,7 +296,7 @@ to improve your water usage</string>
                                     <constraint firstItem="aPy-eZ-j83" firstAttribute="centerX" secondItem="bJt-SV-E21" secondAttribute="centerX" multiplier="5" id="BUy-qc-yhG"/>
                                     <constraint firstItem="vGv-Rl-VJC" firstAttribute="centerX" secondItem="bJt-SV-E21" secondAttribute="centerX" id="FHo-lt-vYk"/>
                                     <constraint firstItem="4Sh-3a-Qhu" firstAttribute="centerY" secondItem="bJt-SV-E21" secondAttribute="centerY" constant="10" id="VxL-Xb-2Sn"/>
-                                    <constraint firstItem="vGv-Rl-VJC" firstAttribute="centerY" secondItem="bJt-SV-E21" secondAttribute="centerY" constant="10" id="ZCU-v5-hVz"/>
+                                    <constraint firstItem="vGv-Rl-VJC" firstAttribute="centerY" secondItem="bJt-SV-E21" secondAttribute="centerY" constant="12.5" id="ZCU-v5-hVz"/>
                                 </constraints>
                             </scrollView>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="33F-81-tXV" userLabel="Top Row">

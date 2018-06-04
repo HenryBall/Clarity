@@ -32,9 +32,12 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     
     var todaysTotal: Double!
     var dailyGoal : Double!
+    var cp : CirclePath!
+    var track : CirclePath!
+    var trackPath : CAShapeLayer!
+    var motionPath : CAShapeLayer!
     
     @IBOutlet weak var scrollView: UIScrollView!
-    let shapeLayer = CAShapeLayer()
     
     let today = Date()
     let databaseDateFormatter = DateFormatter()
@@ -60,6 +63,8 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         
         self.scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width * 3, height:self.scrollView.frame.height)
         
+        initCircle()
+        
         self.navigationController?.isNavigationBarHidden = true
     }
     
@@ -78,10 +83,30 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         }
 
         group.notify(queue: .main) {
-            
             self.getTodaysTotal()
             self.queryIngredientsFromFirebase()
         }
+    }
+    
+    func initCircle() {
+        let rect = CGRect(x: 0, y: 0, width: circleView.bounds.width, height: circleView.bounds.height)
+        
+        cp = CirclePath(frame: rect)
+        cp.color = UIColor.white.cgColor
+        cp.transform = CGAffineTransform(rotationAngle: CGFloat(CFloat.pi/2))
+        
+        track = CirclePath(frame: rect)
+        track.color = UIColor(red: 216/255, green: 216/255, blue: 216/255, alpha: 216/255).cgColor
+        track.value = 1.0
+        
+        circleView.addSubview(track)
+        circleView.addSubview(cp)
+    }
+    
+    func updateCircle(dailyTotal: Float) {
+        let percentage = dailyTotal/Float(dailyGoal)
+        percentLabel.text = String(describing: (Int(percentage * 100))) + "% of your daily limit"
+        cp.value = percentage
     }
     
     /* IBActions ********************************************************************************************************/
@@ -156,53 +181,11 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
             } else {
                 let totalAsString = String(Int(total))
                 if (totalAsString != self.dailyTotalLabel.text) {
-                    self.drawCircle(dailyTotal: CGFloat(total))
+                    self.updateCircle(dailyTotal: Float(total))
                     self.dailyTotalLabel.text = totalAsString
                 }
             }
         }
-    }
-    
-    /* Circle Animation ************************************************************************************************/
-    func drawCircle(dailyTotal: CGFloat) {
-        let trackLayer = CAShapeLayer()
-        let center = circleView.center
-        let circularPath = UIBezierPath(arcCenter: center, radius: 90, startAngle: 0, endAngle: 2 * CGFloat.pi, clockwise: true)
-        
-        trackLayer.path = circularPath.cgPath
-        
-        trackLayer.strokeColor = UIColor(red: 216/255, green: 216/255, blue: 216/255, alpha: 216/255).cgColor
-        trackLayer.lineWidth = 20
-        trackLayer.fillColor = UIColor.clear.cgColor
-        trackLayer.lineCap = kCALineCapRound
-        view.layer.addSublayer(trackLayer)
-        scrollView.layer.addSublayer(trackLayer)
-        
-        let percentage = Int(( dailyTotal / CGFloat(dailyGoal)) * 100)
-        percentLabel.text = String(describing: percentage) + "% of your daily limit"
-
-        let endAngle = (CGFloat.pi / 2) + (CGFloat.pi * 2 * (dailyTotal / CGFloat(dailyGoal)))
-        let motionPath = UIBezierPath(arcCenter: center, radius: 90, startAngle: CGFloat.pi / 2, endAngle: endAngle , clockwise: true)
-        shapeLayer.path = motionPath.cgPath
-        
-        shapeLayer.strokeColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1.0).cgColor
-        shapeLayer.lineWidth = 20
-        shapeLayer.fillColor = UIColor.clear.cgColor
-        shapeLayer.lineCap = kCALineCapRound
-        shapeLayer.strokeEnd = 0
-        
-        view.layer.addSublayer(shapeLayer)
-        scrollView.layer.addSublayer(shapeLayer)
-        animateBar()
-    }
-    
-    @objc private func animateBar() {
-        let basicAnimation = CABasicAnimation(keyPath: "strokeEnd")
-        basicAnimation.toValue = 1
-        basicAnimation.duration = 1
-        basicAnimation.fillMode = kCAFillModeForwards
-        basicAnimation.isRemovedOnCompletion = false
-        shapeLayer.add(basicAnimation, forKey: "urSoBasic")
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView){
@@ -215,5 +198,4 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         }
         self.pageControl.currentPage = Int(currentPage)
     }
-
 }
