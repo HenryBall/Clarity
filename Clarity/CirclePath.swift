@@ -24,6 +24,12 @@ class CirclePath: UIView {
         }
     }
     
+    var width: CGFloat = 10 {
+        didSet {
+            shapeLayer.lineWidth = width
+        }
+    }
+    
     func drawPath() {
         shapeLayer.strokeEnd = CGFloat(value)
     }
@@ -34,9 +40,9 @@ class CirclePath: UIView {
         layer.addSublayer(shapeLayer)
         let path = UIBezierPath(ovalIn: bounds)
         shapeLayer.path = path.cgPath
-        shapeLayer.lineWidth = 20
         shapeLayer.fillColor = UIColor.clear.cgColor
         shapeLayer.strokeEnd = CGFloat(value)
+        shapeLayer.lineCap = kCALineCapRound
         shapeLayer.speed = 0.3
     }
     

@@ -57,7 +57,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.navigationController?.isNavigationBarHidden = true
         self.scrollView.delegate = self
         user = defaults.string(forKey: "user_id")!
         userRef = db.collection("users").document(user)
@@ -71,10 +71,9 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         labelDateFormatter.dateFormat = "EEEE, MMMM d"
         dateLabel.text = labelDateFormatter.string(from: today)
         self.scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width * 3, height:self.scrollView.frame.height)
+        self.navigationItem.title = labelDateFormatter.string(from: today)
         
         initCircle()
-        
-        self.navigationController?.isNavigationBarHidden = true
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -94,21 +93,28 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
             self.getTodaysTotal()
         }
     }
-
     
     func initCircle() {
-        let rect = CGRect(x: 0, y: 0, width: circleView.bounds.width, height: circleView.bounds.height)
+        let trackRect = CGRect(x: 0, y: 0, width: circleView.bounds.width, height: circleView.bounds.height)
+        let pathRect = CGRect(x: 0, y: 0, width: circleView.bounds.width, height: circleView.bounds.height)
+        cp = CirclePath(frame: trackRect)
+        cp.width = 12
+        cp.color = UIColor(red: 50/255, green: 150/255, blue: 220/255, alpha: 255/255).cgColor
+        cp.transform = CGAffineTransform(rotationAngle: CGFloat(3*CFloat.pi/2))
         
-        cp = CirclePath(frame: rect)
-        cp.color = UIColor.white.cgColor
-        cp.transform = CGAffineTransform(rotationAngle: CGFloat(CFloat.pi/2))
-        
-        track = CirclePath(frame: rect)
+        track = CirclePath(frame: pathRect)
         track.color = UIColor(red: 216/255, green: 216/255, blue: 216/255, alpha: 216/255).cgColor
+        track.width = 5
         track.value = 1.0
         
         circleView.addSubview(track)
         circleView.addSubview(cp)
+    }
+    
+    func updateCircle(dailyTotal: Float) {
+        let percentage = dailyTotal/Float(dailyGoal)
+        percentLabel.text = String(describing: (Int(percentage * 100))) + "% of your daily limit"
+        cp.value = percentage
     }
     
     func updateChartWithData(allWaterData: [barChartEntry]) {
@@ -196,36 +202,32 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         pieChart.transparentCircleColor = UIColor.clear
     }
     
-    
-    
-    func updateCircle(dailyTotal: Float) {
-        let percentage = dailyTotal/Float(dailyGoal)
-        percentLabel.text = String(describing: (Int(percentage * 100))) + "% of your daily limit"
-        cp.value = percentage
-    }
-    
     /* IBActions ********************************************************************************************************/
     @IBAction func breakfastTapped(_ sender: Any) {
         let destination = self.storyboard?.instantiateViewController(withIdentifier: "MealViewController") as! MealViewController
         destination.mealType = "breakfast"
+        //self.navigationController?.isNavigationBarHidden = true
         self.navigationController?.pushViewController(destination, animated: true)
     }
     
     @IBAction func lunchTapped(_ sender: Any) {
         let destination = self.storyboard?.instantiateViewController(withIdentifier: "MealViewController") as! MealViewController
         destination.mealType = "lunch"
+        //self.navigationController?.isNavigationBarHidden = true
         self.navigationController?.pushViewController(destination, animated: true)
     }
     
     @IBAction func dinnerTapped(_ sender: Any) {
         let destination = self.storyboard?.instantiateViewController(withIdentifier: "MealViewController") as! MealViewController
         destination.mealType = "dinner"
+        //self.navigationController?.isNavigationBarHidden = true
         self.navigationController?.pushViewController(destination, animated: true)
     }
     
     @IBAction func snacksTapped(_ sender: Any) {
         let destination = self.storyboard?.instantiateViewController(withIdentifier: "MealViewController") as! MealViewController
         destination.mealType = "snacks"
+        //self.navigationController?.isNavigationBarHidden = true
         self.navigationController?.pushViewController(destination, animated: true)
     }
     

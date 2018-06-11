@@ -35,6 +35,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         }
         self.window.rootViewController = navigationController
         self.window.makeKeyAndVisible()
+        
+        let navigationBarAppearace = UINavigationBar.appearance()
+        navigationBarAppearace.tintColor = UIColor(red: 75/255, green: 150/255, blue: 255/255, alpha: 216/255)
+        navigationBarAppearace.barTintColor = UIColor(red: 75/255, green: 150/255, blue: 255/255, alpha: 216/255)
+        
         return true
     }
     

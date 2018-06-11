@@ -59,8 +59,6 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        loadingScreen.isHidden = true
-        
         formatter.timeStyle = .none
         formatter.dateStyle = .long
         formatter.string(from: today)
