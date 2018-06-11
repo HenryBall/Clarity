@@ -19,6 +19,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var userWaterGoal: UITextField!
+    @IBOutlet weak var backBtn: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,7 +30,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
                 if (document?.data()!["water_goal"]) != nil{
                     self.userWaterGoal.text = String(Int((document?.data()!["water_goal"] as! Double)))
                 }else{
-                    self.userWaterGoal.placeholder = "1000"
+                    self.backBtn.isHidden = true
                 }
             }else{
                 print("This user does not exist in the database")
@@ -45,7 +46,6 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         let user = db.collection("users").document(defaults.string(forKey: "user_id")!)
         
         if (userWaterGoal.text != "") {
-            //UserDefaults.standard.set(Double(userWaterGoal.text!), forKey: "water_limit")
             user.setData(["water_goal": Double(userWaterGoal.text!) as Any], options: SetOptions.merge())
             self.navigationController?.popViewController(animated: true)
         } else {

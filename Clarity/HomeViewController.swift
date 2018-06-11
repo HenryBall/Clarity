@@ -29,6 +29,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         var value: Double
     }
     
+    @IBOutlet weak var avgLabel: UILabel!
     @IBOutlet weak var percentLabel: UILabel!
     @IBOutlet weak var dailyTotal: UILabel!
     @IBOutlet weak var circleView: UIView!
@@ -67,7 +68,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         databaseDateFormatter.string(from: today)
         labelDateFormatter.timeStyle = .none
         labelDateFormatter.dateStyle = .long
-        labelDateFormatter.dateFormat = "EEEE, MMMM d"
+        labelDateFormatter.dateFormat = "MMMM d"
         dateLabel.text = labelDateFormatter.string(from: today)
         self.scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width * 3, height: 260.0)
         self.navigationItem.title = labelDateFormatter.string(from: today)
@@ -98,7 +99,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         let pathRect = CGRect(x: 0, y: 0, width: circleView.bounds.width, height: circleView.bounds.height)
         cp = CirclePath(frame: trackRect)
         cp.width = 12
-        cp.color = UIColor(red: 50/255, green: 150/255, blue: 220/255, alpha: 255/255).cgColor
+        cp.color = UIColor(red: 89/255, green: 166/255, blue: 255/255, alpha: 255/255).cgColor
         cp.transform = CGAffineTransform(rotationAngle: CGFloat(3*CFloat.pi/2))
         
         track = CirclePath(frame: pathRect)
@@ -205,28 +206,24 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     @IBAction func breakfastTapped(_ sender: Any) {
         let destination = self.storyboard?.instantiateViewController(withIdentifier: "MealViewController") as! MealViewController
         destination.mealType = "breakfast"
-        //self.navigationController?.isNavigationBarHidden = true
         self.navigationController?.pushViewController(destination, animated: true)
     }
     
     @IBAction func lunchTapped(_ sender: Any) {
         let destination = self.storyboard?.instantiateViewController(withIdentifier: "MealViewController") as! MealViewController
         destination.mealType = "lunch"
-        //self.navigationController?.isNavigationBarHidden = true
         self.navigationController?.pushViewController(destination, animated: true)
     }
     
     @IBAction func dinnerTapped(_ sender: Any) {
         let destination = self.storyboard?.instantiateViewController(withIdentifier: "MealViewController") as! MealViewController
         destination.mealType = "dinner"
-        //self.navigationController?.isNavigationBarHidden = true
         self.navigationController?.pushViewController(destination, animated: true)
     }
     
     @IBAction func snacksTapped(_ sender: Any) {
         let destination = self.storyboard?.instantiateViewController(withIdentifier: "MealViewController") as! MealViewController
         destination.mealType = "snacks"
-        //self.navigationController?.isNavigationBarHidden = true
         self.navigationController?.pushViewController(destination, animated: true)
     }
     
@@ -285,39 +282,80 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
 //    }
     
     func getTodaysTotal(){
-        var breakfastTotal = 0.0
-        var lunchTotal = 0.0
-        var dinnerTotal = 0.0
-        var snacksTotal = 0.0
-        var total = 0.0
-        
         let day = db.collection("users").document(defaults.string(forKey: "user_id")!).collection("meals").document(databaseDateFormatter.string(from: today))
         
         day.getDocument { (document, error) in
             if(document?.exists)!{
-                if let breakfast_total = document?.data()!["breakfast_total"]{
-                    breakfastTotal = breakfast_total as! Double
-                }
-                
-                if let lunch_total = document?.data()!["lunch_total"]{
-                    lunchTotal = lunch_total as! Double
-                }
-                
-                if let dinner_total = document?.data()!["dinner_total"]{
-                    dinnerTotal = dinner_total as! Double
-                }
-                
-                if let snacks_total = document?.data()!["snacks_total"]{
-                    snacksTotal = snacks_total as! Double
-                }
-                
-                total = breakfastTotal + lunchTotal + dinnerTotal + snacksTotal
+                let total = self.getTotalForDay(document: document!)
+                let breakfastTotal = self.getBreakfastTotalForDay(document: document!)
+                let lunchTotal = self.getLunchTotalForDay(document: document!)
+                let dinnerTotal = self.getDinnerTotalForDay(document: document!)
+                let snacksTotal = self.getSnackTotalForDay(document: document!)
                 let totalAsString = String(Int(total))
-                if (totalAsString != self.dailyTotal.text) {
-                    self.updateCircle(dailyTotal: Float(total))
-                    //self.dailyTotalLabel.text = totalAsString
-                    self.updatePieChart(breakfast: breakfastTotal, lunch: lunchTotal, dinner: dinnerTotal, snacks: snacksTotal)
+                self.getAverage()
+                self.updateCircle(dailyTotal: Float(total))
+                self.dailyTotal.text = totalAsString
+                self.updatePieChart(breakfast: breakfastTotal, lunch: lunchTotal, dinner: dinnerTotal, snacks: snacksTotal)            }
+        }
+    }
+    
+    func getBreakfastTotalForDay(document: DocumentSnapshot) -> Double {
+        if let breakfast_total = document.data()!["breakfast_total"]{
+            let breakfastTotal = breakfast_total as! Double
+            return breakfastTotal
+        } else {
+            return 0.0
+        }
+    }
+    
+    func getLunchTotalForDay(document: DocumentSnapshot) -> Double {
+        if let lunch_total = document.data()!["lunch_total"]{
+            let lunchTotal = lunch_total as! Double
+            return lunchTotal
+        } else {
+            return 0.0
+        }
+    }
+    
+    func getDinnerTotalForDay(document: DocumentSnapshot) -> Double {
+        if let Dinner_total = document.data()!["dinner_total"]{
+            let DinnerTotal = Dinner_total as! Double
+            return DinnerTotal
+        } else {
+            return 0.0
+        }
+    }
+    
+    func getSnackTotalForDay(document: DocumentSnapshot) -> Double {
+        if let Snack_total = document.data()!["snacks_total"]{
+            let SnackTotal = Snack_total as! Double
+            return SnackTotal
+        } else {
+            return 0.0
+        }
+    }
+    
+    func getTotalForDay(document: DocumentSnapshot) -> Double {
+        let breakfastTotal = getBreakfastTotalForDay(document: document)
+        let lunchTotal = getLunchTotalForDay(document: document)
+        let dinnerTotal = getDinnerTotalForDay(document: document)
+        let snacksTotal = getSnackTotalForDay(document: document)
+        let total = breakfastTotal + lunchTotal + dinnerTotal + snacksTotal
+        return total
+    }
+    
+    func getAverage() {
+        db.collection("users").document(defaults.string(forKey: "user_id")!).collection("meals").limit(to: 10).getDocuments { (querySnapshot, err) in
+            var days : Int = 0
+            var total : Double = 0
+            if let err = err {
+                print(err)
+            } else {
+                for document in querySnapshot!.documents {
+                    days = days + 1
+                    total = total + (self.getTotalForDay(document: document))
                 }
+                self.avgLabel.text = String(Int(total)/days)
             }
         }
     }

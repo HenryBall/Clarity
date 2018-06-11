@@ -68,7 +68,7 @@ class IngredientsDetailsViewController: UIViewController {
             dataEntries.append(dataEntry)
         }
         let chartDataSet = BarChartDataSet(values: dataEntries, label: "Gallons of water per serving")
-        let color = UIColor(red: 0/255, green: 188/255, blue: 205/255, alpha: 1.0)
+        let color = UIColor(red: 89/255, green: 166/255, blue: 255/255, alpha: 255/255)
         var colors = Array(repeating: color, count: data.count)
         
         if let index = data.index(where: { $0.name == ingredientToShow.name }) {
