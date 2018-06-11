@@ -10,7 +10,6 @@ import UIKit
 import Firebase
 import GoogleSignIn
 import Charts
-//import AAChartView.swift
 
 let defaults = UserDefaults.standard
 let db = Firestore.firestore()
@@ -30,8 +29,8 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         var value: Double
     }
     
-    @IBOutlet weak var dailyTotalLabel: UILabel!
     @IBOutlet weak var percentLabel: UILabel!
+    @IBOutlet weak var dailyTotal: UILabel!
     @IBOutlet weak var circleView: UIView!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var pageControl: UIPageControl!
@@ -70,7 +69,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         labelDateFormatter.dateStyle = .long
         labelDateFormatter.dateFormat = "EEEE, MMMM d"
         dateLabel.text = labelDateFormatter.string(from: today)
-        self.scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width * 3, height:self.scrollView.frame.height)
+        self.scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width * 3, height: 260.0)
         self.navigationItem.title = labelDateFormatter.string(from: today)
         
         initCircle()
@@ -113,7 +112,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     
     func updateCircle(dailyTotal: Float) {
         let percentage = dailyTotal/Float(dailyGoal)
-        percentLabel.text = String(describing: (Int(percentage * 100))) + "% of your daily limit"
+        percentLabel.text = String(describing: (Int(percentage * 100))) + "%"
         cp.value = percentage
     }
     
@@ -128,7 +127,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         let chartDataSet = BarChartDataSet(values: dataEntries, label: "Gallons of water per day")
         chartDataSet.drawValuesEnabled = false
         
-        let colors = Array(repeating: UIColor.white, count: allWaterData.count)
+        let colors = Array(repeating: UIColor.black, count: allWaterData.count)
         chartDataSet.colors = colors
         
         //let limitLine = ChartLimitLine(limit: dailyGoal, label: "") //show daily limit on graph
@@ -141,7 +140,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         //barChart.rightAxis.addLimitLine(limitLine) //show daily limit line on graph
         barChart.rightAxis.drawGridLinesEnabled = false //hide vertical line on right side
         barChart.rightAxis.drawAxisLineEnabled = false //hide horizontal axis lines
-        barChart.rightAxis.labelTextColor = UIColor.white
+        barChart.rightAxis.labelTextColor = UIColor.black
         
         barChart.leftAxis.drawLabelsEnabled = false //hide axis labels on left side
         barChart.leftAxis.drawGridLinesEnabled = false //hide horizontal axis lines
@@ -314,9 +313,9 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
                 
                 total = breakfastTotal + lunchTotal + dinnerTotal + snacksTotal
                 let totalAsString = String(Int(total))
-                if (totalAsString != self.dailyTotalLabel.text) {
+                if (totalAsString != self.dailyTotal.text) {
                     self.updateCircle(dailyTotal: Float(total))
-                    self.dailyTotalLabel.text = totalAsString
+                    //self.dailyTotalLabel.text = totalAsString
                     self.updatePieChart(breakfast: breakfastTotal, lunch: lunchTotal, dinner: dinnerTotal, snacks: snacksTotal)
                 }
             }
