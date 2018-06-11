@@ -14,6 +14,9 @@ import Charts
 let defaults = UserDefaults.standard
 let db = Firestore.firestore()
 let storage = Storage.storage()
+let lightGrey = UIColor(red: 230/255, green: 230/255, blue: 230/255, alpha: 1)
+let darkGrey = UIColor(red: 170/255, green: 170/255, blue: 170/255, alpha: 1)
+let mainBlue = UIColor(red: 89/255, green: 166/255, blue: 255/255, alpha: 1)
 var ingredientsFromDatabase = [Ingredient]()
 var proteins = [Ingredient]()
 var fruits = [Ingredient]()
@@ -35,7 +38,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var pageControl: UIPageControl!
     @IBOutlet weak var pieChart: PieChartView!
-    @IBOutlet weak var barChart: BarChartView!
+    @IBOutlet weak var lineChart: LineChartView!
     @IBOutlet var barGraphDateLabels: [UILabel]!
     
     var todaysTotal: Double!
@@ -98,11 +101,11 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         let pathRect = CGRect(x: 0, y: 0, width: circleView.bounds.width, height: circleView.bounds.height)
         cp = CirclePath(frame: trackRect)
         cp.width = 12
-        cp.color = UIColor(red: 50/255, green: 150/255, blue: 220/255, alpha: 255/255).cgColor
+        cp.color = mainBlue.cgColor
         cp.transform = CGAffineTransform(rotationAngle: CGFloat(3*CFloat.pi/2))
         
         track = CirclePath(frame: pathRect)
-        track.color = UIColor(red: 216/255, green: 216/255, blue: 216/255, alpha: 216/255).cgColor
+        track.color = lightGrey.cgColor
         track.width = 5
         track.value = 1.0
         
@@ -116,46 +119,52 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         cp.value = percentage
     }
     
+    //line chart
     func updateChartWithData(allWaterData: [barChartEntry]) {
-        var dataEntries: [BarChartDataEntry] = []
-        
+        var dataEntries: [ChartDataEntry] = []
+
         for i in 0..<allWaterData.count {
-            let dataEntry = BarChartDataEntry(x: Double(i), y: Double(allWaterData[i].value))
+            let dataEntry = ChartDataEntry(x: Double(i), y: Double(allWaterData[i].value))
             dataEntries.append(dataEntry)
         }
         
-        let chartDataSet = BarChartDataSet(values: dataEntries, label: "Gallons of water per day")
-        chartDataSet.drawValuesEnabled = false
+        let set1 = LineChartDataSet(values: dataEntries, label: "")
+        set1.drawIconsEnabled = false
         
-        let colors = Array(repeating: UIColor.black, count: allWaterData.count)
-        chartDataSet.colors = colors
+        set1.setColor(.black)
+        set1.drawCirclesEnabled = false
+        set1.lineWidth = 0
+        set1.valueFont = .systemFont(ofSize: 9)
+        set1.formLineWidth = 1
+        set1.formSize = 15
+        set1.drawValuesEnabled = false
+        set1.mode = .cubicBezier
         
-        //let limitLine = ChartLimitLine(limit: dailyGoal, label: "") //show daily limit on graph
-        //limitLine.lineColor = UIColor.white
-        //limitLine.lineWidth = 1
+        let gradientColors = [UIColor.white.cgColor, mainBlue.cgColor]
+        let gradient = CGGradient(colorsSpace: nil, colors: gradientColors as CFArray, locations: nil)!
         
-        barChart.xAxis.drawGridLinesEnabled = false //hide vertical grid lines
-        barChart.xAxis.drawLabelsEnabled = false //hide x axis label
+        set1.fillAlpha = 1
+        set1.fill = Fill(linearGradient: gradient, angle: 90)
+        set1.drawFilledEnabled = true
         
-        //barChart.rightAxis.addLimitLine(limitLine) //show daily limit line on graph
-        barChart.rightAxis.drawGridLinesEnabled = false //hide vertical line on right side
-        barChart.rightAxis.drawAxisLineEnabled = false //hide horizontal axis lines
-        barChart.rightAxis.labelTextColor = UIColor.black
+        let data = LineChartData(dataSet: set1)
+        lineChart.data = data
         
-        barChart.leftAxis.drawLabelsEnabled = false //hide axis labels on left side
-        barChart.leftAxis.drawGridLinesEnabled = false //hide horizontal axis lines
-        barChart.leftAxis.drawAxisLineEnabled = false //hide vertical line on right side
+        lineChart.rightAxis.drawAxisLineEnabled = false //hide horizontal axis lines
+        lineChart.rightAxis.drawGridLinesEnabled = false //hide right axis line
+        lineChart.rightAxis.labelTextColor = darkGrey
         
-        barChart.drawBordersEnabled = false //hide borders
-        barChart.drawValueAboveBarEnabled = false
-        barChart.xAxis.labelPosition = .bottom
-        barChart.xAxis.axisLineColor = UIColor.clear
+        lineChart.leftAxis.drawGridLinesEnabled = false //hide horizontal axis lines
+        lineChart.leftAxis.drawLabelsEnabled = false //don't show axis labels on left side
+        lineChart.leftAxis.drawAxisLineEnabled = false //hide left axis line
         
-        barChart.noDataTextColor = UIColor.white //set color of "no data available" text
-        barChart.chartDescription?.text = "" //hide description under the chart
-        barChart.legend.enabled = false //hide legend
-        barChart.isUserInteractionEnabled = false
-        barChart.data = BarChartData(dataSet: chartDataSet)
+        lineChart.xAxis.drawGridLinesEnabled = false //hide vertical grid lines
+        lineChart.xAxis.drawLabelsEnabled = false //hide x axis label
+        lineChart.xAxis.axisLineColor = UIColor.clear //hides line at top of graph
+        
+        lineChart.legend.enabled = false //hide legend
+        lineChart.chartDescription?.enabled = false
+        lineChart.isUserInteractionEnabled = false
     }
     
     //Pie Chart
@@ -174,7 +183,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     
         
         let set = PieChartDataSet(values: entries, label: "")
-        set.colors = [UIColor(red: 245/255, green: 166/255, blue: 35/255, alpha: 1), UIColor(red: 126/255, green: 211/255, blue: 33/255, alpha: 1), UIColor(red: 118/255, green: 96/255, blue: 180/255, alpha: 1), UIColor(red: 59/255, green: 128/255, blue: 208/255, alpha: 1)]
+        set.colors = [mainBlue, UIColor(red: 39/255, green: 106/255, blue: 184/255, alpha: 1), UIColor(red: 187/255, green: 218/255, blue: 255/255, alpha: 1), UIColor(red: 10/255, green: 63/255, blue: 125/255, alpha: 1)]
         set.drawValuesEnabled = true
         
         let data = PieChartData(dataSet: set)
@@ -189,14 +198,14 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         pieChart.chartDescription?.text = ""
         pieChart.noDataText = "No data available"
         pieChart.usePercentValuesEnabled = true
-        pieChart.noDataTextColor = UIColor.white
+        pieChart.noDataTextColor = darkGrey
         pieChart.legend.horizontalAlignment = .center
         pieChart.legend.formSize = 20.0
-        pieChart.legend.textColor = UIColor.white
+        pieChart.legend.textColor = darkGrey
         pieChart.drawEntryLabelsEnabled = false
         pieChart.isUserInteractionEnabled = false
         
-        pieChart.holeRadiusPercent = 0.35
+        //pieChart.holeRadiusPercent = 0.35
         pieChart.holeColor = UIColor.clear
         pieChart.transparentCircleColor = UIColor.clear
     }
@@ -315,7 +324,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
                 let totalAsString = String(Int(total))
                 if (totalAsString != self.dailyTotal.text) {
                     self.updateCircle(dailyTotal: Float(total))
-                    //self.dailyTotalLabel.text = totalAsString
+                    self.dailyTotal.text = totalAsString
                     self.updatePieChart(breakfast: breakfastTotal, lunch: lunchTotal, dinner: dinnerTotal, snacks: snacksTotal)
                 }
             }
