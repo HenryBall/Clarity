@@ -14,6 +14,7 @@
 		9C1C29C020B267CA004B7953 /* SearchProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1C29BF20B267CA004B7953 /* SearchProduct.swift */; };
 		9C1C29C320B2683E004B7953 /* searchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1C29C220B2683E004B7953 /* searchCell.swift */; };
 		9C1D87D320CF6C1400C68C81 /* addScannedItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1D87D220CF6C1300C68C81 /* addScannedItemViewController.swift */; };
+		9C7A195E20CF77CD0029108A /* Pacifico.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9C7A195D20CF76110029108A /* Pacifico.ttf */; };
 		9CB90C3620AA108B00BEADCA /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB90C3520AA108A00BEADCA /* HomeViewController.swift */; };
 		9CB90C3820AA11B500BEADCA /* MealViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB90C3720AA11B400BEADCA /* MealViewController.swift */; };
 		9CDC1FEC20AA02CD00503BAB /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CDC1FEB20AA02CD00503BAB /* LoginViewController.swift */; };
@@ -62,6 +63,7 @@
 		9C1C29BF20B267CA004B7953 /* SearchProduct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchProduct.swift; sourceTree = "<group>"; };
 		9C1C29C220B2683E004B7953 /* searchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = searchCell.swift; sourceTree = "<group>"; };
 		9C1D87D220CF6C1300C68C81 /* addScannedItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = addScannedItemViewController.swift; path = "Add From Scan/addScannedItemViewController.swift"; sourceTree = "<group>"; };
+		9C7A195D20CF76110029108A /* Pacifico.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Pacifico.ttf; sourceTree = "<group>"; };
 		9CB90C3520AA108A00BEADCA /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		9CB90C3720AA11B400BEADCA /* MealViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MealViewController.swift; sourceTree = "<group>"; };
 		9CDC1FEB20AA02CD00503BAB /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -200,6 +202,7 @@
 				E7C0A5EC20A9F23E007A8F39 /* Main.storyboard */,
 				9CDC1FEB20AA02CD00503BAB /* LoginViewController.swift */,
 				EB008A0920BC5E6700CE8EC3 /* Assets.xcassets */,
+				9C7A195D20CF76110029108A /* Pacifico.ttf */,
 				E7C0A5F120A9F23F007A8F39 /* LaunchScreen.storyboard */,
 				E7EF6D2620AB23AF0022D7E1 /* GoogleService-Info.plist */,
 				9CFD02D020AEAE85007D4BEF /* AddFromDatabaseViewController.swift */,
@@ -339,6 +342,7 @@
 			files = (
 				E7C0A5F320A9F23F007A8F39 /* LaunchScreen.storyboard in Resources */,
 				EB13409620AAB2B50084B79B /* Info.plist in Resources */,
+				9C7A195E20CF77CD0029108A /* Pacifico.ttf in Resources */,
 				E7C0A5EE20A9F23E007A8F39 /* Main.storyboard in Resources */,
 				E7EF6D2720AB23B00022D7E1 /* GoogleService-Info.plist in Resources */,
 				EB008A0A20BC5E6800CE8EC3 /* Assets.xcassets in Resources */,

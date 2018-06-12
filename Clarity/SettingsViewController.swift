@@ -16,7 +16,9 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     let db = Firestore.firestore()
     let storage = Storage.storage()
     
+    @IBOutlet weak var saveButton: UIButton!
     
+    @IBOutlet weak var logoutButton: UIButton!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var userWaterGoal: UITextField!
     @IBOutlet weak var backBtn: UIButton!
@@ -24,6 +26,8 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.hideKeyboard()
+        saveButton.layer.borderColor = textColor.cgColor
+        logoutButton.layer.borderColor = UIColor.white.cgColor
         let user = db.collection("users").document(defaults.string(forKey: "user_id")!)
         user.getDocument { (document, error) in
             if(document?.exists)!{
@@ -55,13 +59,14 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        scrollView.setContentOffset(CGPoint(x:0, y: 190), animated: true)
-    }
+//    func textFieldDidBeginEditing(_ textField: UITextField) {
+//        scrollView.setContentOffset(CGPoint(x:0, y: 190), animated: true)
+//    }
+//    
+//    func textFieldDidEndEditing(_ textField: UITextField) {
+//        scrollView.setContentOffset(CGPoint(x:0, y:-20), animated: true)
+//    }
     
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        scrollView.setContentOffset(CGPoint(x:0, y:-20), animated: true)
-    }
     @IBAction func logoutButtunPressed(_ sender: Any) {
         GIDSignIn.sharedInstance().signOut()
         let s = UIStoryboard(name: "Main", bundle: nil)
