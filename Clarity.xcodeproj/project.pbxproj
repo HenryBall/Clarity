@@ -33,6 +33,7 @@
 		EB13408A20AA51410084B79B /* IngredientCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB13408920AA51400084B79B /* IngredientCell.swift */; };
 		EB13409620AAB2B50084B79B /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EB13409520AAB2B40084B79B /* Info.plist */; };
 		EB1884B720CDAD4D0000FA98 /* CirclePath.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1884B620CDAD4D0000FA98 /* CirclePath.swift */; };
+		EB1884B920CF78080000FA98 /* SpinnerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1884B820CF78080000FA98 /* SpinnerView.swift */; };
 		FA684CBBD94A12E5511C9123 /* Pods_ClarityTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDD35D5BF6B1106C6A550085 /* Pods_ClarityTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -89,6 +90,7 @@
 		EB13408920AA51400084B79B /* IngredientCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IngredientCell.swift; sourceTree = "<group>"; };
 		EB13409520AAB2B40084B79B /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EB1884B620CDAD4D0000FA98 /* CirclePath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CirclePath.swift; sourceTree = "<group>"; };
+		EB1884B820CF78080000FA98 /* SpinnerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpinnerView.swift; sourceTree = "<group>"; };
 		ED82CB166BA61ED7F4423C5A /* Pods-Clarity.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Clarity.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Clarity/Pods-Clarity.debug.xcconfig"; sourceTree = "<group>"; };
 		EDDB8AEEFE050573C461D29B /* Pods_ClarityUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ClarityUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD43534DA3442C0B51F8F166 /* Pods-Clarity.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Clarity.release.xcconfig"; path = "Pods/Target Support Files/Pods-Clarity/Pods-Clarity.release.xcconfig"; sourceTree = "<group>"; };
@@ -209,6 +211,7 @@
 				9CFD02D220AEB1F9007D4BEF /* addDatabaseIngredientCell.swift */,
 				9C1C29BC20B262EC004B7953 /* searchViewController.swift */,
 				9C1C29C220B2683E004B7953 /* searchCell.swift */,
+				EB1884B820CF78080000FA98 /* SpinnerView.swift */,
 			);
 			path = Clarity;
 			sourceTree = "<group>";
@@ -505,6 +508,7 @@
 				9CB90C3820AA11B500BEADCA /* MealViewController.swift in Sources */,
 				9C1C29C020B267CA004B7953 /* SearchProduct.swift in Sources */,
 				9C1C29BB20B25585004B7953 /* Food.swift in Sources */,
+				EB1884B920CF78080000FA98 /* SpinnerView.swift in Sources */,
 				EB008A0E20BCEC4E00CE8EC3 /* IngredientsDetailsViewController.swift in Sources */,
 				9CFD02D320AEB1F9007D4BEF /* addDatabaseIngredientCell.swift in Sources */,
 				E7C0A5E920A9F23E007A8F39 /* AppDelegate.swift in Sources */,
@@ -687,14 +691,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = GX825LSHK4;
+				DEVELOPMENT_TEAM = Q38YCXN8XD;
 				INFOPLIST_FILE = Clarity/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.Clarity;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Clarity.Henry;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -707,14 +711,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = GX825LSHK4;
+				DEVELOPMENT_TEAM = Q38YCXN8XD;
 				INFOPLIST_FILE = Clarity/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.Clarity;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Clarity.Henry;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
