@@ -16,7 +16,7 @@ let db = Firestore.firestore()
 let storage = Storage.storage()
 var day : DocumentReference!
 let lightGrey = UIColor(red: 230/255, green: 230/255, blue: 230/255, alpha: 1)
-let darkGrey = UIColor(red: 170/255, green: 170/255, blue: 170/255, alpha: 1)
+let textColor = UIColor(red: 170/255, green: 170/255, blue: 170/255, alpha: 1)
 let mainBlue = UIColor(red: 89/255, green: 166/255, blue: 255/255, alpha: 1)
 var ingredientsFromDatabase = [Ingredient]()
 var proteins = [Ingredient]()
@@ -119,7 +119,18 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     
     func updateCircle(dailyTotal: Float) {
         let percentage = dailyTotal/Float(dailyGoal)
-        percentLabel.text = String(describing: (Int(percentage * 100))) + "%"
+        let percent = percentage * 100
+   
+        if(percent < 25.0){
+            cp.color = UIColor(red: 187/255, green: 218/255, blue: 255/255, alpha: 1).cgColor
+        }else if(percent < 50.0){
+            cp.color = mainBlue.cgColor
+        }else if(percent < 75.0){
+            cp.color = UIColor(red: 39/255, green: 106/255, blue: 184/255, alpha: 1).cgColor
+        }else{
+            cp.color = UIColor(red: 10/255, green: 63/255, blue: 125/255, alpha: 1).cgColor
+        }
+        percentLabel.text = String(describing: (Int(percent))) + "%"
         cp.value = percentage
     }
     
@@ -156,7 +167,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         
         lineChart.rightAxis.drawAxisLineEnabled = false //hide horizontal axis lines
         lineChart.rightAxis.drawGridLinesEnabled = false //hide right axis line
-        lineChart.rightAxis.labelTextColor = darkGrey
+        lineChart.rightAxis.labelTextColor = textColor
         
         lineChart.leftAxis.drawGridLinesEnabled = false //hide horizontal axis lines
         lineChart.leftAxis.drawLabelsEnabled = false //don't show axis labels on left side
@@ -202,10 +213,10 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         pieChart.chartDescription?.text = ""
         pieChart.noDataText = "No data available"
         pieChart.usePercentValuesEnabled = true
-        pieChart.noDataTextColor = darkGrey
+        pieChart.noDataTextColor = textColor
         pieChart.legend.horizontalAlignment = .center
         pieChart.legend.formSize = 20.0
-        pieChart.legend.textColor = darkGrey
+        pieChart.legend.textColor = textColor
         pieChart.drawEntryLabelsEnabled = false
         pieChart.isUserInteractionEnabled = false
         
@@ -294,8 +305,6 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
 //    }
     
     func getTodaysTotal(){
-       // let day = db.collection("users").document(defaults.string(forKey: "user_id")!).collection("meals").document(databaseDateFormatter.string(from: today))
-        
         day.getDocument { (document, error) in
             if(document?.exists)!{
                 let total = self.getTotalForDay(document: document!)
