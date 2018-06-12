@@ -14,6 +14,7 @@ import Charts
 let defaults = UserDefaults.standard
 let db = Firestore.firestore()
 let storage = Storage.storage()
+var day : DocumentReference!
 let lightGrey = UIColor(red: 230/255, green: 230/255, blue: 230/255, alpha: 1)
 let darkGrey = UIColor(red: 170/255, green: 170/255, blue: 170/255, alpha: 1)
 let mainBlue = UIColor(red: 89/255, green: 166/255, blue: 255/255, alpha: 1)
@@ -62,16 +63,17 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         super.viewDidLoad()
         self.navigationController?.isNavigationBarHidden = true
         self.scrollView.delegate = self
-        user = defaults.string(forKey: "user_id")!
-        userRef = db.collection("users").document(user)
-        queryIngredientsFromFirebase()
-        getBarGraphData()
         databaseDateFormatter.timeStyle = .none
         databaseDateFormatter.dateStyle = .long
         databaseDateFormatter.string(from: today)
         labelDateFormatter.timeStyle = .none
         labelDateFormatter.dateStyle = .long
         labelDateFormatter.dateFormat = "MMMM d"
+        user = defaults.string(forKey: "user_id")!
+        userRef = db.collection("users").document(user)
+        day = db.collection("users").document(defaults.string(forKey: "user_id")!).collection("meals").document(databaseDateFormatter.string(from: today))
+        queryIngredientsFromFirebase()
+        getBarGraphData()
         dateLabel.text = labelDateFormatter.string(from: today)
         self.scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width * 3, height: 260.0)
         self.navigationItem.title = labelDateFormatter.string(from: today)
@@ -292,7 +294,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
 //    }
     
     func getTodaysTotal(){
-        let day = db.collection("users").document(defaults.string(forKey: "user_id")!).collection("meals").document(databaseDateFormatter.string(from: today))
+       // let day = db.collection("users").document(defaults.string(forKey: "user_id")!).collection("meals").document(databaseDateFormatter.string(from: today))
         
         day.getDocument { (document, error) in
             if(document?.exists)!{

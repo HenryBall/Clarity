@@ -56,9 +56,7 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
     }
     
     @IBAction func doneTapped(_ sender: UIButton) {
-        
-        let day = db.collection("users").document(defaults.string(forKey: "user_id")!).collection("meals").document(formatter.string(from: today))
-        
+    
         var refArray = [DocumentReference]()
         for i in ingredientsInMeal{
             if(i.source != ""){
