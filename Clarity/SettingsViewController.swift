@@ -59,13 +59,13 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-//    func textFieldDidBeginEditing(_ textField: UITextField) {
-//        scrollView.setContentOffset(CGPoint(x:0, y: 190), animated: true)
-//    }
-//    
-//    func textFieldDidEndEditing(_ textField: UITextField) {
-//        scrollView.setContentOffset(CGPoint(x:0, y:-20), animated: true)
-//    }
+    /*func textFieldDidBeginEditing(_ textField: UITextField) {
+        scrollView.setContentOffset(CGPoint(x:0, y: 190), animated: true)
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        scrollView.setContentOffset(CGPoint(x:0, y:-20), animated: true)
+    }*/
     
     @IBAction func logoutButtunPressed(_ sender: Any) {
         GIDSignIn.sharedInstance().signOut()
