@@ -191,7 +191,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         let data = PieChartData(dataSet: set)
         let pFormatter = NumberFormatter()
         pFormatter.numberStyle = .percent
-        pFormatter.maximumFractionDigits = 1
+        pFormatter.maximumFractionDigits = 0
         pFormatter.multiplier = 1
         pFormatter.percentSymbol =  "%"
         data.setValueFormatter(DefaultValueFormatter(formatter: pFormatter))
@@ -305,7 +305,8 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
                 self.getAverage()
                 self.updateCircle(dailyTotal: Float(total))
                 self.dailyTotal.text = totalAsString
-                self.updatePieChart(breakfast: breakfastTotal, lunch: lunchTotal, dinner: dinnerTotal, snacks: snacksTotal)            }
+                self.updatePieChart(breakfast: breakfastTotal, lunch: lunchTotal, dinner: dinnerTotal, snacks: snacksTotal)
+            }
         }
     }
     
@@ -431,16 +432,18 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
                     let current = barChartEntry(date: date!, value: total)
                     entries.append(current)
                     entries.sort(by: { $0.date < $1.date })
-                    
-                    self.updateChartWithData(allWaterData: entries)
-                    }
+                }
                 
-                
-                if (waterData.count < 10) {
+                if (entries.count < 10) {
+                    let oldFormatterr = DateFormatter()
+                    oldFormatterr.dateStyle = .long
+                    let date = oldFormatterr.date(from: "March 19, 2018")
                     for _ in 1...(10 - waterData.count) {
-                        waterData.append(0.0)
+                        entries.append (barChartEntry(date: date!, value: 0))
                     }
                 }
+                
+                self.updateChartWithData(allWaterData: entries)
             }
         }
     }

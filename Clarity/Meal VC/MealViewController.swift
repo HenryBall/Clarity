@@ -53,8 +53,6 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
     var itemsInMeal = [Food]()
     
     @IBOutlet weak var addIngredientsView: UIView!
-    @IBOutlet weak var loadingScreen: UIView!
-    @IBOutlet weak var loadingIcon: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -236,6 +234,7 @@ extension MealViewController {
         if #available(iOS 11.0, *) {
             tagger.enumerateTags(in: range, unit: .word, scheme: .tokenType, options: options) { tag, tokenRange, stop in
                 let word = (text as NSString).substring(with: tokenRange)
+                //let lemma = lemmatize(for: word)
                 arr.append(word)
             }
             return arr
@@ -244,15 +243,31 @@ extension MealViewController {
         }
     }
     
+    /*func lemmatize(for text: String) -> String {
+        tagger.string = text
+        var  lemm : String = ""
+        let range = NSRange(location:0, length: text.utf16.count)
+        if #available(iOS 11.0, *) {
+            tagger.enumerateTags(in: range, unit: .word, scheme: .lemma, options: options) { tag, tokenRange, stop in
+                if let lemma = tag?.rawValue {
+                    lemm = lemma
+                    return lemm
+                    print(lemm)
+                } else {
+                    return ""
+                }
+            }
+        } else {
+            return ""
+        }
+    }*/
+    
     func doTextProcessing (text: JSON) {
         if text != JSON.null{
             ingredientsList = text.string!.lowercased().components(separatedBy: ", ")
             for ingredient in ingredientsList {
-                //ingredientsList.append(ingredient)
                 matchIngredient (name: ingredient)
             }
-            loadingScreen.isHidden = true
-            loadingIcon.layer.removeAllAnimations()
         }else{
             print("Sorry, the ingredients for this item are unavailable")
         }
@@ -261,7 +276,7 @@ extension MealViewController {
     func matchIngredient (name: String) {
         let arr = tokenizeText (for: name)
         var dic : Dictionary<String, DocumentSnapshot> = [String : DocumentSnapshot]()
-        
+        print(arr)
         let group = DispatchGroup()
         
         for word in arr {
@@ -346,8 +361,6 @@ extension MealViewController {
         dismiss(animated: true, completion: nil)
         if let destination = self.navigationController?.viewControllers[1] {
             self.navigationController?.popToViewController(destination, animated: true)
-            loadingScreen.isHidden = false
-            loadingIcon.rotate()
         }
     }
     
@@ -428,16 +441,3 @@ extension MealViewController {
         task.resume()
     }
 }
-
-extension UIView {
-    func rotate(duration: CFTimeInterval = 1) {
-        let animation = CABasicAnimation(keyPath: "transform.rotation")
-        animation.fromValue = 0.0
-        animation.toValue = CGFloat(Double.pi * 2)
-        animation.isRemovedOnCompletion = false
-        animation.duration = duration
-        animation.repeatCount = Float.infinity
-        self.layer.add(animation, forKey: nil)
-    }
-}
-
