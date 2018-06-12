@@ -13,6 +13,7 @@
 		9C1C29BD20B262EC004B7953 /* searchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1C29BC20B262EC004B7953 /* searchViewController.swift */; };
 		9C1C29C020B267CA004B7953 /* SearchProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1C29BF20B267CA004B7953 /* SearchProduct.swift */; };
 		9C1C29C320B2683E004B7953 /* searchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1C29C220B2683E004B7953 /* searchCell.swift */; };
+		9C1D87D320CF6C1400C68C81 /* addScannedItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1D87D220CF6C1300C68C81 /* addScannedItemViewController.swift */; };
 		9CB90C3620AA108B00BEADCA /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB90C3520AA108A00BEADCA /* HomeViewController.swift */; };
 		9CB90C3820AA11B500BEADCA /* MealViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB90C3720AA11B400BEADCA /* MealViewController.swift */; };
 		9CDC1FEC20AA02CD00503BAB /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CDC1FEB20AA02CD00503BAB /* LoginViewController.swift */; };
@@ -60,6 +61,7 @@
 		9C1C29BC20B262EC004B7953 /* searchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = searchViewController.swift; path = Search/searchViewController.swift; sourceTree = "<group>"; };
 		9C1C29BF20B267CA004B7953 /* SearchProduct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchProduct.swift; sourceTree = "<group>"; };
 		9C1C29C220B2683E004B7953 /* searchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = searchCell.swift; sourceTree = "<group>"; };
+		9C1D87D220CF6C1300C68C81 /* addScannedItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = addScannedItemViewController.swift; path = "Add From Scan/addScannedItemViewController.swift"; sourceTree = "<group>"; };
 		9CB90C3520AA108A00BEADCA /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		9CB90C3720AA11B400BEADCA /* MealViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MealViewController.swift; sourceTree = "<group>"; };
 		9CDC1FEB20AA02CD00503BAB /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -190,6 +192,7 @@
 				EB13409520AAB2B40084B79B /* Info.plist */,
 				9CFD02CC20AE9CC1007D4BEF /* Model */,
 				9CFD02CF20AEACBA007D4BEF /* Meal VC */,
+				9C1D87D220CF6C1300C68C81 /* addScannedItemViewController.swift */,
 				E7C0A5E820A9F23E007A8F39 /* AppDelegate.swift */,
 				EB1884B620CDAD4D0000FA98 /* CirclePath.swift */,
 				9CB90C3520AA108A00BEADCA /* HomeViewController.swift */,
@@ -490,6 +493,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9C1D87D320CF6C1400C68C81 /* addScannedItemViewController.swift in Sources */,
 				9CDC1FEC20AA02CD00503BAB /* LoginViewController.swift in Sources */,
 				9C1C29BD20B262EC004B7953 /* searchViewController.swift in Sources */,
 				9CFD02CE20AE9CCE007D4BEF /* Ingredient.swift in Sources */,
@@ -679,14 +683,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = Q38YCXN8XD;
+				DEVELOPMENT_TEAM = GX825LSHK4;
 				INFOPLIST_FILE = Clarity/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.Clarity.Henry;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Clarity;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -699,14 +703,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = Q38YCXN8XD;
+				DEVELOPMENT_TEAM = GX825LSHK4;
 				INFOPLIST_FILE = Clarity/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.Clarity.Henry;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Clarity;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
