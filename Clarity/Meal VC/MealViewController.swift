@@ -16,6 +16,8 @@ import SwiftyJSON
 
 class MealViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
+    var loadingScreenShouldBeActive = false
+    
     let db = Firestore.firestore()
     let storage = Storage.storage()
     var ingredientDB : CollectionReference!
@@ -25,6 +27,7 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
     let formatter = DateFormatter()
     var ingredientsList = [String]()
     var day : DocumentReference!
+    var spinner : SpinnerView!
     
     // Camera stuff
     let imagePicker = UIImagePickerController()
@@ -36,6 +39,7 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
         return URL(string: "https://vision.googleapis.com/v1/images:annotate?key=\(googleAPIKey)")!
     }
     
+    @IBOutlet weak var loadingView: UIView!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var closeButton: UIButton!
     var mealType: String!
@@ -66,10 +70,23 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
         imagePicker.allowsEditing = false
         imagePicker.sourceType = .camera
         setBannerImage()
+        
+        let rect = CGRect(x: loadingView.bounds.width/2-40, y: loadingView.bounds.height/2-50, width: 75, height: 75)
+        spinner = SpinnerView(frame: rect)
+        loadingView.addSubview(spinner)
+        spinner.isHidden = false
     }
     
     override func viewDidAppear(_ animated: Bool) {
         queryIngredients()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        if loadingScreenShouldBeActive {
+            loadingView.isHidden = false
+        } else {
+            loadingView.isHidden = true
+        }
     }
     
     func setBannerImage(){
@@ -233,7 +250,7 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
             destination.ingredientsList = ingredientSelector
             destination.mealType = self.mealType
             self.navigationController?.pushViewController(destination, animated: true)
-            
+            self.loadingScreenShouldBeActive = false
         })
     }
     
@@ -244,6 +261,8 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
             createRequest(with: binaryImageData)
         }
         
+        loadingView.isHidden = false
+        loadingScreenShouldBeActive = true
         dismiss(animated: true, completion: nil)
     }
     
