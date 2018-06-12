@@ -72,19 +72,20 @@ class IngredientsDetailsViewController: UIViewController {
         var colors = Array(repeating: color, count: data.count)
         
         if let index = data.index(where: { $0.name == ingredientToShow.name }) {
-            colors[index] = UIColor(red: 1/255, green: 225/255, blue: 180/255, alpha: 1.0)
+            colors[index] = darkestBlue
         }
     
         chartDataSet.colors = colors
         chartDataSet.drawValuesEnabled = false
         let chartData = BarChartData(dataSet: chartDataSet)
         barChart.chartDescription?.text = ""
+        barChart.rightAxis.labelTextColor = textColor
         barChart.isUserInteractionEnabled = false
         barChart.xAxis.drawGridLinesEnabled = false
         barChart.rightAxis.drawGridLinesEnabled = false
         barChart.leftAxis.drawLabelsEnabled = false
         barChart.leftAxis.drawGridLinesEnabled = false
-        barChart.noDataTextColor = UIColor.black
+        barChart.noDataTextColor = textColor
         barChart.xAxis.drawLabelsEnabled = false
         barChart.xAxis.axisLineColor = UIColor.clear
         barChart.drawValueAboveBarEnabled = false

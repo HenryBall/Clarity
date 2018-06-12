@@ -18,6 +18,9 @@ var day : DocumentReference!
 let lightGrey = UIColor(red: 230/255, green: 230/255, blue: 230/255, alpha: 1)
 let textColor = UIColor(red: 170/255, green: 170/255, blue: 170/255, alpha: 1)
 let mainBlue = UIColor(red: 89/255, green: 166/255, blue: 255/255, alpha: 1)
+let lightestBlue = UIColor(red: 187/255, green: 218/255, blue: 255/255, alpha: 1)
+let darkerBlue = UIColor(red: 39/255, green: 106/255, blue: 184/255, alpha: 1)
+let darkestBlue = UIColor(red: 10/255, green: 63/255, blue: 125/255, alpha: 1)
 var ingredientsFromDatabase = [Ingredient]()
 var proteins = [Ingredient]()
 var fruits = [Ingredient]()
@@ -122,13 +125,13 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         let percent = percentage * 100
    
         if(percent < 25.0){
-            cp.color = UIColor(red: 187/255, green: 218/255, blue: 255/255, alpha: 1).cgColor
+            cp.color = lightestBlue.cgColor
         }else if(percent < 50.0){
             cp.color = mainBlue.cgColor
         }else if(percent < 75.0){
-            cp.color = UIColor(red: 39/255, green: 106/255, blue: 184/255, alpha: 1).cgColor
+            cp.color = darkerBlue.cgColor
         }else{
-            cp.color = UIColor(red: 10/255, green: 63/255, blue: 125/255, alpha: 1).cgColor
+            cp.color = darkestBlue.cgColor
         }
         percentLabel.text = String(describing: (Int(percent))) + "%"
         cp.value = percentage
@@ -198,7 +201,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     
         
         let set = PieChartDataSet(values: entries, label: "")
-        set.colors = [mainBlue, UIColor(red: 39/255, green: 106/255, blue: 184/255, alpha: 1), UIColor(red: 187/255, green: 218/255, blue: 255/255, alpha: 1), UIColor(red: 10/255, green: 63/255, blue: 125/255, alpha: 1)]
+        set.colors = [lightestBlue, mainBlue, darkerBlue, darkestBlue]
         set.drawValuesEnabled = true
         
         let data = PieChartData(dataSet: set)
@@ -220,7 +223,6 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         pieChart.drawEntryLabelsEnabled = false
         pieChart.isUserInteractionEnabled = false
         
-        //pieChart.holeRadiusPercent = 0.35
         pieChart.holeColor = UIColor.clear
         pieChart.transparentCircleColor = UIColor.clear
     }
@@ -287,22 +289,6 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
             }
         }
     }
-    
-//    func getTodaysTotal() {
-//        let day = db.collection("users").document(defaults.string(forKey: "user_id")!).collection("meals").document(databaseDateFormatter.string(from: today))
-//
-//        firebaseHelper.getTotalForDay(day: day) { (total, error) in
-//            if let error = error {
-//                print (error)
-//            } else {
-//                let totalAsString = String(Int(total))
-//                if (totalAsString != self.dailyTotalLabel.text) {
-//                    self.updateCircle(dailyTotal: Float(total))
-//                    self.dailyTotalLabel.text = totalAsString
-//                }
-//            }
-//        }
-//    }
     
     func getTodaysTotal(){
         day.getDocument { (document, error) in
@@ -425,7 +411,6 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
                     let total = breakfastTotal + lunchTotal + dinnerTotal + snacksTotal
                 
                     //Get dates to display under bar graph
-                    print(document.documentID)
                     let dateStr = document.documentID
                     let oldFormatterr = DateFormatter()
                     oldFormatterr.dateStyle = .long
@@ -453,7 +438,6 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
                         entries.append (barChartEntry(date: date!, value: 0))
                     }
                 }
-                
                 self.updateChartWithData(allWaterData: entries)
             }
         }

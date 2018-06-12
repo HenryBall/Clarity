@@ -18,6 +18,7 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
 
     var loadingScreenShouldBeActive = false
     
+    @IBOutlet weak var bannerImageTopConstraint: NSLayoutConstraint!
     let db = Firestore.firestore()
     let storage = Storage.storage()
     var ingredientDB : CollectionReference!
@@ -66,9 +67,6 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
         tableView.delegate = self
         tableView.dataSource = self
         
-        imagePicker.delegate = self
-        imagePicker.allowsEditing = false
-        imagePicker.sourceType = .camera
         setBannerImage()
         
         let rect = CGRect(x: loadingView.bounds.width/2-40, y: loadingView.bounds.height/2-50, width: 75, height: 75)
@@ -151,6 +149,9 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     @IBAction func scanTapped(_ sender: UIButton) {
+        imagePicker.delegate = self
+        imagePicker.allowsEditing = false
+        imagePicker.sourceType = .camera
         setView(hidden: true, angle: -CGFloat.pi)
         present(imagePicker, animated: true, completion: nil)
     }
@@ -235,9 +236,10 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
 
-//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        self.bannerImage.alpha = ((UIScreen.main.bounds.width * 45/100)-self.scrollView.contentOffset.y)/UIScreen.main.bounds.width
-//    }
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        self.bannerImage.alpha = ((UIScreen.main.bounds.width * 45/100)-self.scrollView.contentOffset.y)/(UIScreen.main.bounds.width*45/100)
+        bannerImageTopConstraint?.constant = min(0, -scrollView.contentOffset.y / 2.0) // only when scrolling down so we never let it be higher than 0
+    }
     
     func analyzeResults(_ dataToParse: Data) {
         
