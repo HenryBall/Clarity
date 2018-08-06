@@ -149,11 +149,18 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     @IBAction func scanTapped(_ sender: UIButton) {
-        imagePicker.delegate = self
-        imagePicker.allowsEditing = false
-        imagePicker.sourceType = .camera
-        setView(hidden: true, angle: -CGFloat.pi)
-        present(imagePicker, animated: true, completion: nil)
+        
+        if #available(iOS 11.0, *) {
+            imagePicker.delegate = self
+            imagePicker.allowsEditing = false
+            imagePicker.sourceType = .camera
+            setView(hidden: true, angle: -CGFloat.pi)
+            present(imagePicker, animated: true, completion: nil)
+        } else {
+            let alert = UIAlertController(title: "Oops!", message: "You need iOS 11 to access this feature", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+            self.present(alert, animated: true)
+        }
     }
     
     @IBAction func searchTapped(_ sender: UIButton) {
