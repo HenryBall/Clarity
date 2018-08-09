@@ -2,18 +2,7 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "waterDrop.png",
-      "scale" : "1x"
-    },
-    {
-      "idiom" : "universal",
-      "filename" : "waterDrop@2x.png",
-      "scale" : "2x"
-    },
-    {
-      "idiom" : "universal",
-      "filename" : "waterDrop@3x.png",
-      "scale" : "3x"
+      "filename" : "Drop.pdf"
     }
   ],
   "info" : {

@@ -16,20 +16,25 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     let db = Firestore.firestore()
     let storage = Storage.storage()
     
+    @IBOutlet weak var saveButton: UIButton!
     
+    @IBOutlet weak var logoutButton: UIButton!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var userWaterGoal: UITextField!
+    @IBOutlet weak var backBtn: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.hideKeyboard()
+        saveButton.layer.borderColor = textColor.cgColor
+        logoutButton.layer.borderColor = UIColor.white.cgColor
         let user = db.collection("users").document(defaults.string(forKey: "user_id")!)
         user.getDocument { (document, error) in
             if(document?.exists)!{
                 if (document?.data()!["water_goal"]) != nil{
                     self.userWaterGoal.text = String(Int((document?.data()!["water_goal"] as! Double)))
                 }else{
-                    self.userWaterGoal.placeholder = "1000"
+                    self.backBtn.isHidden = true
                 }
             }else{
                 print("This user does not exist in the database")
@@ -45,8 +50,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         let user = db.collection("users").document(defaults.string(forKey: "user_id")!)
         
         if (userWaterGoal.text != "") {
-            UserDefaults.standard.set(Double(userWaterGoal.text!), forKey: "water_limit")
-            user.setData(["water_goal": Double(userWaterGoal.text!)], options: SetOptions.merge())
+            user.setData(["water_goal": Double(userWaterGoal.text!) as Any], options: SetOptions.merge())
             self.navigationController?.popViewController(animated: true)
         } else {
             let alert = UIAlertController(title: "Oops!", message: "Please enter a water goal", preferredStyle: .alert)
@@ -55,13 +59,14 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    func textFieldDidBeginEditing(_ textField: UITextField) {
+    /*func textFieldDidBeginEditing(_ textField: UITextField) {
         scrollView.setContentOffset(CGPoint(x:0, y: 190), animated: true)
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         scrollView.setContentOffset(CGPoint(x:0, y:-20), animated: true)
-    }
+    }*/
+    
     @IBAction func logoutButtunPressed(_ sender: Any) {
         GIDSignIn.sharedInstance().signOut()
         let s = UIStoryboard(name: "Main", bundle: nil)

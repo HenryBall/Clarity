@@ -29,9 +29,9 @@ class Ingredient {
     init(document: DocumentSnapshot){
         self.name = document.documentID.uppercased()
         self.waterData = document.data()!["gallons_water"] as! Double
-        self.description = document.data()!["description"] as! String
-        self.servingSize = document.data()!["average_weight_oz"] as! Double
-        self.category = document.data()!["category"] as! String
-        self.source = document.data()!["source"] as! String
+        self.description = document.data()!["description"] as? String
+        self.servingSize = document.data()!["average_weight_oz"] as? Double
+        self.category = document.data()!["category"] as? String
+        self.source = document.data()!["source"] as? String
     }
 }

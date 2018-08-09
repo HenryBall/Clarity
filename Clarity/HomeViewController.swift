@@ -14,6 +14,13 @@ import Charts
 let defaults = UserDefaults.standard
 let db = Firestore.firestore()
 let storage = Storage.storage()
+var day : DocumentReference!
+let lightGrey = UIColor(red: 230/255, green: 230/255, blue: 230/255, alpha: 1)
+let textColor = UIColor(red: 170/255, green: 170/255, blue: 170/255, alpha: 1)
+let mainBlue = UIColor(red: 89/255, green: 166/255, blue: 255/255, alpha: 1)
+let lightestBlue = UIColor(red: 187/255, green: 218/255, blue: 255/255, alpha: 1)
+let darkerBlue = UIColor(red: 39/255, green: 106/255, blue: 184/255, alpha: 1)
+let darkestBlue = UIColor(red: 10/255, green: 63/255, blue: 125/255, alpha: 1)
 var ingredientsFromDatabase = [Ingredient]()
 var proteins = [Ingredient]()
 var fruits = [Ingredient]()
@@ -24,213 +31,160 @@ var other = [Ingredient]()
 
 class HomeViewController: UIViewController, UIScrollViewDelegate {
     
-    @IBOutlet weak var barChart: BarChartView!
-    @IBOutlet weak var dailyTotalLabel: UILabel!
+    struct barChartEntry {
+        var date: Date
+        var value: Double
+    }
+    
+    @IBOutlet weak var avgLabel: UILabel!
     @IBOutlet weak var percentLabel: UILabel!
+    @IBOutlet weak var dailyTotal: UILabel!
     @IBOutlet weak var circleView: UIView!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var pageControl: UIPageControl!
     @IBOutlet weak var pieChart: PieChartView!
-    var totalGallonsToday: Double!
-    var dailyGoal = 0.0
+    @IBOutlet weak var lineChart: LineChartView!
+    @IBOutlet var barGraphDateLabels: [UILabel]!
+    
+    var todaysTotal: Double!
+    var dailyGoal : Double!
+    var cp : CirclePath!
+    var track : CirclePath!
+    var trackPath : CAShapeLayer!
+    var motionPath : CAShapeLayer!
     
     @IBOutlet weak var scrollView: UIScrollView!
-    let shapeLayer = CAShapeLayer()
     
     let today = Date()
     let databaseDateFormatter = DateFormatter()
     let labelDateFormatter = DateFormatter()
     
+    var user: String!
+    var userRef: DocumentReference!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.isNavigationBarHidden = true
         self.scrollView.delegate = self
         dailyGoal = defaults.double(forKey: "water_limit")
-        
+
         databaseDateFormatter.timeStyle = .none
         databaseDateFormatter.dateStyle = .long
         databaseDateFormatter.string(from: today)
         labelDateFormatter.timeStyle = .none
         labelDateFormatter.dateStyle = .long
-        labelDateFormatter.dateFormat = "EEEE, MMM d"
-        dateLabel.text = labelDateFormatter.string(from: today)
-        
-        self.scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width * 3, height:self.scrollView.frame.height)
-        totalGallonsToday = 0.0
+        labelDateFormatter.dateFormat = "MMMM d"
+        user = defaults.string(forKey: "user_id")!
+        userRef = db.collection("users").document(user)
+        day = db.collection("users").document(defaults.string(forKey: "user_id")!).collection("meals").document(databaseDateFormatter.string(from: today))
         queryIngredientsFromFirebase()
-        self.navigationController?.isNavigationBarHidden = true
+        getBarGraphData()
+        dateLabel.text = labelDateFormatter.string(from: today)
+        self.scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width * 3, height: 260.0)
+        self.navigationItem.title = labelDateFormatter.string(from: today)
+        
+        initCircle()
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        queryTotal()
-        getBarGraphData()
-    }
-    
-    /* Queries ************************************************************************************************/
-    
-    ///Queries the user's last 10 days total water intake
-    func getBarGraphData(){
-        var waterData = [Double]()
-        var breakfastTotal = 0.0
-        var lunchTotal = 0.0
-        var dinnerTotal = 0.0
-        var snacksTotal = 0.0
-        
-        let day = db.collection("users").document(defaults.string(forKey: "user_id")!).collection("meals")
-        day.getDocuments { (querySnapshot, err) in
-            if err != nil {
-                print("Error getting bar graph data")
-            }else{
-                for document in querySnapshot!.documents.reversed(){
-                    if(waterData.count == 10){
-                        return
-                    }else{
-                        if let breakfast_total = document.data()["breakfast_total"]{
-                            breakfastTotal = breakfast_total as! Double
-                        }
-                        
-                        if let lunch_total = document.data()["lunch_total"]{
-                            lunchTotal = lunch_total as! Double
-                        }
-                        
-                        if let dinner_total = document.data()["dinner_total"]{
-                            dinnerTotal = dinner_total as! Double
-                        }
-                        
-                        if let snacks_total = document.data()["snacks_total"]{
-                            snacksTotal = snacks_total as! Double
-                        }
-                        
-                        let total = breakfastTotal + lunchTotal + dinnerTotal + snacksTotal
-                        waterData.append(total)
-                    }
-                }
-                if (waterData.count < 10) {
-                    for _ in 1...(10 - waterData.count) {
-                        waterData.append(0.0)
-                    }
-                }
-                self.updateChartWithData(allWaterData: waterData.reversed())
+        let group = DispatchGroup()
+        group.enter()
+        userRef.getDocument { (doc, error) in
+            if let doc = doc, doc.exists {
+                self.dailyGoal = doc.data()!["water_goal"] as! Double
+                group.leave()
+            } else {
+                // Display error screen
+                print("Document does not exist")
             }
+        }
+
+        group.notify(queue: .main) {
+            self.getTodaysTotal()
         }
     }
     
-    ///Queries all of the ingredients from our database: water-footprint-data, adds them to array ingredientsFromDatabase (a global array used throughout the application)
-    func queryIngredientsFromFirebase(){
-        db.collection("water-footprint-data").getDocuments { (querySnapshot, err) in
-            if let err = err {
-                print(err)
-            }else{
-                for document in querySnapshot!.documents {
-                    let current_ingredient = Ingredient(document: document)
-                    ingredientsFromDatabase.append(current_ingredient)
-                    
-                    switch(current_ingredient.category){
-                    case "protein":
-                        proteins.append(current_ingredient)
-                    case "fruit":
-                        fruits.append(current_ingredient)
-                    case "vegetable":
-                        vegetables.append(current_ingredient)
-                    case "dairy":
-                        dairy.append(current_ingredient)
-                    case "drinks":
-                        drinks.append(current_ingredient)
-                    case "other":
-                        other.append(current_ingredient)
-                    default:
-                        print(current_ingredient.category)
-                    }
-                }
-            }
-        }
+    func initCircle() {
+        let trackRect = CGRect(x: 0, y: 0, width: circleView.bounds.width, height: circleView.bounds.height)
+        let pathRect = CGRect(x: 0, y: 0, width: circleView.bounds.width, height: circleView.bounds.height)
+        cp = CirclePath(frame: trackRect)
+        cp.width = 12
+        cp.color = mainBlue.cgColor
+        cp.color = UIColor(red: 89/255, green: 166/255, blue: 255/255, alpha: 255/255).cgColor
+        cp.transform = CGAffineTransform(rotationAngle: CGFloat(3*CFloat.pi/2))
+        
+        track = CirclePath(frame: pathRect)
+        track.color = lightGrey.cgColor
+        track.width = 5
+        track.value = 1.0
+        
+        circleView.addSubview(track)
+        circleView.addSubview(cp)
     }
     
-    func queryTotal(){
-        var breakfastTotal = 0.0
-        var lunchTotal = 0.0
-        var dinnerTotal = 0.0
-        var snacksTotal = 0.0
-        var total = 0.0
-        
-        let day = db.collection("users").document(defaults.string(forKey: "user_id")!).collection("meals").document(databaseDateFormatter.string(from: today))
-        
-        day.getDocument { (document, error) in
-            if(document?.exists)!{
-                if let breakfast_total = document?.data()!["breakfast_total"]{
-                    breakfastTotal = breakfast_total as! Double
-                }
-                
-                if let lunch_total = document?.data()!["lunch_total"]{
-                    lunchTotal = lunch_total as! Double
-                }
-                
-                if let dinner_total = document?.data()!["dinner_total"]{
-                    dinnerTotal = dinner_total as! Double
-                }
-                
-                if let snacks_total = document?.data()!["snacks_total"]{
-                    snacksTotal = snacks_total as! Double
-                }
-                
-                total = breakfastTotal + lunchTotal + dinnerTotal + snacksTotal
-                self.dailyTotalLabel.text = String(Int(total))
-                if(total != self.totalGallonsToday || self.dailyGoal != defaults.double(forKey: "water_limit")){
-                    self.dailyGoal = defaults.double(forKey: "water_limit")
-                    self.drawCircle(greenRating: CGFloat(total))
-                    self.updatePieChart(breakfast: breakfastTotal, lunch: lunchTotal, dinner: dinnerTotal, snacks: snacksTotal)
-                    self.totalGallonsToday = total
-                }
-            }else{
-                print("called draw circle with 0")
-                self.drawCircle(greenRating: 0.0)
-            }
+    func updateCircle(dailyTotal: Float) {
+        let percentage = dailyTotal/Float(dailyGoal)
+        let percent = percentage * 100
+   
+        if(percent < 25.0){
+            cp.color = lightestBlue.cgColor
+        }else if(percent < 50.0){
+            cp.color = mainBlue.cgColor
+        }else if(percent < 75.0){
+            cp.color = darkerBlue.cgColor
+        }else{
+            cp.color = darkestBlue.cgColor
         }
+        percentLabel.text = String(describing: (Int(percent))) + "%"
+        cp.value = percentage
     }
     
-    
-    /* Charts ************************************************************************************************/
-    //Bar Chart
-    func updateChartWithData(allWaterData: [Double]) {
-        var dataEntries: [BarChartDataEntry] = []
-        
+    //line chart
+    func updateChartWithData(allWaterData: [barChartEntry]) {
+        var dataEntries: [ChartDataEntry] = []
+
         for i in 0..<allWaterData.count {
-            let dataEntry = BarChartDataEntry(x: Double(i), y: Double(allWaterData[i]))
+            let dataEntry = ChartDataEntry(x: Double(i), y: Double(allWaterData[i].value))
             dataEntries.append(dataEntry)
         }
         
+        let set1 = LineChartDataSet(values: dataEntries, label: "")
+        set1.drawIconsEnabled = false
         
-        let chartDataSet = BarChartDataSet(values: dataEntries, label: "Gallons of water per day")
-        barChart.xAxis.labelPosition = .bottom
-        chartDataSet.drawValuesEnabled = false
+        set1.setColor(.black)
+        set1.drawCirclesEnabled = false
+        set1.lineWidth = 0
+        set1.valueFont = .systemFont(ofSize: 9)
+        set1.formLineWidth = 1
+        set1.formSize = 15
+        set1.drawValuesEnabled = false
+        set1.mode = .cubicBezier
         
-        let colors = Array(repeating: UIColor.white, count: allWaterData.count)
-        chartDataSet.colors = colors
+        let gradientColors = [UIColor.white.cgColor, mainBlue.cgColor]
+        let gradient = CGGradient(colorsSpace: nil, colors: gradientColors as CFArray, locations: nil)!
         
-        let limitLine = ChartLimitLine(limit: dailyGoal, label: "") //show daily limit on graph
-        limitLine.lineColor = UIColor.white
-        limitLine.lineWidth = 1
+        set1.fillAlpha = 1
+        set1.fill = Fill(linearGradient: gradient, angle: 90)
+        set1.drawFilledEnabled = true
         
-        barChart.xAxis.drawGridLinesEnabled = false //hide vertical grid lines
-        barChart.xAxis.drawLabelsEnabled = false //hide x axis labels
-        barChart.drawValueAboveBarEnabled = false
-        //barChart.rightAxis.addLimitLine(limitLine) //show daily limit line on graph
- 
-        barChart.rightAxis.addLimitLine(limitLine) //show daily limit line on graph
-        barChart.rightAxis.drawGridLinesEnabled = false //hide vertical line on right side
-        barChart.rightAxis.drawAxisLineEnabled = false //hide horizontal axis lines
-        barChart.rightAxis.labelTextColor = UIColor.white
+        let data = LineChartData(dataSet: set1)
+        lineChart.data = data
         
-        barChart.leftAxis.drawLabelsEnabled = false //hide axis labels on left side
-        barChart.leftAxis.drawGridLinesEnabled = false //hide horizontal axis lines
-        barChart.leftAxis.drawAxisLineEnabled = false //hide vertical line on right side
+        lineChart.rightAxis.drawAxisLineEnabled = false //hide horizontal axis lines
+        lineChart.rightAxis.drawGridLinesEnabled = false //hide right axis line
+        lineChart.rightAxis.labelTextColor = textColor
         
-        barChart.drawBordersEnabled = false //hide borders
+        lineChart.leftAxis.drawGridLinesEnabled = false //hide horizontal axis lines
+        lineChart.leftAxis.drawLabelsEnabled = false //don't show axis labels on left side
+        lineChart.leftAxis.drawAxisLineEnabled = false //hide left axis line
         
-        barChart.noDataTextColor = UIColor.white //set color of "no data available" text
-        barChart.chartDescription?.text = "" //hide description under the chart
-        barChart.legend.enabled = false //hide legend
-        barChart.isUserInteractionEnabled = false
-        barChart.data = BarChartData(dataSet: chartDataSet)
+        lineChart.xAxis.drawGridLinesEnabled = false //hide vertical grid lines
+        lineChart.xAxis.drawLabelsEnabled = false //hide x axis label
+        lineChart.xAxis.axisLineColor = UIColor.clear //hides line at top of graph
+        
+        lineChart.legend.enabled = false //hide legend
+        lineChart.chartDescription?.enabled = false
+        lineChart.isUserInteractionEnabled = false
     }
     
     //Pie Chart
@@ -239,36 +193,43 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         let meals = [breakfast, lunch, dinner, snacks]
         let track = ["Breakfast", "Lunch", "Dinner", "Snacks"]
         var entries = [PieChartDataEntry]()
+
         for (index, value) in meals.enumerated() {
             let entry = PieChartDataEntry()
             entry.y = value
             entry.label = track[index]
-            entries.append( entry)
+            entries.append(entry)
         }
+    
         
         let set = PieChartDataSet(values: entries, label: "")
-        set.colors = ChartColorTemplates.joyful()
-        set.drawValuesEnabled = false
+        set.colors = [lightestBlue, mainBlue, darkerBlue, darkestBlue]
+        set.drawValuesEnabled = true
         
         let data = PieChartData(dataSet: set)
+        let pFormatter = NumberFormatter()
+        pFormatter.numberStyle = .percent
+        pFormatter.maximumFractionDigits = 0
+        pFormatter.multiplier = 1
+        pFormatter.percentSymbol =  "%"
+        data.setValueFormatter(DefaultValueFormatter(formatter: pFormatter))
+        
         pieChart.data = data
         pieChart.chartDescription?.text = ""
         pieChart.noDataText = "No data available"
-        pieChart.noDataTextColor = UIColor.white
-        pieChart.legend.horizontalAlignment = .right
-        pieChart.legend.verticalAlignment = .center
-        pieChart.legend.orientation = .vertical
-        pieChart.legend.textColor = UIColor.white
+        pieChart.usePercentValuesEnabled = true
+        pieChart.noDataTextColor = textColor
+        pieChart.legend.horizontalAlignment = .center
+        pieChart.legend.formSize = 20.0
+        pieChart.legend.textColor = textColor
         pieChart.drawEntryLabelsEnabled = false
         pieChart.isUserInteractionEnabled = false
         
-        pieChart.holeRadiusPercent = 0.5
         pieChart.holeColor = UIColor.clear
         pieChart.transparentCircleColor = UIColor.clear
     }
     
-    /* IBAction ************************************************************************************************/
-    
+    /* IBActions ********************************************************************************************************/
     @IBAction func breakfastTapped(_ sender: Any) {
         let destination = self.storyboard?.instantiateViewController(withIdentifier: "MealViewController") as! MealViewController
         destination.mealType = "breakfast"
@@ -294,59 +255,122 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     }
     
     @IBAction func settingsBtnTapped(_ sender: Any) {
-          let destination = self.storyboard?.instantiateViewController(withIdentifier: "SettingsViewController") as! SettingsViewController
-          self.navigationController?.pushViewController(destination, animated: true)
+        let destination = self.storyboard?.instantiateViewController(withIdentifier: "SettingsViewController") as! SettingsViewController
+        self.navigationController?.pushViewController(destination, animated: true)
     }
     
-    /* Circle Animation ************************************************************************************************/
-    func drawCircle(greenRating: CGFloat) {
+    /* Queries ************************************************************************************************/
     
-        //Tracklayer is the gray layer behind the animation color for the green rating
-        // Code for the Rating Circle comes from: https://www.letsbuildthatapp.com/course_video?id=2342
-        let trackLayer = CAShapeLayer()
-        let center = circleView.center
-        let circularPath = UIBezierPath(arcCenter: center, radius: 90, startAngle: 0, endAngle: 2 * CGFloat.pi, clockwise: true)
-        
-        trackLayer.path = circularPath.cgPath
-        
-        trackLayer.strokeColor = UIColor(red: 216/255, green: 216/255, blue: 216/255, alpha: 216/255).cgColor
-        trackLayer.lineWidth = 20
-        trackLayer.fillColor = UIColor.clear.cgColor
-        trackLayer.lineCap = kCALineCapRound
-        view.layer.addSublayer(trackLayer)
-        scrollView.layer.addSublayer(trackLayer)
-        
-        let percentage = Int(( greenRating / CGFloat(dailyGoal )) * 100)
-        percentLabel.text = String(describing: percentage) + "% of your daily limit"
-
-        let endAngle = (CGFloat.pi / 2) + (CGFloat.pi * 2 * (greenRating / CGFloat(dailyGoal)))
-        let motionPath = UIBezierPath(arcCenter: center, radius: 90, startAngle: CGFloat.pi / 2, endAngle: endAngle , clockwise: true)
-        shapeLayer.path = motionPath.cgPath
-        
-        shapeLayer.strokeColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1.0).cgColor
-        shapeLayer.lineWidth = 20
-        shapeLayer.fillColor = UIColor.clear.cgColor
-        shapeLayer.lineCap = kCALineCapRound
-        shapeLayer.strokeEnd = 0
-        
-        //This will be the score we give the rating.
-        view.layer.addSublayer(shapeLayer)
-        scrollView.layer.addSublayer(shapeLayer)
-        animateBar()
+    ///Queries all of the ingredients from our database: water-footprint-data, adds them to array ingredientsFromDatabase (a global array used throughout the application)
+    func queryIngredientsFromFirebase(){
+        db.collection("water-footprint-data").getDocuments { (querySnapshot, err) in
+            if let err = err {
+                print(err)
+            }else{
+                for document in querySnapshot!.documents {
+                    let current_ingredient = Ingredient(document: document)
+                    ingredientsFromDatabase.append(current_ingredient)
+                    
+                    switch(current_ingredient.category){
+                    case "protein":
+                        proteins.append(current_ingredient)
+                    case "fruit":
+                        fruits.append(current_ingredient)
+                    case "vegetable":
+                        vegetables.append(current_ingredient)
+                    case "dairy":
+                        dairy.append(current_ingredient)
+                    case "drinks":
+                        drinks.append(current_ingredient)
+                    case "other":
+                        other.append(current_ingredient)
+                    default:
+                        print("some item not in a category has been entered")
+                    }
+                }
+            }
+        }
     }
     
-    //Function to Animate the Green Rating. Code used from https://www.letsbuildthatapp.com/course_video?id=2342
-    @objc private func animateBar() {
-        let basicAnimation = CABasicAnimation(keyPath: "strokeEnd")
-        basicAnimation.toValue = 1
-        basicAnimation.duration = 1
-        basicAnimation.fillMode = kCAFillModeForwards
-        basicAnimation.isRemovedOnCompletion = false
-        shapeLayer.add(basicAnimation, forKey: "urSoBasic")
+    func getTodaysTotal(){
+        day.getDocument { (document, error) in
+            if(document?.exists)!{
+                let total = self.getTotalForDay(document: document!)
+                let breakfastTotal = self.getBreakfastTotalForDay(document: document!)
+                let lunchTotal = self.getLunchTotalForDay(document: document!)
+                let dinnerTotal = self.getDinnerTotalForDay(document: document!)
+                let snacksTotal = self.getSnackTotalForDay(document: document!)
+                let totalAsString = String(Int(total))
+                self.getAverage()
+                self.updateCircle(dailyTotal: Float(total))
+                self.dailyTotal.text = totalAsString
+                self.updatePieChart(breakfast: breakfastTotal, lunch: lunchTotal, dinner: dinnerTotal, snacks: snacksTotal)
+            }
+        }
+    }
+    
+    func getBreakfastTotalForDay(document: DocumentSnapshot) -> Double {
+        if let breakfast_total = document.data()!["breakfast_total"]{
+            let breakfastTotal = breakfast_total as! Double
+            return breakfastTotal
+        } else {
+            return 0.0
+        }
+    }
+    
+    func getLunchTotalForDay(document: DocumentSnapshot) -> Double {
+        if let lunch_total = document.data()!["lunch_total"]{
+            let lunchTotal = lunch_total as! Double
+            return lunchTotal
+        } else {
+            return 0.0
+        }
+    }
+    
+    func getDinnerTotalForDay(document: DocumentSnapshot) -> Double {
+        if let Dinner_total = document.data()!["dinner_total"]{
+            let DinnerTotal = Dinner_total as! Double
+            return DinnerTotal
+        } else {
+            return 0.0
+        }
+    }
+    
+    func getSnackTotalForDay(document: DocumentSnapshot) -> Double {
+        if let Snack_total = document.data()!["snacks_total"]{
+            let SnackTotal = Snack_total as! Double
+            return SnackTotal
+        } else {
+            return 0.0
+        }
+    }
+    
+    func getTotalForDay(document: DocumentSnapshot) -> Double {
+        let breakfastTotal = getBreakfastTotalForDay(document: document)
+        let lunchTotal = getLunchTotalForDay(document: document)
+        let dinnerTotal = getDinnerTotalForDay(document: document)
+        let snacksTotal = getSnackTotalForDay(document: document)
+        let total = breakfastTotal + lunchTotal + dinnerTotal + snacksTotal
+        return total
+    }
+    
+    func getAverage() {
+        db.collection("users").document(defaults.string(forKey: "user_id")!).collection("meals").limit(to: 10).getDocuments { (querySnapshot, err) in
+            var days : Int = 0
+            var total : Double = 0
+            if let err = err {
+                print(err)
+            } else {
+                for document in querySnapshot!.documents {
+                    days = days + 1
+                    total = total + (self.getTotalForDay(document: document))
+                }
+                self.avgLabel.text = String(Int(total)/days)
+            }
+        }
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView){
-        // Test the offset and calculate the current page after scrolling ends
         let pageWidth:CGFloat = scrollView.frame.width
         let currentPage:CGFloat = floor((scrollView.contentOffset.x-pageWidth/2)/pageWidth)+1
         if(currentPage == 2){
@@ -354,7 +378,72 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         }else{
             dateLabel.text = labelDateFormatter.string(from: today)
         }
-        self.pageControl.currentPage = Int(currentPage) // Change the indicator
+        self.pageControl.currentPage = Int(currentPage)
+    }
+    
+    func getBarGraphData(){
+        var waterData = [Double]()
+        var entries = [barChartEntry]()
+        var dates = [Date]()
+        
+        let day = db.collection("users").document(defaults.string(forKey: "user_id")!).collection("meals").limit(to: 10)
+        day.getDocuments { (querySnapshot, err) in
+            if err != nil {
+                print("Error getting bar graph data")
+            }else{
+                for document in querySnapshot!.documents.reversed(){
+                    var breakfastTotal = 0.0, lunchTotal = 0.0, dinnerTotal = 0.0, snacksTotal = 0.0
+                    
+                    if let breakfast_total = document.data()["breakfast_total"]{
+                        breakfastTotal = breakfast_total as! Double
+                    }
+                    
+                    if let lunch_total = document.data()["lunch_total"]{
+                        lunchTotal = lunch_total as! Double
+                    }
+                    
+                    if let dinner_total = document.data()["dinner_total"]{
+                        dinnerTotal = dinner_total as! Double
+                    }
+                    
+                    if let snacks_total = document.data()["snacks_total"]{
+                        snacksTotal = snacks_total as! Double
+                    }
+                    
+                    let total = breakfastTotal + lunchTotal + dinnerTotal + snacksTotal
+                
+                    //Get dates to display under bar graph
+                    let dateStr = document.documentID
+                    let oldFormatterr = DateFormatter()
+                    oldFormatterr.dateStyle = .long
+                    let date = oldFormatterr.date(from: dateStr)
+                    dates.append(date!)
+                    let sorted = dates.map{(($0 < Date() ? 1 : 0), $0)}.sorted(by:<).map{$1}
+                    let newFormatter = DateFormatter()
+                    newFormatter.dateFormat = "MM/dd"
+                    
+                    for i in 0 ... sorted.count-1 {
+                        let dateString = newFormatter.string(from: sorted[i])
+                        self.barGraphDateLabels[i].text = dateString
+                    }
+                    
+                    let current = barChartEntry(date: date!, value: total)
+                    entries.append(current)
+                    entries.sort(by: { $0.date < $1.date })
+                }
+                
+                if (entries.count < 10) {
+                    let oldFormatterr = DateFormatter()
+                    oldFormatterr.dateStyle = .long
+                    let date = oldFormatterr.date(from: "March 19, 2018")
+                    for _ in 1...(10 - waterData.count) {
+                        entries.append (barChartEntry(date: date!, value: 0))
+                    }
+                }
+                self.updateChartWithData(allWaterData: entries)
+            }
+        }
     }
 }
+
 

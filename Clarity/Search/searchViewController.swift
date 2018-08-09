@@ -92,7 +92,6 @@ class searchViewController: UIViewController, UITableViewDataSource, UITableView
         formatter.dateStyle = .long
         formatter.string(from: today)
         
-        //let day = db.collection("users").document(defaults.string(forKey: "user_id")!).collection("meals").document(formatter.string(from: today))
         day.getDocument { (document, error) in
             if(document?.exists)!{
                 if(document?.data()?.keys.contains(self.mealType + "-meals"))!{

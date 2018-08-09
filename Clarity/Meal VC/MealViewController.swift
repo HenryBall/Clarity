@@ -16,6 +16,9 @@ import SwiftyJSON
 
 class MealViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
+    var loadingScreenShouldBeActive = false
+    
+    @IBOutlet weak var bannerImageTopConstraint: NSLayoutConstraint!
     let db = Firestore.firestore()
     let storage = Storage.storage()
     var ingredientDB : CollectionReference!
@@ -25,15 +28,12 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
     let formatter = DateFormatter()
     var ingredientsList = [String]()
     var day : DocumentReference!
+    var spinner : SpinnerView!
     
     @IBOutlet weak var addButton: UIButton!
     // Camera stuff
     let imagePicker = UIImagePickerController()
     let session = URLSession.shared
-    
-    // NLP stuff
-    let tagger = NSLinguisticTagger(tagSchemes:[.tokenType, .language, .lexicalClass, .nameType, .lemma], options: 0)
-    let options: NSLinguisticTagger.Options = [.omitPunctuation, .omitWhitespace, .joinNames]
     
     var googleAPIKey = "AIzaSyBTCGyrnH7vNYfWN8bogL7hcwrF_xv1its"
     
@@ -41,6 +41,8 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
         return URL(string: "https://vision.googleapis.com/v1/images:annotate?key=\(googleAPIKey)")!
     }
     
+    @IBOutlet weak var loadingView: UIView!
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var closeButton: UIButton!
     var mealType: String!
     @IBOutlet weak var bannerImage: UIImageView!
@@ -54,14 +56,9 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
     var itemsInMeal = [Food]()
     
     @IBOutlet weak var addIngredientsView: UIView!
-    @IBOutlet weak var loadingScreen: UIView!
-    @IBOutlet weak var loadingIcon: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        //loadingScreen.isHidden = true
-        
         formatter.timeStyle = .none
         formatter.dateStyle = .long
         formatter.string(from: today)
@@ -69,17 +66,25 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         tableView.delegate = self
         tableView.dataSource = self
-        ingredientDB = db.collection("water-footprint-data")
-        invertedIndex = db.collection("water-data-inverted-index")
         
-        imagePicker.delegate = self
-        imagePicker.allowsEditing = false
-        imagePicker.sourceType = .camera
         setBannerImage()
+        
+        let rect = CGRect(x: loadingView.bounds.width/2-40, y: loadingView.bounds.height/2-50, width: 75, height: 75)
+        spinner = SpinnerView(frame: rect)
+        loadingView.addSubview(spinner)
+        spinner.isHidden = false
     }
     
     override func viewDidAppear(_ animated: Bool) {
         queryIngredients()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        if loadingScreenShouldBeActive {
+            loadingView.isHidden = false
+        } else {
+            loadingView.isHidden = true
+        }
     }
     
     func setBannerImage(){
@@ -142,8 +147,18 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     @IBAction func scanTapped(_ sender: UIButton) {
-        setView(hidden: true, angle: -CGFloat.pi)
-        present(imagePicker, animated: true, completion: nil)
+        
+        if #available(iOS 11.0, *) {
+            imagePicker.delegate = self
+            imagePicker.allowsEditing = false
+            imagePicker.sourceType = .camera
+            setView(hidden: true, angle: -CGFloat.pi)
+            present(imagePicker, animated: true, completion: nil)
+        } else {
+            let alert = UIAlertController(title: "Oops!", message: "You need iOS 11 to access this feature", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+            self.present(alert, animated: true)
+        }
     }
     
     @IBAction func searchTapped(_ sender: UIButton) {
@@ -225,119 +240,10 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
             self.tableView.deleteRows(at: [indexPath], with: .automatic)
         }
     }
-}
-
-/*************************************** Scanning Stuff ***************************************/
-extension MealViewController {
     
-    func tokenizeText(for text: String) -> [String] {
-        var arr = [String]()
-        tagger.string = text
-        let range = NSRange(location: 0, length: text.utf16.count)
-        if #available(iOS 11.0, *) {
-            tagger.enumerateTags(in: range, unit: .word, scheme: .tokenType, options: options) { tag, tokenRange, stop in
-                let word = (text as NSString).substring(with: tokenRange)
-                arr.append(word)
-            }
-            return arr
-        } else {
-            return []
-        }
-    }
-    
-    func doTextProcessing (text: JSON) {
-        if text != JSON.null{
-            ingredientsList = text.string!.lowercased().components(separatedBy: ", ")
-            for ingredient in ingredientsList {
-                //ingredientsList.append(ingredient)
-                matchIngredient (name: ingredient)
-            }
-            loadingScreen.isHidden = true
-            loadingIcon.layer.removeAllAnimations()
-        }else{
-            print("Sorry, the ingredients for this item are unavailable")
-            loadingScreen.isHidden = true
-            loadingIcon.layer.removeAllAnimations()
-        }
-    }
-    
-    func matchIngredient (name: String) {
-        let arr = tokenizeText (for: name)
-        var dic : Dictionary<String, DocumentSnapshot> = [String : DocumentSnapshot]()
-        
-        let group = DispatchGroup()
-        
-        for word in arr {
-            group.enter()
-            invertedIndex.document(word).getDocument { (document, error) in
-                if let document = document, document.exists {
-                    let candidentIngredients = document.get("documents") as! [DocumentReference]
-                    for ingredient in candidentIngredients {
-                        group.enter()
-                        ingredient.getDocument(completion: { (doc, err) in
-                            dic[ingredient.documentID] = doc
-                            group.leave()
-                        })
-                    }
-                } else {
-                    print("Document does not exist")
-                }
-                group.leave()
-            }
-        }
-        
-        group.notify(queue: .main) {
-            var maxScore = 0.0
-            var matchedItem : String!
-            
-            if !dic.isEmpty {
-                for (id, snapshot) in dic {
-                    
-                    let termScores = snapshot.data()!["term_scores"] as! [String : Double]
-                    var sum = 0.0
-                    
-                    for word in arr {
-                        if(termScores[word] != nil){
-                            sum += termScores[word]!
-                        }
-                    }
-                    
-                    if (sum > maxScore) {
-                        maxScore = sum
-                        matchedItem = id
-                    }
-                }
-                
-                var water = 0.0
-                var refArray = [DocumentReference]()
-                
-                let matchedRef = self.ingredientDB.document(matchedItem!)
-                matchedRef.getDocument(completion: { (doc, err) in
-                    water = doc?.data()!["gallons_water"] as! Double
-                    print(matchedRef.documentID)
-                    print(doc?.documentID)
-                    let ingr = Ingredient(document: doc!)
-//                    if(!ingredientsInMeal.contains(where: { $0.name == ingredientsInMeal.name })){
-//                        
-//                    }
-                    self.ingredientsInMeal.append(ingr)
-                    
-                    for i in self.ingredientsInMeal{
-                        if(i.source != ""){
-                            let ref = self.db.document("water-footprint-data/" + i.name.capitalized)
-                            if(!refArray.contains(ref)){
-                                refArray.append(ref)
-                            }
-                        }
-                    }
-                    self.waterInMeal = self.waterInMeal + water
-                    self.day.setData([self.mealType + "_total" : self.waterInMeal], options: SetOptions.merge())
-                    self.day.setData([self.mealType : refArray], options: SetOptions.merge())
-                    self.gallonsInMeal.text = String(Int(self.waterInMeal))
-                    self.tableView.reloadData()
-                })
-            }
-        }
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        self.bannerImage.alpha = ((UIScreen.main.bounds.width * 45/100)-self.scrollView.contentOffset.y)/(UIScreen.main.bounds.width*45/100)
+        bannerImageTopConstraint?.constant = min(0, -scrollView.contentOffset.y / 2.0) // only when scrolling down so we never let it be higher than 0
     }
     
     func analyzeResults(_ dataToParse: Data) {
@@ -347,7 +253,11 @@ extension MealViewController {
             let json = JSON(data: dataToParse)
             let ingredientSelector = json["responses"][0]["textAnnotations"][0]["description"]
             
-            self.doTextProcessing(text: ingredientSelector)
+            let destination = self.storyboard?.instantiateViewController(withIdentifier: "addScannedItemViewController") as! addScannedItemViewController
+            destination.ingredientsList = ingredientSelector
+            destination.mealType = self.mealType
+            self.navigationController?.pushViewController(destination, animated: true)
+            self.loadingScreenShouldBeActive = false
         })
     }
     
@@ -358,12 +268,9 @@ extension MealViewController {
             createRequest(with: binaryImageData)
         }
         
+        loadingView.isHidden = false
+        loadingScreenShouldBeActive = true
         dismiss(animated: true, completion: nil)
-        if let destination = self.navigationController?.viewControllers[1] {
-            self.navigationController?.popToViewController(destination, animated: true)
-            loadingScreen.isHidden = false
-            loadingIcon.rotate()
-        }
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
@@ -443,16 +350,3 @@ extension MealViewController {
         task.resume()
     }
 }
-
-extension UIView {
-    func rotate(duration: CFTimeInterval = 1) {
-        let animation = CABasicAnimation(keyPath: "transform.rotation")
-        animation.fromValue = 0.0
-        animation.toValue = CGFloat(Double.pi * 2)
-        animation.isRemovedOnCompletion = false
-        animation.duration = duration
-        animation.repeatCount = Float.infinity
-        self.layer.add(animation, forKey: nil)
-    }
-}
-
