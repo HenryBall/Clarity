@@ -171,7 +171,7 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="45" id="gbU-Ep-E8O"/>
                                         </constraints>
-                                        <color key="textColor" red="0.75406885150000003" green="0.75408679249999999" blue="0.75407713649999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="textColor" red="0.45098039215686275" green="0.45098039215686275" blue="0.45098039215686275" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="20"/>
                                         <textInputTraits key="textInputTraits"/>
                                         <connections>
@@ -827,21 +827,23 @@
                                     <constraint firstItem="1NL-gl-0mB" firstAttribute="centerX" secondItem="D2O-1E-JmC" secondAttribute="centerX" multiplier="3/5" id="rhD-IE-JHl"/>
                                 </constraints>
                             </scrollView>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="U5B-sg-bXN">
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="U5B-sg-bXN">
                                 <rect key="frame" x="0.0" y="340" width="375" height="329"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DkZ-Zk-jNf" userLabel="Breakfast">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="82.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="81"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MlA-Ad-6Z4">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="82.5"/>
-                                                <state key="normal" image="Breakfast"/>
+                                            <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MlA-Ad-6Z4">
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="81"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <fontDescription key="fontDescription" name="AvenirNext-Heavy" family="Avenir Next" pointSize="25"/>
+                                                <state key="normal" title="Breakfast" image="Breakfast"/>
                                                 <connections>
                                                     <action selector="breakfastTapped:" destination="V4S-hq-XRe" eventType="touchUpInside" id="Zvx-a5-Fo8"/>
                                                 </connections>
                                             </button>
                                         </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="MlA-Ad-6Z4" secondAttribute="trailing" id="7W3-SO-uy0"/>
                                             <constraint firstAttribute="bottom" secondItem="MlA-Ad-6Z4" secondAttribute="bottom" id="P8u-UX-Hlk"/>
@@ -850,25 +852,27 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MTw-Ht-hGd" userLabel="Lunch">
-                                        <rect key="frame" x="0.0" y="82.5" width="375" height="82"/>
+                                        <rect key="frame" x="0.0" y="83" width="375" height="80.5"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OC4-5V-9n8">
-                                                <rect key="frame" x="0.0" y="1" width="375" height="80"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OC4-5V-9n8">
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="80.5"/>
                                                 <state key="normal" image="Lunch"/>
                                                 <connections>
                                                     <action selector="lunchTapped:" destination="V4S-hq-XRe" eventType="touchUpInside" id="fvJ-Il-wbW"/>
                                                 </connections>
                                             </button>
                                         </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                        <constraints>
+                                            <constraint firstItem="OC4-5V-9n8" firstAttribute="top" secondItem="MTw-Ht-hGd" secondAttribute="top" id="P47-Jq-7j7"/>
+                                            <constraint firstAttribute="bottom" secondItem="OC4-5V-9n8" secondAttribute="bottom" id="iMQ-9B-gEc"/>
+                                        </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Krl-eF-dkW" userLabel="Dinner">
-                                        <rect key="frame" x="0.0" y="164.5" width="375" height="82.5"/>
+                                        <rect key="frame" x="0.0" y="165.5" width="375" height="81"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="No6-0v-aNN" userLabel="Dinner">
-                                                <rect key="frame" x="0.0" y="1" width="375" height="80"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="No6-0v-aNN" userLabel="Dinner">
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="81"/>
                                                 <state key="normal" image="Dinner"/>
                                                 <connections>
                                                     <action selector="dinnerTapped:" destination="V4S-hq-XRe" eventType="touchUpInside" id="gyf-Qu-Nuk"/>
@@ -876,12 +880,16 @@
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="No6-0v-aNN" secondAttribute="bottom" id="YaL-c1-1bh"/>
+                                            <constraint firstItem="No6-0v-aNN" firstAttribute="top" secondItem="Krl-eF-dkW" secondAttribute="top" id="cIH-k1-Cex"/>
+                                        </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KzW-jG-Gse" userLabel="Snacks">
-                                        <rect key="frame" x="0.0" y="247" width="375" height="82"/>
+                                        <rect key="frame" x="0.0" y="248.5" width="375" height="80.5"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SkC-CI-lfM">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="82"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="80.5"/>
                                                 <state key="normal" image="Snacks"/>
                                                 <connections>
                                                     <action selector="snacksTapped:" destination="V4S-hq-XRe" eventType="touchUpInside" id="65D-sy-sS9"/>
@@ -897,6 +905,12 @@
                                         </constraints>
                                     </view>
                                 </subviews>
+                                <constraints>
+                                    <constraint firstItem="OC4-5V-9n8" firstAttribute="trailing" secondItem="MlA-Ad-6Z4" secondAttribute="trailing" id="6kJ-ZH-FAA"/>
+                                    <constraint firstItem="No6-0v-aNN" firstAttribute="trailing" secondItem="MlA-Ad-6Z4" secondAttribute="trailing" id="8CE-vX-r5O"/>
+                                    <constraint firstItem="OC4-5V-9n8" firstAttribute="leading" secondItem="MlA-Ad-6Z4" secondAttribute="leading" id="RkZ-Eu-GVW"/>
+                                    <constraint firstItem="No6-0v-aNN" firstAttribute="leading" secondItem="MlA-Ad-6Z4" secondAttribute="leading" id="Vk6-Mb-p5f"/>
+                                </constraints>
                             </stackView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1489,10 +1503,10 @@
     </scenes>
     <resources>
         <image name="Add" width="25" height="24"/>
-        <image name="Breakfast" width="375" height="80"/>
-        <image name="Dinner" width="375" height="80"/>
-        <image name="Lunch" width="375" height="80"/>
-        <image name="Snacks" width="375" height="80"/>
+        <image name="Breakfast" width="1125" height="240"/>
+        <image name="Dinner" width="1125" height="240"/>
+        <image name="Lunch" width="1125" height="240"/>
+        <image name="Snacks" width="1125" height="240"/>
         <image name="addButton" width="35" height="34"/>
         <image name="backButton" width="14" height="24"/>
         <image name="checkMark" width="27" height="27"/>
