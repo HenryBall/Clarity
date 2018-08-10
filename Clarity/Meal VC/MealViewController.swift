@@ -35,7 +35,7 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
     let imagePicker = UIImagePickerController()
     let session = URLSession.shared
     
-    var googleAPIKey = "AIzaSyBTCGyrnH7vNYfWN8bogL7hcwrF_xv1its"
+    var googleAPIKey = "AIzaSyAzRUSHeNGqtwILEr098EODn14I83j-CQI"
     
     var googleURL: URL {
         return URL(string: "https://vision.googleapis.com/v1/images:annotate?key=\(googleAPIKey)")!
@@ -252,7 +252,7 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
         DispatchQueue.main.async(execute: {
             let json = JSON(data: dataToParse)
             let ingredientSelector = json["responses"][0]["textAnnotations"][0]["description"]
-            
+            print(json)
             let destination = self.storyboard?.instantiateViewController(withIdentifier: "addScannedItemViewController") as! addScannedItemViewController
             destination.ingredientsList = ingredientSelector
             destination.mealType = self.mealType

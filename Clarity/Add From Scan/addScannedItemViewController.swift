@@ -52,7 +52,7 @@ class addScannedItemViewController: UIViewController {
         case "snacks":
             bannerImage.image = #imageLiteral(resourceName: "snacksBanner")
         default:
-            print("errorrrrr")
+            print("error setting banner image")
         }
     }
     
