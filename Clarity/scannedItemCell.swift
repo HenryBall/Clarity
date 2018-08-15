@@ -11,6 +11,7 @@ import UIKit
 class scannedItemCell: UITableViewCell {
 
     @IBOutlet weak var name: UILabel!
+    @IBOutlet weak var gallons: UILabel!
     @IBOutlet weak var icon: UIImageView!
     
     override func awakeFromNib() {

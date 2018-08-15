@@ -1182,7 +1182,7 @@
                                 <rect key="frame" x="0.0" y="238.5" width="375" height="428.5"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="scannedItemCell" rowHeight="85" id="DPq-rQ-KhT" customClass="scannedItemCell" customModule="Clarity" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="scannedItemCell" rowHeight="85" id="DPq-rQ-KhT" customClass="scannedItemCell" customModule="Clarity" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="85"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="DPq-rQ-KhT" id="fPv-kn-y7R">
@@ -1208,15 +1208,32 @@
                                                     <color key="textColor" red="0.57647058819999997" green="0.57647058819999997" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nVd-g3-6Wf">
+                                                    <rect key="frame" x="80" y="47" width="11" height="25"/>
+                                                    <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="18"/>
+                                                    <color key="textColor" red="0.57647058819999997" green="0.57647058819999997" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="gal" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9NJ-K9-md3">
+                                                    <rect key="frame" x="96" y="51" width="18" height="17"/>
+                                                    <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="12"/>
+                                                    <color key="textColor" red="0.57647058819999997" green="0.57647058819999997" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="4Cg-S0-PSI" firstAttribute="leading" secondItem="fPv-kn-y7R" secondAttribute="leading" constant="10" id="Qou-jG-I3Y"/>
+                                                <constraint firstItem="nVd-g3-6Wf" firstAttribute="top" secondItem="wFN-2k-9DS" secondAttribute="bottom" constant="1" id="Rth-M5-5aS"/>
                                                 <constraint firstItem="wFN-2k-9DS" firstAttribute="leading" secondItem="4Cg-S0-PSI" secondAttribute="trailing" constant="10" id="T8e-gq-ciG"/>
+                                                <constraint firstItem="9NJ-K9-md3" firstAttribute="top" secondItem="wFN-2k-9DS" secondAttribute="bottom" constant="5" id="Z0y-0P-LaN"/>
+                                                <constraint firstItem="nVd-g3-6Wf" firstAttribute="leading" secondItem="wFN-2k-9DS" secondAttribute="leading" id="d3s-fJ-sqh"/>
                                                 <constraint firstItem="4Cg-S0-PSI" firstAttribute="centerY" secondItem="fPv-kn-y7R" secondAttribute="centerY" id="qe7-0f-cbv"/>
+                                                <constraint firstItem="9NJ-K9-md3" firstAttribute="leading" secondItem="nVd-g3-6Wf" secondAttribute="trailing" constant="5" id="vMl-Ul-N5Q"/>
                                                 <constraint firstItem="wFN-2k-9DS" firstAttribute="top" secondItem="fPv-kn-y7R" secondAttribute="topMargin" constant="10" id="x1K-sr-aRv"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="gallons" destination="nVd-g3-6Wf" id="rpq-XD-bg3"/>
                                             <outlet property="icon" destination="4Cg-S0-PSI" id="Adh-gO-lmo"/>
                                             <outlet property="name" destination="wFN-2k-9DS" id="kIs-a4-M6f"/>
                                         </connections>
