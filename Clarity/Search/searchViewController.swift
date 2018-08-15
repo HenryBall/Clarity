@@ -173,21 +173,6 @@ class searchViewController: UIViewController, UITableViewDataSource, UITableView
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath){
         searchItem(number: searchedProducts[indexPath.row].ndbno, name: searchedProducts[indexPath.row].name)
-        //let currentIngredient = searchedProducts[indexPath.row]
-        //let cell = tableView.dequeueReusableCell(withIdentifier: "addDatabaseIngredientCell") as! addDatabaseIngredientCell
-        //print(cell.count.text)
-        //if let count = Int(cell.count.text!){
-        //if(count > 1){
-        //for i in 0 ... count{
-        //  ingredientsInMeal.append(currentIngredient)
-        //}
-        //}else{
-        //ingredientsInMeal.append(currentIngredient)
-        //}
-        //}
-       
-        
-       // self.navigationController?.popViewController(animated: true)
     }
     
     //Set up parameters based on search bar value

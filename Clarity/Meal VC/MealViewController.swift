@@ -19,24 +19,12 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
     var loadingScreenShouldBeActive = false
     
     @IBOutlet weak var bannerImageTopConstraint: NSLayoutConstraint!
-    let db = Firestore.firestore()
-    let storage = Storage.storage()
-    var ingredientDB : CollectionReference!
-    var invertedIndex : CollectionReference!
-    
-    let today = Date()
-    let formatter = DateFormatter()
-    var ingredientsList = [String]()
-    var day : DocumentReference!
-    var spinner : SpinnerView!
-    
     @IBOutlet weak var addButton: UIButton!
-    // Camera stuff
+    
     let imagePicker = UIImagePickerController()
     let session = URLSession.shared
     
     var googleAPIKey = "AIzaSyAzRUSHeNGqtwILEr098EODn14I83j-CQI"
-    
     var googleURL: URL {
         return URL(string: "https://vision.googleapis.com/v1/images:annotate?key=\(googleAPIKey)")!
     }
@@ -50,6 +38,16 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tableViewHeight: NSLayoutConstraint!
 
+    let db = Firestore.firestore()
+    let storage = Storage.storage()
+    var ingredientDB : CollectionReference!
+    
+    let today = Date()
+    let formatter = DateFormatter()
+    var ingredientsList = [String]()
+    var day : DocumentReference!
+    var spinner : SpinnerView!
+    
     var ingredientsInMeal = [Ingredient]()
 
     var waterInMeal : Double! = 0.0
@@ -147,7 +145,6 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     @IBAction func scanTapped(_ sender: UIButton) {
-        
         if #available(iOS 11.0, *) {
             imagePicker.delegate = self
             imagePicker.allowsEditing = false
@@ -247,12 +244,9 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func analyzeResults(_ dataToParse: Data) {
-        
-        // Update UI on the main thread
         DispatchQueue.main.async(execute: {
             let json = JSON(data: dataToParse)
             let ingredientSelector = json["responses"][0]["textAnnotations"][0]["description"]
-            print(json)
             let destination = self.storyboard?.instantiateViewController(withIdentifier: "addScannedItemViewController") as! addScannedItemViewController
             destination.ingredientsList = ingredientSelector
             destination.mealType = self.mealType

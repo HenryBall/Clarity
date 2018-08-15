@@ -32,7 +32,6 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
         formatter.timeStyle = .none
         formatter.dateStyle = .long
         formatter.string(from: today)
-
         setBanner()
     }
     
@@ -56,7 +55,6 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
     }
     
     @IBAction func doneTapped(_ sender: UIButton) {
-    
         var refArray = [DocumentReference]()
         for i in ingredientsInMeal{
             if(i.source != ""){
@@ -82,7 +80,6 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
         cell.label.text = displayedIngredients[indexPath.row].name.capitalized
         cell.gallonsWaterLabel.text = String(Int(displayedIngredients[indexPath.row].waterData))
         let imagePath = "food-icons/" + displayedIngredients[indexPath.row].name.uppercased() + ".jpg"
-        
         let imageRef = storage.reference().child(imagePath)
         cell.icon.sd_setImage(with: imageRef, placeholderImage: #imageLiteral(resourceName: "Food"))
         return cell
@@ -95,17 +92,6 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath){
         let currentIngredient = displayedIngredients[indexPath.row]
         ingredientsInMeal.append(currentIngredient)
-        //let cell = tableView.dequeueReusableCell(withIdentifier: "addDatabaseIngredientCell") as! addDatabaseIngredientCell
-        //print(cell.count.text)
-        //if let count = Int(cell.count.text!){
-            //if(count > 1){
-                //for i in 0 ... count{
-                  //  ingredientsInMeal.append(currentIngredient)
-                //}
-        //}else{
-   
-            //}
-        //}
     }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {

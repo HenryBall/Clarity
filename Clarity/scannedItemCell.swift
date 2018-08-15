@@ -1,19 +1,17 @@
 //
-//  addDatabaseIngredientCell.swift
+//  scannedItemCell.swift
 //  Clarity
 //
-//  Created by Celine Pena on 5/18/18.
+//  Created by henry on 8/14/18.
 //  Copyright © 2018 Robert. All rights reserved.
 //
 
 import UIKit
 
-class addDatabaseIngredientCell: UITableViewCell {
+class scannedItemCell: UITableViewCell {
 
+    @IBOutlet weak var name: UILabel!
     @IBOutlet weak var icon: UIImageView!
-    @IBOutlet weak var label: UILabel!
-    @IBOutlet weak var count: UITextField!
-    @IBOutlet weak var gallonsWaterLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -23,5 +21,4 @@ class addDatabaseIngredientCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
         accessoryType = selected ? .checkmark : .none
     }
-
 }

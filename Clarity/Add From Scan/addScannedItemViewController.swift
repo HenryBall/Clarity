@@ -10,19 +10,19 @@ import UIKit
 import SwiftyJSON
 import Firebase
 
-class addScannedItemViewController: UIViewController {
+class addScannedItemViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var bannerImage: UIImageView!
-    @IBOutlet weak var totalGallons: UILabel!
-    @IBOutlet weak var itemNameField: UITextField!
+    @IBOutlet weak var tableView: UITableView!
     
     var invertedIndex : CollectionReference!
     var ingredientDB : CollectionReference!
     var mealType : String!
-    var thisFoodTotal = 0.0
-    var currentTotal = 0.0
+    var matchedWaterTotal = 0.0
     var ingredientsList : JSON!
-    var foodInMeal = [[String : Any]]()
+    var refsInMeal = [DocumentReference]()
+    var matchedRefs = [DocumentReference]()
+    var ingredientsInMeal = [Ingredient]()
     var matchedIngredients = [Ingredient]()
     
     // NLP stuff
@@ -31,17 +31,17 @@ class addScannedItemViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.delegate = self
+        tableView.dataSource = self
         hideKeyboard()
         setBannerImage()
-        queryFoodInMeal()
-
+        getFoodInMeal()
         ingredientDB = db.collection("water-footprint-data")
         invertedIndex = db.collection("water-data-inverted-index")
-        
         doTextProcessing(text: ingredientsList)
     }
     
-    func setBannerImage(){
+    func setBannerImage() {
         switch mealType {
         case "breakfast":
             bannerImage.image = #imageLiteral(resourceName: "breakfastBanner")
@@ -64,7 +64,6 @@ class addScannedItemViewController: UIViewController {
         if text != JSON.null{
             let ingredientsList = text.string!.lowercased().components(separatedBy: ", ")
             for ingredient in ingredientsList {
-                //ingredientsList.append(ingredient)
                 matchIngredient (name: ingredient)
             }
         }else{
@@ -72,22 +71,16 @@ class addScannedItemViewController: UIViewController {
         }
     }
     
-    ///Query the items that exist in ""-meals. When we select an item, they will be added to this array
-    func queryFoodInMeal(){
+    func getFoodInMeal() {
         let today = Date()
         let formatter = DateFormatter()
         formatter.timeStyle = .none
         formatter.dateStyle = .long
         formatter.string(from: today)
-        
         day.getDocument { (document, error) in
             if(document?.exists)!{
-                if(document?.data()?.keys.contains(self.mealType + "-meals"))!{
-                    self.foodInMeal = document?.data()![self.mealType + "-meals"] as! [[String : Any]]
-                }
-                
-                if(document?.data()?.keys.contains(self.mealType + "_total"))!{
-                    self.currentTotal = document?.data()![self.mealType + "_total"] as! Double
+                if(document?.data()?.keys.contains(self.mealType))!{
+                    self.refsInMeal = document?.data()![self.mealType] as! [DocumentReference]
                 }
             } else {
                 print("No food exists for this meal")
@@ -96,15 +89,8 @@ class addScannedItemViewController: UIViewController {
     }
     
     @IBAction func saveTapped(_ sender: UIButton) {
-        var map = [String : Any]()
-        let name = itemNameField.text
-        map = ["name" : name, "total" : thisFoodTotal]
-        self.foodInMeal.append(map)
-        self.currentTotal = self.currentTotal + thisFoodTotal
-        
-        day.setData([self.mealType + "-meals" : self.foodInMeal], options: SetOptions.merge())
-        day.setData([self.mealType + "_total" : self.currentTotal], options: SetOptions.merge())
-        
+        let refsToPush = matchedRefs + refsInMeal
+        day.setData([self.mealType: refsToPush], options: SetOptions.merge())
         if let destination = self.navigationController?.viewControllers[1] {
             self.navigationController?.popToViewController(destination, animated: true)
         }
@@ -138,34 +124,57 @@ class addScannedItemViewController: UIViewController {
         group.notify(queue: .main) {
             var maxScore = 0.0
             var matchedItem : String!
-            
             if !dic.isEmpty {
                 for (id, snapshot) in dic {
                     
                     let termScores = snapshot.data()!["term_scores"] as! [String : Double]
                     var sum = 0.0
                     
-                    for (_, num) in termScores {
-                        sum += num
-                    }
+                    for (_, num) in termScores { sum += num }
                     
                     if (sum > maxScore) {
                         maxScore = sum
                         matchedItem = id
                     }
                 }
-                
-                var water = 0.0
-                
                 let matchedRef = self.ingredientDB.document(matchedItem!)
-                matchedRef.getDocument(completion: { (doc, err) in
-                    water = doc?.data()!["gallons_water"] as! Double
-                    print(doc?.documentID)
-                    self.thisFoodTotal = self.thisFoodTotal + water
-                    self.totalGallons.text = String(Int(self.thisFoodTotal))
-                })
+                self.matchedRefs.append(matchedRef)
+                self.tableView.reloadData()
             }
         }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 75.0
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return matchedRefs.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "scannedItemCell") as! scannedItemCell
+        let curRef = matchedRefs[indexPath.row]
+        curRef.getDocument { (document, error) in
+            if(document?.exists)!{
+                let name = document?.documentID as! String
+                let imagePath = "food-icons/" + name.uppercased() + ".jpg"
+                let imageRef = storage.reference().child(imagePath)
+                cell.name.text = name
+                cell.icon.sd_setImage(with: imageRef, placeholderImage: #imageLiteral(resourceName: "Food"))
+            } else {
+                print("No food exists for this meal")
+            }
+        }
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let curRef = matchedRefs[indexPath.row]
+    }
+    
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        matchedRefs.remove(at: indexPath.row)
     }
     
     func tokenizeText(for text: String) -> [String] {

@@ -24,7 +24,7 @@ class SpinnerView : UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         layer.fillColor = nil
-        layer.strokeColor = UIColor.black.cgColor
+        layer.strokeColor = UIColor.white.cgColor
         layer.lineWidth = 5
         setPath()
     }
@@ -88,7 +88,7 @@ class SpinnerView : UIView {
         animateKeyPath(keyPath: "strokeEnd", duration: totalSeconds, times: times, values: strokeEnds)
         animateKeyPath(keyPath: "transform.rotation", duration: totalSeconds, times: times, values: rotations)
         
-        animateStrokeHueWithDuration(duration: totalSeconds * 5)
+        //animateStrokeHueWithDuration(duration: totalSeconds * 5)
     }
     
     func animateKeyPath(keyPath: String, duration: CFTimeInterval, times: [CFTimeInterval], values: [CGFloat]) {
