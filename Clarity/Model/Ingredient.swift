@@ -16,14 +16,18 @@ class Ingredient {
     var servingSize : Double?
     var category : String?
     var source : String?
+    var quantity : Int?
+    var reference : DocumentReference?
     
-    init(name: String, waterData: Double, description: String, servingSize: Double, category: String, source: String) {
+    init(name: String, waterData: Double, description: String?, servingSize: Double?, category: String?, source: String?, quantity: Int?, reference: DocumentReference?) {
         self.name = name
         self.waterData = waterData
         self.description = description
         self.servingSize = servingSize
         self.category = category
         self.source = source
+        self.quantity = quantity
+        self.reference = reference
     }
     
     init(document: DocumentSnapshot){

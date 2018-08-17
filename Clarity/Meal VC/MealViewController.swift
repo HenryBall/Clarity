@@ -49,6 +49,7 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
     var spinner : SpinnerView!
     
     var ingredientsInMeal = [Ingredient]()
+    var foodInMeal = [[String : Any]]()
 
     var waterInMeal : Double! = 0.0
     var itemsInMeal = [Food]()
@@ -100,49 +101,98 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     
-    func queryIngredients() {
-        
-        var ingredientReferences = [DocumentReference]()
-        var foodInMeal = [[String : Any]]()
-        
+    
+    func queryIngredients(){
+
         day.getDocument { (document, error) in
             if(document?.exists)!{
-                //get ingredients
+                
+                //Set the "gallons total" label 
+                if let gallonsTotal = document?.data()![self.mealType + "_total"] as? Double {
+                    self.gallonsInMeal.text = String(Int(gallonsTotal))
+                }
+                
                 if(document?.data()?.keys.contains(self.mealType))!{
-                    ingredientReferences = document?.data()![self.mealType] as! [DocumentReference]
-                }
-                
-                if(document?.data()?.keys.contains(self.mealType + "_total"))!{
-                    self.waterInMeal = document?.data()![self.mealType + "_total"] as! Double
-                    self.gallonsInMeal.text = String(Int(self.waterInMeal))
-                }
-                
-                if(document?.data()?.keys.contains(self.mealType + "-meals"))!{
-                    foodInMeal = document?.data()![self.mealType + "-meals"] as! [[String : Any]]
-                }
-                
-                self.ingredientsInMeal = []
-                
-                for i in foodInMeal{
-                    let ing = Ingredient(name: i["name"] as! String, waterData: i["total"] as! Double, description: "The water footprint for this item is based on the water footprint for the average serving size of each ingredient. The actual number may be higher or lower depending on how much of each ingredient is actually in this item.", servingSize: 0.0, category: "", source: "")
-                    self.ingredientsInMeal.append(ing)
-                }
-                
-                for ref in ingredientReferences {
-                    ref.getDocument { (document, error) in
-                        if let document = document {
-                            self.ingredientsInMeal.append(Ingredient(document: document))
-                            self.tableView.reloadData()
-                        } else {
-                            print("Document does not exist")
+                    self.foodInMeal = document?.data()![self.mealType] as! [[String : Any]]
+                    
+                    self.ingredientsInMeal = []
+                    
+                    for ing in self.foodInMeal {
+                        if let ref = ing["reference"] as? DocumentReference {
+                            ref.getDocument { (document, error) in
+                                if let document = document {
+                                    let ingredient = Ingredient(document: document)
+                                    
+                                    if let quantity = ing["quantity"] as? Int {
+                                        ingredient.waterData = ingredient.waterData * Double(quantity)
+                                        ingredient.servingSize = ingredient.servingSize! * Double(quantity)
+                                    }
+                                    
+                                    self.ingredientsInMeal.append(ingredient)
+                                    self.tableView.reloadData()
+                                } else {
+                                    print("Document does not exist")
+                                }
+                            }
+                        }else{
+                            let ing = Ingredient(name: ing["name"] as! String, waterData: ing["total"] as! Double, description: "", servingSize: 1, category: "", source: "", quantity: ing["quantity"] as? Int, reference: ing["reference"] as? DocumentReference)
+                            self.ingredientsInMeal.append(ing)
                         }
                     }
                 }
-            } else {
-                print("No ingredients")
+            }else{
+                print("no ingredients")
             }
         }
     }
+    
+//    func queryIngredients() {
+//
+//        var ingredientReferences = [DocumentReference]()
+//        var foodInMeal = [[String : Any]]()
+//
+//        day.getDocument { (document, error) in
+//            if(document?.exists)!{
+//                //get ingredients
+//                if(document?.data()?.keys.contains(self.mealType))!{
+//                    ingredientReferences = document?.data()![self.mealType] as! [DocumentReference]
+//                }
+//
+//                if(document?.data()?.keys.contains(self.mealType + "_total"))!{
+//                    self.waterInMeal = document?.data()![self.mealType + "_total"] as! Double
+//                    self.gallonsInMeal.text = String(Int(self.waterInMeal))
+//                }
+//
+//                if(document?.data()?.keys.contains(self.mealType + "-meals"))!{
+//                    foodInMeal = document?.data()![self.mealType + "-meals"] as! [[String : Any]]
+//                }
+//
+//                self.ingredientsInMeal = []
+//
+//                for i in foodInMeal{
+//                    let ing = Ingredient(name: i["name"] as! String, waterData: i["total"] as! Double, description: "The water footprint for this item is based on the water footprint for the average serving size of each ingredient. The actual number may be higher or lower depending on how much of each ingredient is actually in this item.", servingSize: 0.0, category: "", source: "")
+//                    self.ingredientsInMeal.append(ing)
+//                }
+//
+//                for ref in ingredientReferences {
+//                    ref.getDocument { (document, error) in
+//                        if let document = document {
+//                            let ingredient = Ingredient(document: document)
+//                            if let quantity = document.data()!["quantity"] as? Int {
+//                                ingredient.waterData = ingredient.waterData * Double(quantity)
+//                            }
+//                            self.ingredientsInMeal.append(Ingredient(document: document))
+//                            self.tableView.reloadData()
+//                        } else {
+//                            print("Document does not exist")
+//                        }
+//                    }
+//                }
+//            } else {
+//                print("No ingredients")
+//            }
+//        }
+//    }
     
     @IBAction func scanTapped(_ sender: UIButton) {
         if #available(iOS 11.0, *) {
@@ -161,6 +211,8 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBAction func searchTapped(_ sender: UIButton) {
         let destination = storyboard?.instantiateViewController(withIdentifier: "searchViewController") as! searchViewController
         destination.mealType = mealType
+        destination.foodInMeal = foodInMeal
+        destination.currentTotal = waterInMeal
         setView(hidden: true, angle: -CGFloat.pi)
         navigationController?.pushViewController(destination, animated: true)
     }
@@ -179,7 +231,9 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBAction func firestoreTapped(_ sender: UIButton) {
         let destination = storyboard?.instantiateViewController(withIdentifier: "AddFromDatabase") as! AddFromDatabaseViewController
         destination.mealType = mealType
+        print(ingredientsInMeal)
         destination.ingredientsInMeal = ingredientsInMeal
+        destination.foodInMeal = foodInMeal
         setView(hidden: true, angle: -CGFloat.pi)
         navigationController?.pushViewController(destination, animated: true)
     }

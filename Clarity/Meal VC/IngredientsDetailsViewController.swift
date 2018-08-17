@@ -30,7 +30,12 @@ class IngredientsDetailsViewController: UIViewController {
         let imagePath = "food-icons/" + ingredientToShow.name.uppercased() + ".jpg"
         let imageRef = storage.reference().child(imagePath)
         icon.sd_setImage(with: imageRef, placeholderImage: #imageLiteral(resourceName: "Food"))
-        ingredientDescription.text = ingredientToShow.description
+        
+        if(ingredientToShow.description != ""){
+            ingredientDescription.text = ingredientToShow.description
+        }else{
+            ingredientDescription.text = "The water footprint for this item is based on the water footprint for the average serving size of each ingredient. The actual number may be higher or lower depending on how much of each ingredient is actually in this item."
+        }
         if(ingredientToShow.category == "other"){
             compareLabel.text = "How does this compare to other food?"
         }else{

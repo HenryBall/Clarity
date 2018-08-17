@@ -24,16 +24,14 @@ class searchViewController: UIViewController, UITableViewDataSource, UITableView
     var searchedProducts = [SearchProduct]()
     let today = Date()
     let formatter = DateFormatter()
-    //var foodInMeal = [Food]()
-    var mealType: String!
     var foodInMeal = [[String : Any]]()
-    var currentTotal = 0.0
+    var mealType: String!
+    var currentTotal: Double!
     
     // NLP stuffs
     let tagger = NSLinguisticTagger(tagSchemes:[.tokenType, .language, .lexicalClass, .nameType, .lemma], options: 0)
     let options: NSLinguisticTagger.Options = [.omitPunctuation, .omitWhitespace, .joinNames]
     var ingredientsText: JSON = []
-    var day: DocumentReference!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,9 +42,8 @@ class searchViewController: UIViewController, UITableViewDataSource, UITableView
         formatter.timeStyle = .none
         formatter.dateStyle = .long
         formatter.string(from: today)
-        day = db.collection("users").document(defaults.string(forKey: "user_id")!).collection("meals").document(formatter.string(from: today))
         
-        queryFoodInMeal()
+        //queryFoodInMeal()
         setBanner()
     }
     
@@ -84,6 +81,12 @@ class searchViewController: UIViewController, UITableViewDataSource, UITableView
         return cell
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath){
+        let currentCell = tableView.cellForRow(at: indexPath) as! searchCell
+        let quantity = Int(currentCell.quantityTextField.text!)
+        addItemToList(number: searchedProducts[indexPath.row].ndbno, name: searchedProducts[indexPath.row].name, quantity: quantity!)
+    }
+    
     ///Query the items that exist in ""-meals. When we select an item, they will be added to this array
     func queryFoodInMeal(){
         let today = Date()
@@ -94,13 +97,19 @@ class searchViewController: UIViewController, UITableViewDataSource, UITableView
         
         day.getDocument { (document, error) in
             if(document?.exists)!{
-                if(document?.data()?.keys.contains(self.mealType + "-meals"))!{
-                    self.foodInMeal = document?.data()![self.mealType + "-meals"] as! [[String : Any]]
+                if let meal = document?.data()![self.mealType] as? [[String : Any]] {
+                    self.foodInMeal = meal
                 }
-                
-                if(document?.data()?.keys.contains(self.mealType + "_total"))!{
-                    self.currentTotal = document?.data()![self.mealType + "_total"] as! Double
+//                if(document?.data()?.keys.contains(self.mealType))!{
+//                    self.foodInMeal = document?.data()![self.mealType] as! [[String : Any]]
+//                }
+//
+                if let total = document?.data()![self.mealType + "_total"] as? Double {
+                    self.currentTotal = total
                 }
+//                if(document?.data()?.keys.contains(self.mealType + "_total"))!{
+//                    self.currentTotal = document?.data()![self.mealType + "_total"] as! Double
+//                }
             } else {
                 print("No food exists for this meal")
             }
@@ -150,19 +159,19 @@ class searchViewController: UIViewController, UITableViewDataSource, UITableView
         }
     }
     
-    func searchItem(number: String, name: String){
+    func addItemToList(number: String, name: String, quantity: Int){
         let params : [String : String] = ["api_key" : API_KEY, "format": "JSON", "type": "b", "ndbno" : number]
         Alamofire.request(report_url, method: .get, parameters: params).responseJSON{
             response in
             if response.result.isSuccess{
                 let itemJSON : JSON = JSON(response.result.value!)
                 
-                let totalGallons = self.compareIngredients(text: itemJSON["report"]["food"]["ing"]["desc"])
+                let totalGallons = self.compareIngredients(text: itemJSON["report"]["food"]["ing"]["desc"]) * Double(quantity)
                 
                 var map = [String : Any]()
-                map = ["name" : name, "total" : totalGallons]
+                map = ["name" : name, "total" : totalGallons, "quantity" : quantity]
+                
                 self.foodInMeal.append(map)
-        
                 self.currentTotal = self.currentTotal + totalGallons
                 
             } else {
@@ -170,9 +179,6 @@ class searchViewController: UIViewController, UITableViewDataSource, UITableView
                 print("Error \(String(describing: response.result.error))")
             }
         }
-    }
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath){
-        searchItem(number: searchedProducts[indexPath.row].ndbno, name: searchedProducts[indexPath.row].name)
     }
     
     //Set up parameters based on search bar value
@@ -229,7 +235,7 @@ class searchViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     @IBAction func doneTapped(_ sender: UIButton) {
-        day.setData([self.mealType + "-meals" : self.foodInMeal], options: SetOptions.merge())
+        day.setData([self.mealType : self.foodInMeal], options: SetOptions.merge())
         day.setData([self.mealType + "_total" : self.currentTotal], options: SetOptions.merge())
         if let destination = self.navigationController?.viewControllers[1] {
             self.navigationController?.popToViewController(destination, animated: true)

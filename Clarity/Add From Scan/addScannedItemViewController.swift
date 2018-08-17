@@ -34,7 +34,7 @@ class addScannedItemViewController: UIViewController, UITableViewDelegate, UITab
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
-        hideKeyboard()
+        //hideKeyboard()
         setBannerImage()
         getRefsInMeal()
         getWaterTotalForMeal()

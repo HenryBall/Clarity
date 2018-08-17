@@ -15,6 +15,7 @@ class addDatabaseIngredientCell: UITableViewCell {
     @IBOutlet weak var count: UITextField!
     @IBOutlet weak var gallonsWaterLabel: UILabel!
     
+    @IBOutlet weak var quantityTextField: UITextField!
     override func awakeFromNib() {
         super.awakeFromNib()
     }

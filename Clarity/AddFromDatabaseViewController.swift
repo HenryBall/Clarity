@@ -16,6 +16,8 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var bannerImage: UIImageView!
     var mealType: String!
+    
+    var foodInMeal = [[String : Any]]()
     var ingredientsInMeal = [Ingredient]()
     var displayedIngredients = [Ingredient]()
     
@@ -23,8 +25,10 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
     let formatter = DateFormatter()
     
     @IBOutlet weak var searchBar: UISearchBar!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        print(ingredientsInMeal)
         displayedIngredients = ingredientsFromDatabase
         searchBar.delegate = self
         tableView.delegate = self
@@ -55,16 +59,17 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
     }
     
     @IBAction func doneTapped(_ sender: UIButton) {
-        var refArray = [DocumentReference]()
-        for i in ingredientsInMeal{
-            if(i.source != ""){
-                let ref = db.document("water-footprint-data/" + i.name.capitalized)
-                refArray.append(ref)
-            }
-        }
+//        var map = [String : Any]()
+//
+//        for i in ingredientsInMeal{
+//            if(i.source != ""){
+//                let ref = db.document("water-footprint-data/" + i.name.capitalized)
+//                map = ["name" : i.name, "total" : i.waterData, "quantity" : i.quantity]
+//            }
+//        }
         let total = ingredientsInMeal.map({$0.waterData}).reduce(0, +)
         day.setData([mealType + "_total" : total], options: SetOptions.merge())
-        day.setData([mealType : refArray], options: SetOptions.merge())
+        day.setData([mealType : foodInMeal], options: SetOptions.merge())
         
         if let destination = self.navigationController?.viewControllers[1] {
             self.navigationController?.popToViewController(destination, animated: true)
@@ -90,6 +95,14 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath){
+        var map = [String : Any]()
+        let ref = db.document("water-footprint-data/" + displayedIngredients[indexPath.row].name.capitalized)
+        let currentCell = tableView.cellForRow(at: indexPath) as! addDatabaseIngredientCell
+        let quantity = Int(currentCell.quantityTextField.text!)
+        
+        map = ["reference" : ref, "quantity" : quantity]
+        self.foodInMeal.append(map)
+        
         let currentIngredient = displayedIngredients[indexPath.row]
         ingredientsInMeal.append(currentIngredient)
     }

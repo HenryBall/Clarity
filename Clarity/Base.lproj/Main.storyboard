@@ -111,7 +111,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Settings" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9BN-lZ-U6A">
-                                <rect key="frame" x="115.5" y="83" width="143.5" height="75"/>
+                                <rect key="frame" x="116" y="83" width="143.5" height="75"/>
                                 <fontDescription key="fontDescription" name="Pacifico" family="Pacifico" pointSize="40"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
@@ -1320,8 +1320,8 @@
                                                     <rect key="frame" x="335" y="30" width="25" height="24"/>
                                                     <state key="normal" image="Add"/>
                                                 </button>
-                                                <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="1" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="SQK-Jn-km4">
-                                                    <rect key="frame" x="288.5" y="27.5" width="30.5" height="30"/>
+                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="1" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="SQK-Jn-km4">
+                                                    <rect key="frame" x="288" y="27.5" width="31" height="30"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                                                     <textInputTraits key="textInputTraits"/>
@@ -1365,6 +1365,7 @@
                                             <outlet property="gallonsWaterLabel" destination="DZM-H9-Ya1" id="jwM-HV-Mzl"/>
                                             <outlet property="icon" destination="SyD-Y2-J55" id="8x0-Kv-Zha"/>
                                             <outlet property="label" destination="fqg-tN-7ua" id="jTd-69-7Sr"/>
+                                            <outlet property="quantityTextField" destination="SQK-Jn-km4" id="fW9-xj-Vee"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -1462,11 +1463,11 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="1" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3qM-Ld-WYd">
-                                                    <rect key="frame" x="304.5" y="29" width="30.5" height="30"/>
+                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="1" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3qM-Ld-WYd">
+                                                    <rect key="frame" x="304" y="29" width="31" height="30"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -1480,6 +1481,7 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="label" destination="umb-ya-AQl" id="Szb-ya-dYJ"/>
+                                            <outlet property="quantityTextField" destination="3qM-Ld-WYd" id="97g-hy-ZgG"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>

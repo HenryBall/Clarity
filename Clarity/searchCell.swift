@@ -11,6 +11,7 @@ import UIKit
 class searchCell: UITableViewCell {
 
     @IBOutlet weak var label: UILabel!
+    @IBOutlet weak var quantityTextField: UITextField!
     
     override func awakeFromNib() {
         super.awakeFromNib()
