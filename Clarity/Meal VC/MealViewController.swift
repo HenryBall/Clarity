@@ -124,8 +124,9 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
                 self.ingredientsInMeal = []
                 
                 for i in foodInMeal{
-                    let ing = Ingredient(name: i["name"] as! String, waterData: i["total"] as! Double, description: "The water footprint for this item is based on the water footprint for the average serving size of each ingredient. The actual number may be higher or lower depending on how much of each ingredient is actually in this item.", servingSize: 0.0, category: "", source: "")
-                    self.ingredientsInMeal.append(ing)
+                    let ingr = Ingredient(name: i["name"] as! String, waterData: i["total"] as! Double, description: "The water footprint for this item is based on the water footprint for the average serving size of each ingredient. The actual number may be higher or lower depending on how much of each ingredient is actually in this item.", servingSize: 0.0, category: "", source: "", isScannedItem: true, imagePath: "food-icons/" + (i["imagePath"] as! String).uppercased() + ".jpg")
+                    self.ingredientsInMeal.append(ingr)
+                    self.tableView.reloadData()
                 }
                 
                 for ref in ingredientReferences {
@@ -206,9 +207,8 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "IngredientCell") as! IngredientCell
         cell.label.text = ingredientsInMeal[indexPath.row].name.capitalized
-        
         cell.gallonsWaterLabel.text = String(Int(ingredientsInMeal[indexPath.row].waterData))
-        let imagePath = "food-icons/" + ingredientsInMeal[indexPath.row].name.uppercased() + ".jpg"
+        let imagePath = ingredientsInMeal[indexPath.row].imagePath
         let imageRef = storage.reference().child(imagePath)
         cell.icon.sd_setImage(with: imageRef, placeholderImage: #imageLiteral(resourceName: "Food"))
         return cell
@@ -227,7 +227,7 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
             self.ingredientsInMeal.remove(at: indexPath.row)
             var refArray = [DocumentReference]()
             for i in self.ingredientsInMeal{
-                if(i.source != ""){
+                if(!i.isScannedItem){
                     let ref = self.db.document("water-footprint-data/" + i.name.capitalized)
                     refArray.append(ref)
                 }

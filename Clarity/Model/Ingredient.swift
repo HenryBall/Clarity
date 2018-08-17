@@ -16,14 +16,18 @@ class Ingredient {
     var servingSize : Double?
     var category : String?
     var source : String?
+    var isScannedItem : Bool
+    var imagePath : String
     
-    init(name: String, waterData: Double, description: String, servingSize: Double, category: String, source: String) {
+    init(name: String, waterData: Double, description: String, servingSize: Double, category: String, source: String, isScannedItem: Bool, imagePath: String) {
         self.name = name
         self.waterData = waterData
         self.description = description
         self.servingSize = servingSize
         self.category = category
         self.source = source
+        self.isScannedItem = isScannedItem
+        self.imagePath = imagePath
     }
     
     init(document: DocumentSnapshot){
@@ -33,5 +37,7 @@ class Ingredient {
         self.servingSize = document.data()!["average_weight_oz"] as? Double
         self.category = document.data()!["category"] as? String
         self.source = document.data()!["source"] as? String
+        self.imagePath = "food-icons/" + name + ".jpg"
+        self.isScannedItem = false
     }
 }
