@@ -3,7 +3,7 @@
 //  Clarity
 //
 //  Created by Celine Pena on 5/27/18.
-//  Copyright © 2018 Robert. All rights reserved.
+//  Copyright © 2018 Clarity. All rights reserved.
 //
 
 import UIKit

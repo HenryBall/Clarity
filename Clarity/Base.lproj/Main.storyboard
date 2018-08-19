@@ -1316,12 +1316,12 @@
                                                         <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                                                     </userDefinedRuntimeAttributes>
                                                 </imageView>
-                                                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7V4-is-tEP">
-                                                    <rect key="frame" x="335" y="30" width="25" height="24"/>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7V4-is-tEP">
+                                                    <rect key="frame" x="333" y="28" width="27" height="28"/>
                                                     <state key="normal" image="Add"/>
                                                 </button>
                                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="1" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="SQK-Jn-km4">
-                                                    <rect key="frame" x="288" y="27.5" width="31" height="30"/>
+                                                    <rect key="frame" x="277" y="27.5" width="31" height="30"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                                                     <textInputTraits key="textInputTraits"/>
@@ -1357,10 +1357,11 @@
                                                 <constraint firstAttribute="trailing" secondItem="7V4-is-tEP" secondAttribute="trailing" constant="15" id="c3H-7r-W4o"/>
                                                 <constraint firstItem="SyD-Y2-J55" firstAttribute="centerY" secondItem="hWm-ZA-feb" secondAttribute="centerY" id="h0V-2d-xO8"/>
                                                 <constraint firstItem="DZM-H9-Ya1" firstAttribute="top" secondItem="fqg-tN-7ua" secondAttribute="bottom" id="kVl-oC-eQ8"/>
-                                                <constraint firstItem="7V4-is-tEP" firstAttribute="leading" secondItem="SQK-Jn-km4" secondAttribute="trailing" constant="16" id="ql5-dm-Nrg"/>
+                                                <constraint firstItem="7V4-is-tEP" firstAttribute="leading" secondItem="SQK-Jn-km4" secondAttribute="trailing" constant="25" id="ql5-dm-Nrg"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="addButton" destination="7V4-is-tEP" id="fsV-g9-Gm1"/>
                                             <outlet property="count" destination="SQK-Jn-km4" id="P1n-XG-0Zn"/>
                                             <outlet property="gallonsWaterLabel" destination="DZM-H9-Ya1" id="jwM-HV-Mzl"/>
                                             <outlet property="icon" destination="SyD-Y2-J55" id="8x0-Kv-Zha"/>
@@ -1519,7 +1520,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Add" width="25" height="24"/>
+        <image name="Add" width="27" height="28"/>
         <image name="Breakfast" width="375" height="80"/>
         <image name="Dinner" width="375" height="80"/>
         <image name="Lunch" width="375" height="80"/>
