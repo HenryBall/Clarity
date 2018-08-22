@@ -89,8 +89,10 @@ extension AddFromDatabaseViewController {
         let currentCell = tableView.cellForRow(at: indexPath) as! addDatabaseIngredientCell
         let name = displayedIngredients[index].name
         if let i = ingredientsInMeal.index(where: { $0.name == name }) {
-            ingredientsInMeal[i].quantity = ingredientsInMeal[i].quantity! - 1
-            currentCell.count.text = String(ingredientsInMeal[i].quantity!)
+            if (ingredientsInMeal[i].quantity! > 1) {
+                ingredientsInMeal[i].quantity = ingredientsInMeal[i].quantity! - 1
+                currentCell.count.text = String(ingredientsInMeal[i].quantity!)
+            }
         }
     }
 }
