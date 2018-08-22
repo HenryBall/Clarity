@@ -15,6 +15,7 @@ class addScannedItemViewController: UIViewController, UITableViewDelegate, UITab
     /* Banner and TableView outlets */
     @IBOutlet weak var bannerImage: UIImageView!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var itemName: UITextField!
     
     /* Class Globals */
     var mealType : String!
@@ -25,6 +26,9 @@ class addScannedItemViewController: UIViewController, UITableViewDelegate, UITab
     var currentWaterTotal = 0.0
     var refsInMeal = [DocumentReference]()
     var matchedRefs = [DocumentReference: Bool]()
+    var foodInMeal = [[String : Any]]()
+    var imageName = String()
+    var currentTotal = 0.0
     
     /* Tagger and options for NLP functions */
     let tagger = NSLinguisticTagger(tagSchemes:[.tokenType, .language, .lexicalClass, .nameType, .lemma], options: 0)
@@ -37,7 +41,7 @@ class addScannedItemViewController: UIViewController, UITableViewDelegate, UITab
         tableView.keyboardDismissMode = .onDrag
         setBannerImage()
         getRefsInMeal()
-        getWaterTotalForMeal()
+        getCurrentWaterTotal()
         ingredientDB = db.collection("water-footprint-data")
         invertedIndex = db.collection("water-data-inverted-index")
         doTextProcessing(text: ingredientsList)
@@ -74,8 +78,8 @@ class addScannedItemViewController: UIViewController, UITableViewDelegate, UITab
     func getRefsInMeal() {
         day.getDocument { (document, error) in
             if(document?.exists)!{
-                if(document?.data()?.keys.contains(self.mealType))!{
-                    self.refsInMeal = document?.data()![self.mealType] as! [DocumentReference]
+                if(document?.data()?.keys.contains(self.mealType + "-meals"))!{
+                    self.foodInMeal = document?.data()![self.mealType + "-meals"] as! [[String : Any]]
                 }
             } else {
                 print("No food exists for this meal")
@@ -86,7 +90,7 @@ class addScannedItemViewController: UIViewController, UITableViewDelegate, UITab
     /*
      - Get the current water total for the selected meal
     */
-    func getWaterTotalForMeal() {
+    func getCurrentWaterTotal() {
         day.getDocument { (document, error) in
             if(document?.exists)!{
                 if(document?.data()?.keys.contains(self.mealType))!{
@@ -118,22 +122,32 @@ class addScannedItemViewController: UIViewController, UITableViewDelegate, UITab
     @IBAction func saveTapped(_ sender: UIButton) {
         let group = DispatchGroup()
         let matched = getMatchedRefsToPush()
+        let refWithMostWater = 0.0
         for ref in matched {
             group.enter()
             ref.getDocument { (document, error) in
                 group.leave()
                 if(document?.exists)!{
-                    self.matchedWaterTotal += document?.data()!["gallons_water"] as! Double
+                    let curWater = document?.data()!["gallons_water"] as! Double
+                    self.matchedWaterTotal += curWater
+                    if (curWater > refWithMostWater) {
+                        print(document?.documentID)
+                        self.imageName = (document?.documentID)!
+                    }
                 } else {
                     print("Document does not exist")
                 }
             }
         }
         group.notify(queue: .main) {
-            let refsToPush = matched + self.refsInMeal
-            let waterTotalToPush = self.matchedWaterTotal + self.currentWaterTotal
-            day.setData([self.mealType: refsToPush], options: SetOptions.merge())
-            day.setData([self.mealType + "_total": waterTotalToPush], options: SetOptions.merge())
+            var map = [String : Any]()
+            let name = self.itemName.text as! String
+            map = ["name" : name, "total" : self.matchedWaterTotal, "refs": matched, "imagePath": self.imageName]
+            self.foodInMeal.append(map)
+            print(self.currentWaterTotal)
+            self.currentTotal = self.currentWaterTotal + self.matchedWaterTotal
+            day.setData([self.mealType + "-meals" : self.foodInMeal], options: SetOptions.merge())
+            day.setData([self.mealType + "_total" : self.currentTotal], options: SetOptions.merge())
             if let destination = self.navigationController?.viewControllers[1] {
                 self.navigationController?.popToViewController(destination, animated: true)
             }
@@ -148,6 +162,7 @@ class addScannedItemViewController: UIViewController, UITableViewDelegate, UITab
         if text != JSON.null{
             let ingredientsList = text.string!.lowercased().components(separatedBy: ", ")
             for ingredient in ingredientsList {
+                partOfSpeech(text: ingredient)
                 findCandidates(ingredient: ingredient)
             }
         }else{
@@ -204,6 +219,21 @@ class addScannedItemViewController: UIViewController, UITableViewDelegate, UITab
             let matchedRef = self.ingredientDB.document(matchedItem!)
             self.matchedRefs[matchedRef] = true
             self.tableView.reloadData()
+        }
+    }
+    
+    func partOfSpeech(text: String) {
+        tagger.string = text
+        let range = NSRange(location: 0, length: text.utf16.count)
+        if #available(iOS 11.0, *) {
+            tagger.enumerateTags(in: range, unit: .word, scheme: .lexicalClass, options: options) { tag, tokenRange, _ in
+                if let tag = tag {
+                    let word = (text as NSString).substring(with: tokenRange)
+                    print("\(word): \(tag)")
+                }
+            }
+        } else {
+            print("iOS 11 not availible")
         }
     }
     
