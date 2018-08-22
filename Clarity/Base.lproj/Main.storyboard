@@ -423,7 +423,7 @@
                                                                     </userDefinedRuntimeAttributes>
                                                                 </imageView>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumFontSize="18" translatesAutoresizingMaskIntoConstraints="NO" id="om7-dH-0k8" userLabel="Name">
-                                                                    <rect key="frame" x="90" y="14" width="204" height="60"/>
+                                                                    <rect key="frame" x="85" y="19" width="61" height="30.5"/>
                                                                     <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="22"/>
                                                                     <color key="textColor" red="0.57647058819999997" green="0.57647058819999997" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     <nil key="highlightedColor"/>
@@ -440,21 +440,28 @@
                                                                     <color key="textColor" red="0.57647058819999997" green="0.57647058819999997" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aoC-1n-RFc" userLabel="gallonsPerServing">
+                                                                    <rect key="frame" x="85" y="48.5" width="38" height="21"/>
+                                                                    <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="15"/>
+                                                                    <color key="textColor" red="0.57647058819999997" green="0.57647058819999997" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
                                                             </subviews>
                                                             <constraints>
                                                                 <constraint firstItem="e65-Gs-7uH" firstAttribute="bottom" secondItem="Js5-z0-FRc" secondAttribute="bottom" constant="-2" id="5r5-gN-mUP"/>
-                                                                <constraint firstItem="om7-dH-0k8" firstAttribute="bottom" secondItem="VtH-TJ-295" secondAttribute="bottom" id="MK1-W4-bj2"/>
-                                                                <constraint firstItem="om7-dH-0k8" firstAttribute="top" secondItem="VtH-TJ-295" secondAttribute="top" id="Q2B-la-7uX"/>
+                                                                <constraint firstItem="om7-dH-0k8" firstAttribute="top" secondItem="VtH-TJ-295" secondAttribute="top" constant="5" id="ENu-cl-EAN"/>
+                                                                <constraint firstItem="aoC-1n-RFc" firstAttribute="leading" secondItem="VtH-TJ-295" secondAttribute="trailing" constant="10" id="KdE-y8-QH5"/>
                                                                 <constraint firstItem="VtH-TJ-295" firstAttribute="centerY" secondItem="vbe-8t-NIk" secondAttribute="centerY" id="Sqp-Yw-XBO"/>
                                                                 <constraint firstAttribute="trailing" secondItem="e65-Gs-7uH" secondAttribute="trailing" constant="15" id="egq-PT-uta"/>
-                                                                <constraint firstItem="om7-dH-0k8" firstAttribute="leading" secondItem="VtH-TJ-295" secondAttribute="trailing" constant="15" id="lFG-kA-FC3"/>
+                                                                <constraint firstItem="om7-dH-0k8" firstAttribute="leading" secondItem="VtH-TJ-295" secondAttribute="trailing" constant="10" id="h9a-ff-309"/>
+                                                                <constraint firstItem="aoC-1n-RFc" firstAttribute="bottom" secondItem="om7-dH-0k8" secondAttribute="bottom" constant="20" id="isU-pt-el3"/>
                                                                 <constraint firstItem="VtH-TJ-295" firstAttribute="leading" secondItem="vbe-8t-NIk" secondAttribute="leading" constant="15" id="mO5-gW-B1I"/>
-                                                                <constraint firstItem="om7-dH-0k8" firstAttribute="trailing" secondItem="vbe-8t-NIk" secondAttribute="trailing" constant="-80" id="ovf-xN-mup"/>
                                                                 <constraint firstItem="Js5-z0-FRc" firstAttribute="trailing" secondItem="e65-Gs-7uH" secondAttribute="leading" constant="-5" id="paJ-k8-g1Q"/>
                                                                 <constraint firstItem="Js5-z0-FRc" firstAttribute="centerY" secondItem="vbe-8t-NIk" secondAttribute="centerY" id="x91-xI-dyF"/>
                                                             </constraints>
                                                         </tableViewCellContentView>
                                                         <connections>
+                                                            <outlet property="gallonsPerServing" destination="aoC-1n-RFc" id="VNK-qe-2hJ"/>
                                                             <outlet property="gallonsWaterLabel" destination="Js5-z0-FRc" id="cDg-Oj-JeW"/>
                                                             <outlet property="icon" destination="VtH-TJ-295" id="uBd-t8-ZyH"/>
                                                             <outlet property="label" destination="om7-dH-0k8" id="mpb-Ai-F1L"/>
@@ -1412,30 +1419,40 @@
                                                         <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                                                     </userDefinedRuntimeAttributes>
                                                 </imageView>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7V4-is-tEP">
-                                                    <rect key="frame" x="333" y="28" width="27" height="28"/>
-                                                    <state key="normal" image="Add"/>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7V4-is-tEP">
+                                                    <rect key="frame" x="330" y="18.5" width="30" height="47"/>
+                                                    <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="25"/>
+                                                    <state key="normal" title="+">
+                                                        <color key="titleColor" red="0.57647058819999997" green="0.57647058819999997" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    </state>
+                                                </button>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F0b-ee-UK4">
+                                                    <rect key="frame" x="239" y="19" width="30" height="47"/>
+                                                    <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="25"/>
+                                                    <state key="normal" title="−">
+                                                        <color key="titleColor" red="0.57647058819999997" green="0.57647058819999997" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    </state>
                                                 </button>
                                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="1" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="SQK-Jn-km4">
-                                                    <rect key="frame" x="277" y="27.5" width="31" height="30"/>
+                                                    <rect key="frame" x="284" y="27.5" width="31" height="30"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                                 </textField>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fqg-tN-7ua">
-                                                    <rect key="frame" x="85" y="22.5" width="50" height="25"/>
+                                                    <rect key="frame" x="85" y="17.5" width="50" height="25"/>
                                                     <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="18"/>
                                                     <color key="textColor" red="0.57647058819999997" green="0.57647058819999997" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DZM-H9-Ya1">
-                                                    <rect key="frame" x="85" y="47.5" width="10" height="25"/>
+                                                    <rect key="frame" x="85" y="42.5" width="10" height="25"/>
                                                     <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="18"/>
                                                     <color key="textColor" red="0.57647058819999997" green="0.57647058819999997" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="gal" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hj3-ys-sEK">
-                                                    <rect key="frame" x="100" y="54" width="17.5" height="16.5"/>
+                                                    <rect key="frame" x="100" y="49" width="17.5" height="16.5"/>
                                                     <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="12"/>
                                                     <color key="textColor" red="0.57647058819999997" green="0.57647058819999997" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -1446,23 +1463,27 @@
                                                 <constraint firstItem="fqg-tN-7ua" firstAttribute="leading" secondItem="SyD-Y2-J55" secondAttribute="trailing" constant="10" id="Cdg-k3-YQw"/>
                                                 <constraint firstItem="DZM-H9-Ya1" firstAttribute="leading" secondItem="fqg-tN-7ua" secondAttribute="leading" id="Chi-oR-daq"/>
                                                 <constraint firstItem="SQK-Jn-km4" firstAttribute="centerY" secondItem="hWm-ZA-feb" secondAttribute="centerY" id="Dn5-mz-87q"/>
+                                                <constraint firstItem="F0b-ee-UK4" firstAttribute="centerY" secondItem="hWm-ZA-feb" secondAttribute="centerY" id="EdE-VF-8CF"/>
                                                 <constraint firstItem="SyD-Y2-J55" firstAttribute="leading" secondItem="hWm-ZA-feb" secondAttribute="leading" constant="15" id="Fxh-J3-0nT"/>
-                                                <constraint firstItem="fqg-tN-7ua" firstAttribute="top" secondItem="SyD-Y2-J55" secondAttribute="top" constant="10" id="KdD-0y-i9V"/>
+                                                <constraint firstItem="fqg-tN-7ua" firstAttribute="top" secondItem="SyD-Y2-J55" secondAttribute="top" constant="5" id="KdD-0y-i9V"/>
+                                                <constraint firstItem="SQK-Jn-km4" firstAttribute="leading" secondItem="F0b-ee-UK4" secondAttribute="trailing" constant="15" id="Mme-nd-OoW"/>
                                                 <constraint firstItem="7V4-is-tEP" firstAttribute="centerY" secondItem="hWm-ZA-feb" secondAttribute="centerY" id="SyV-VA-gQH"/>
                                                 <constraint firstItem="hj3-ys-sEK" firstAttribute="bottom" secondItem="DZM-H9-Ya1" secondAttribute="bottom" constant="-2" id="UWu-eo-tmp"/>
                                                 <constraint firstAttribute="trailing" secondItem="7V4-is-tEP" secondAttribute="trailing" constant="15" id="c3H-7r-W4o"/>
                                                 <constraint firstItem="SyD-Y2-J55" firstAttribute="centerY" secondItem="hWm-ZA-feb" secondAttribute="centerY" id="h0V-2d-xO8"/>
                                                 <constraint firstItem="DZM-H9-Ya1" firstAttribute="top" secondItem="fqg-tN-7ua" secondAttribute="bottom" id="kVl-oC-eQ8"/>
-                                                <constraint firstItem="7V4-is-tEP" firstAttribute="leading" secondItem="SQK-Jn-km4" secondAttribute="trailing" constant="25" id="ql5-dm-Nrg"/>
+                                                <constraint firstItem="7V4-is-tEP" firstAttribute="leading" secondItem="SQK-Jn-km4" secondAttribute="trailing" constant="15" id="ql5-dm-Nrg"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="addButton" destination="7V4-is-tEP" id="fsV-g9-Gm1"/>
                                             <outlet property="count" destination="SQK-Jn-km4" id="P1n-XG-0Zn"/>
+                                            <outlet property="gal" destination="hj3-ys-sEK" id="CPB-j2-gln"/>
                                             <outlet property="gallonsWaterLabel" destination="DZM-H9-Ya1" id="jwM-HV-Mzl"/>
                                             <outlet property="icon" destination="SyD-Y2-J55" id="8x0-Kv-Zha"/>
                                             <outlet property="label" destination="fqg-tN-7ua" id="jTd-69-7Sr"/>
                                             <outlet property="quantityTextField" destination="SQK-Jn-km4" id="fW9-xj-Vee"/>
+                                            <outlet property="subtractButton" destination="F0b-ee-UK4" id="n8q-EZ-9g5"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -1616,7 +1637,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Add" width="27" height="28"/>
         <image name="Breakfast" width="375" height="80"/>
         <image name="Dinner" width="375" height="80"/>
         <image name="Lunch" width="375" height="80"/>

@@ -62,6 +62,8 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
         formatter.dateStyle = .long
         formatter.string(from: today)
         
+        tableView.keyboardDismissMode = .onDrag
+        
         //var day holds a reference to today's meal
         day = db.collection("users").document(defaults.string(forKey: "user_id")!).collection("meals").document(formatter.string(from: today))
         
@@ -157,11 +159,7 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
                             ref.getDocument { (document, error) in
                                 if let document = document {
                                     let ingredient = Ingredient(document: document)
-                                    
-                                    if let quantity = ing["quantity"] as? Int {
-                                        ingredient.waterData = ingredient.waterData * Double(quantity)
-                                    }
-                                    
+                                    ingredient.quantity = ing["quantity"] as? Int
                                     self.ingredientsInMeal.append(ingredient)
                                     self.tableView.reloadData()
                                 } else {

@@ -15,15 +15,11 @@ class addDatabaseIngredientCell: UITableViewCell {
     @IBOutlet weak var count: UITextField!
     @IBOutlet weak var gallonsWaterLabel: UILabel!
     @IBOutlet weak var addButton: UIButton!
+    @IBOutlet weak var gal: UILabel!
+    @IBOutlet weak var subtractButton: UIButton!
     
     @IBOutlet weak var quantityTextField: UITextField!
     override func awakeFromNib() {
         super.awakeFromNib()
     }
-
-//    override func setSelected(_ selected: Bool, animated: Bool) {
-//        super.setSelected(selected, animated: animated)
-//        accessoryType = selected ? .checkmark : .none
-//    }
-
 }

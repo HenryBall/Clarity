@@ -31,9 +31,9 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
         super.viewDidLoad()
         displayedIngredients = ingredientsFromDatabase
         searchBar.delegate = self
-        tableView.delegate = self
-        tableView.dataSource = self
-
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
+        tableView.keyboardDismissMode = .onDrag
         setBanner()
     }
     
@@ -71,17 +71,18 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
         var allIngredients = [[String : Any]]()
         var ingredient = [String : Any]()
         
-        for ing in ingredientsInMeal {
-            if(ing.source != ""){
-                let ref = db.document("water-footprint-data/" + ing.name.capitalized)
-                ingredient = ["reference" : ref, "quantity" : ing.quantity ?? 1]
+        for ingr in ingredientsInMeal {
+            if(ingr.source != ""){
+                let ref = db.document("water-footprint-data/" + ingr.name.capitalized)
+                print(ingr.quantity)
+                ingredient = ["reference" : ref, "quantity" : ingr.quantity ?? 1]
             } else {
-                ingredient = ["name" : ing.name, "total" : ing.waterData, "quantity" : ing.quantity ?? 1]
+                ingredient = ["name" : ingr.name, "total" : ingr.waterData, "quantity" : ingr.quantity ?? 1]
             }
             allIngredients.append(ingredient)
         }
 
-        let total = ingredientsInMeal.map({$0.waterData}).reduce(0, +)
+        let total = ingredientsInMeal.map({$0.waterData * Double($0.quantity!)}).reduce(0, +)
         day.setData([mealType + "_total" : total], options: SetOptions.merge())
         day.setData([mealType : allIngredients], options: SetOptions.merge())
         

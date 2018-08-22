@@ -21,9 +21,9 @@ extension MealViewController {
     //Set the name, # of gallons and image for each ingredient
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "IngredientCell") as! IngredientCell
-        cell.label.text = ingredientsInMeal[indexPath.row].name.capitalized
-        
-        cell.gallonsWaterLabel.text = String(Int(ingredientsInMeal[indexPath.row].waterData))
+        cell.label.text = ingredientsInMeal[indexPath.row].name.capitalized + " (x" + String(ingredientsInMeal[indexPath.row].quantity!) + ")"
+        cell.gallonsWaterLabel.text = String(Int(ingredientsInMeal[indexPath.row].waterData) * ingredientsInMeal[indexPath.row].quantity!)
+        cell.gallonsPerServing.text = String(Int(ingredientsInMeal[indexPath.row].waterData)) + " gal / " + String(format: "%.2f", ingredientsInMeal[indexPath.row].servingSize!) + " oz"
         let imagePath = "food-icons/" + ingredientsInMeal[indexPath.row].name.uppercased() + ".jpg"
         let imageRef = storage.reference().child(imagePath)
         cell.icon.sd_setImage(with: imageRef, placeholderImage: #imageLiteral(resourceName: "Food"))
@@ -53,7 +53,7 @@ extension MealViewController {
             day.getDocument { (document, error) in
                 if(document?.exists)!{
                     if var currentTotal = document?.data()![self.mealType + "_total"] as? Double {
-                        currentTotal = currentTotal - deletedIngredient.waterData
+                        currentTotal = currentTotal - (deletedIngredient.waterData * Double(deletedIngredient.quantity!))
                         self.gallonsInMeal.text = String(Int(currentTotal))
                         self.day.setData([self.self.mealType + "_total" : currentTotal], options: SetOptions.merge())
                     }

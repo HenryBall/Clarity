@@ -37,5 +37,6 @@ class Ingredient {
         self.servingSize = document.data()!["average_weight_oz"] as? Double
         self.category = document.data()!["category"] as? String
         self.source = document.data()!["source"] as? String
+        self.quantity = 1
     }
 }
