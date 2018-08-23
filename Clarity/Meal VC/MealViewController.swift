@@ -161,7 +161,6 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
                                     let ingredient = Ingredient(document: document)
                                     ingredient.quantity = ing["quantity"] as? Int
                                     self.ingredientsInMeal.append(ingredient)
-                                    self.tableView.reloadData()
                                 } else {
                                     print("Document does not exist")
                                 }
@@ -170,6 +169,7 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
                             let ing = Ingredient(name: ing["name"] as! String, type: ing["type"] as! String, waterData: ing["total"] as! Double, description: "", servingSize: 1, category: "", source: "", quantity: ing["quantity"] as? Int, ingredients: ing["ingredients"] as? [DocumentReference], imageName: (ing["image"] as! String))
                             self.ingredientsInMeal.append(ing)
                         }
+                        self.tableView.reloadData()
                     }
                 }
             }else{
