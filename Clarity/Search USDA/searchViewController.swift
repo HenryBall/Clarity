@@ -3,7 +3,7 @@
 //  Clarity
 //
 //  Created by Celine Pena on 5/20/18.
-//  Copyright © 2018 Robert. All rights reserved.
+//  Copyright © 2018 Clarity. All rights reserved.
 //
 
 import UIKit
@@ -13,27 +13,26 @@ import Foundation
 import Firebase
 
 class searchViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
-
+    
+    /* IB Outlets */
+    @IBOutlet weak var bannerImage: UIImageView!
+    @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var tableView: UITableView!
+    
+    /* Class Globals */
+    var searchedProducts = [SearchProduct]()
+    var ingredientsInMeal = [Ingredient]()
+    let today = Date()
+    let formatter = DateFormatter()
+    var mealType: String!
+    
     let search_url = "https://api.nal.usda.gov/ndb/search/"
     let report_url = "https://api.nal.usda.gov/ndb/reports/"
     let API_KEY = "TGfnBgw7WgOWmRSo24XcFgtaoFbhODXG7KQZzVk4"
     
-    @IBOutlet weak var bannerImage: UIImageView!
-    @IBOutlet weak var searchBar: UISearchBar!
-    @IBOutlet weak var tableView: UITableView!
-    var searchedProducts = [SearchProduct]()
-    let today = Date()
-    let formatter = DateFormatter()
-    //var foodInMeal = [Food]()
-    var mealType: String!
-    var foodInMeal = [[String : Any]]()
-    var currentTotal = 0.0
-    
     // NLP stuffs
     let tagger = NSLinguisticTagger(tagSchemes:[.tokenType, .language, .lexicalClass, .nameType, .lemma], options: 0)
     let options: NSLinguisticTagger.Options = [.omitPunctuation, .omitWhitespace, .joinNames]
-    var ingredientsText: JSON = []
-    var day: DocumentReference!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,12 +43,13 @@ class searchViewController: UIViewController, UITableViewDataSource, UITableView
         formatter.timeStyle = .none
         formatter.dateStyle = .long
         formatter.string(from: today)
-        day = db.collection("users").document(defaults.string(forKey: "user_id")!).collection("meals").document(formatter.string(from: today))
-        
-        queryFoodInMeal()
+    
         setBanner()
     }
     
+    /**
+     Set the header image based on the meal type
+     */
     func setBanner(){
         switch mealType {
         case "breakfast":
@@ -64,51 +64,46 @@ class searchViewController: UIViewController, UITableViewDataSource, UITableView
             print("error")
         }
     }
-
-    @IBAction func backTapped(_ sender: UIButton) {
-        self.navigationController?.popViewController(animated: true)
-    }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 80.0
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.searchedProducts.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        let cell = self.tableView.dequeueReusableCell(withIdentifier: "searchCell") as! searchCell
-        cell.label.text = searchedProducts[indexPath.row].name.capitalized
-        return cell
-    }
-    
-    ///Query the items that exist in ""-meals. When we select an item, they will be added to this array
-    func queryFoodInMeal(){
-        let today = Date()
-        let formatter = DateFormatter()
-        formatter.timeStyle = .none
-        formatter.dateStyle = .long
-        formatter.string(from: today)
-        
-        day.getDocument { (document, error) in
-            if(document?.exists)!{
-                if(document?.data()?.keys.contains(self.mealType + "-meals"))!{
-                    self.foodInMeal = document?.data()![self.mealType + "-meals"] as! [[String : Any]]
-                }
+    /**
+     Called when the user selects a row. This function makes a call to the USDA API to get the ingredients for the selected item (returned as JSON).
+     Once the JSON has been recieved, calls compareIngredients to return the list of ingredients that match ingredients for which we have data for.
+     Adds this item to the ingredientsInMeal() array.
+     - Parameter number: "ndbno" number supplied (needed) to query the USDA database (specific to each item)
+     - Parameter name: name of the selected food
+     - Parameter quantity: Quantity the user would like to add to the database
+     */
+    func addItemToList(number: String, name: String, quantity: Int){
+        let params : [String : String] = ["api_key" : API_KEY, "format": "JSON", "type": "b", "ndbno" : number]
+        Alamofire.request(report_url, method: .get, parameters: params).responseJSON{
+            response in
+            if response.result.isSuccess{
+                let itemJSON : JSON = JSON(response.result.value!)
                 
-                if(document?.data()?.keys.contains(self.mealType + "_total"))!{
-                    self.currentTotal = document?.data()![self.mealType + "_total"] as! Double
-                }
+                let matchedIngredients = self.compareIngredients(text: itemJSON["report"]["food"]["ing"]["desc"])
+                let totalGallons = matchedIngredients.map({$0.waterData}).reduce(0, +) * Double(quantity)
+                let refWithMostWater = matchedIngredients.max { $0.waterData < $1.waterData }
+                let imageName = (refWithMostWater?.name)!
+                
+                let ingredientRefs = self.getMatchedRefsToPush(matchedIngredients: matchedIngredients)
+                
+                let currentIngredient = Ingredient(name: name, type: "USDA", waterData: totalGallons, description: "", servingSize: 1, category: nil, source: "", quantity: quantity, ingredients: ingredientRefs, imageName: imageName)
+                self.ingredientsInMeal.append(currentIngredient)
+                
             } else {
-                print("No food exists for this meal")
+                print("Request: \(String(describing: response.request))")
+                print("Error \(String(describing: response.result.error))")
             }
         }
     }
-
     
-    func compareIngredients(text: JSON) -> Double {
+    /**
+     Compares ingredients in the selected food against ingredients from database.
+     - Parameter text: JSON of ingredients in this food
+     - Returns: Array of Ingredients for which we have water footprint data for. If none exist, returns an empty array.
+     - Note: This comparison is based on substrings so it can probably be improved in the future.
+     */
+    func compareIngredients(text: JSON) -> [Ingredient] {
         var ingredientsList: [String]
         var matchedIngredients = [Ingredient]()
         
@@ -126,15 +121,18 @@ class searchViewController: UIViewController, UITableViewDataSource, UITableView
                     }
                 }
             }
-            
-           return matchedIngredients.map({$0.waterData}).reduce(0, +)
+           return matchedIngredients
             
         }else{
             print("Sorry the ingredients for this item are unavailable")
-            return 0.0
+            return []
         }
     }
     
+    /**
+     Splits ingredients list into single words
+     - Returns: Array of single words
+     */
     func tokenizeText(for text: String) -> [String] {
         var arr = [String]()
         tagger.string = text
@@ -150,55 +148,25 @@ class searchViewController: UIViewController, UITableViewDataSource, UITableView
         }
     }
     
-    func searchItem(number: String, name: String){
-        let params : [String : String] = ["api_key" : API_KEY, "format": "JSON", "type": "b", "ndbno" : number]
-        Alamofire.request(report_url, method: .get, parameters: params).responseJSON{
-            response in
-            if response.result.isSuccess{
-                let itemJSON : JSON = JSON(response.result.value!)
-                
-                let totalGallons = self.compareIngredients(text: itemJSON["report"]["food"]["ing"]["desc"])
-                
-                var map = [String : Any]()
-                map = ["name" : name, "total" : totalGallons]
-                self.foodInMeal.append(map)
-        
-                self.currentTotal = self.currentTotal + totalGallons
-                
-            } else {
-                print("Request: \(String(describing: response.request))")
-                print("Error \(String(describing: response.result.error))")
-            }
+    /**
+     Creates reference for each ingredient, appends them to "matched" array
+     - Parameter matchedIngredients: Array of Ingredients for a food item
+     - Returns: Array of ingredient references to be pushed to database
+     */
+    func getMatchedRefsToPush(matchedIngredients: [Ingredient]) -> [DocumentReference] {
+        var matched = [DocumentReference]()
+        for ing in matchedIngredients{
+            let ref = db.document("water-footprint-data/" + ing.name.capitalized)
+            matched.append(ref)
         }
-    }
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath){
-        searchItem(number: searchedProducts[indexPath.row].ndbno, name: searchedProducts[indexPath.row].name)
-        //let currentIngredient = searchedProducts[indexPath.row]
-        //let cell = tableView.dequeueReusableCell(withIdentifier: "addDatabaseIngredientCell") as! addDatabaseIngredientCell
-        //print(cell.count.text)
-        //if let count = Int(cell.count.text!){
-        //if(count > 1){
-        //for i in 0 ... count{
-        //  ingredientsInMeal.append(currentIngredient)
-        //}
-        //}else{
-        //ingredientsInMeal.append(currentIngredient)
-        //}
-        //}
-       
-        
-       // self.navigationController?.popViewController(animated: true)
-    }
-    
-    //Set up parameters based on search bar value
-    func searchProducts(searchText: String){
-        let params : [String : String] = ["api_key" : API_KEY, "q" : searchText, "format": "JSON", "sort": "r"]
-        getSearchData(url: search_url, parameters: params)
+        return matched
     }
     
     //Make Call to API to search for Item
-    func getSearchData(url: String, parameters: [String: String]){
-        Alamofire.request(url, method: .get, parameters: parameters).responseJSON{
+    func searchProducts(searchText: String){
+        let params : [String : String] = ["api_key" : API_KEY, "q" : searchText, "format": "JSON", "sort": "r"]
+        
+        Alamofire.request(search_url, method: .get, parameters: params).responseJSON{
             response in
             if response.result.isSuccess{
                 let searchJSON : JSON = JSON(response.result.value!)
@@ -243,9 +211,36 @@ class searchViewController: UIViewController, UITableViewDataSource, UITableView
         self.tableView.reloadData()
     }
     
+    //------------------------------------------ IBActions --------------------------------------------------
+    
+    /**
+     When the user presses the "<" button, returns to the home screen
+     - Parameter sender: "<" back button */
+    @IBAction func backTapped(_ sender: UIButton) {
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    /**
+     When the user presses the "add" button, updates the ingredients in the database and returns to HomeViewController
+     - Parameter sender: "add" button on top right */
     @IBAction func doneTapped(_ sender: UIButton) {
-        day.setData([self.mealType + "-meals" : self.foodInMeal], options: SetOptions.merge())
-        day.setData([self.mealType + "_total" : self.currentTotal], options: SetOptions.merge())
+        var foodInMeal = [[String : Any]]()
+        var map = [String : Any]()
+        
+        for ing in ingredientsInMeal {
+            if(ing.type == "Database"){
+                let ref = db.document("water-footprint-data/" + ing.name.capitalized)
+                map = ["reference" : ref, "quantity" : ing.quantity ?? 1]
+            }else {
+                map = ["name" : ing.name, "total" : ing.waterData, "ingredients": ing.ingredients as Any, "image": ing.imageName as Any, "quantity" : ing.quantity ?? 1, "type" : ing.type]
+            }
+            foodInMeal.append(map)
+        }
+        
+        let total = ingredientsInMeal.map({$0.waterData}).reduce(0, +)
+        day.setData([self.mealType + "_total" : total], options: SetOptions.merge())
+        day.setData([self.mealType : foodInMeal], options: SetOptions.merge())
+        
         if let destination = self.navigationController?.viewControllers[1] {
             self.navigationController?.popToViewController(destination, animated: true)
         }

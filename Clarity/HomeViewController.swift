@@ -6,7 +6,7 @@
 //  Copyright © 2018 Robert. All rights reserved.
 //
 
-import UIKit
+//import UIKit
 import Firebase
 import GoogleSignIn
 import Charts
@@ -66,8 +66,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         super.viewDidLoad()
         self.navigationController?.isNavigationBarHidden = true
         self.scrollView.delegate = self
-        dailyGoal = defaults.double(forKey: "water_limit")
-
+        //dailyGoal = defaults.double(forKey: "water_limit")
         databaseDateFormatter.timeStyle = .none
         databaseDateFormatter.dateStyle = .long
         databaseDateFormatter.string(from: today)

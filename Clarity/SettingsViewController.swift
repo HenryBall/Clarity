@@ -25,7 +25,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.hideKeyboard()
+        swipeToHideKeyboard()
         saveButton.layer.borderColor = textColor.cgColor
         logoutButton.layer.borderColor = UIColor.white.cgColor
         let user = db.collection("users").document(defaults.string(forKey: "user_id")!)
@@ -59,14 +59,6 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    /*func textFieldDidBeginEditing(_ textField: UITextField) {
-        scrollView.setContentOffset(CGPoint(x:0, y: 190), animated: true)
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        scrollView.setContentOffset(CGPoint(x:0, y:-20), animated: true)
-    }*/
-    
     @IBAction func logoutButtunPressed(_ sender: Any) {
         GIDSignIn.sharedInstance().signOut()
         let s = UIStoryboard(name: "Main", bundle: nil)
@@ -76,7 +68,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
 }
 
 extension UIViewController {
-    func hideKeyboard() {
+    func tapToHideKeyboard() {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(
             target: self,
             action: #selector(UIViewController.dismissKeyboard))
@@ -88,3 +80,12 @@ extension UIViewController {
         view.endEditing(true)
     }
 }
+
+extension UIViewController {
+    func swipeToHideKeyboard() {
+        let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
+        swipeDown.direction = UISwipeGestureRecognizerDirection.down
+        self.view.addGestureRecognizer(swipeDown)
+    }
+}
+
