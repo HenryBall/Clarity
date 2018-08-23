@@ -37,9 +37,9 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
         setBanner()
     }
     
-    /**
-     Set the header image based on the meal type
-     */
+    /*
+     - Set the header image based on the meal type
+    */
     func setBanner(){
         switch mealType {
         case "breakfast":
@@ -55,22 +55,21 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
         }
     }
     
-    //------------------------------------------ IBActions --------------------------------------------------
-    
-    /**
+    /*
      When the user presses the "<" button, returns to HomeViewController
-     - Parameter sender: "<" back button */
+     - Parameter sender: "<" back button
+    */
     @IBAction func backTapped(_ sender: UIButton) {
         self.navigationController?.popViewController(animated: true)
     }
     
-    /**
+    /*
      When the user presses the "add" button, updates the ingredients in the database and returns to HomeViewController
-     - Parameter sender: "add" button on top right */
+     - Parameter sender: "add" button on top right
+    */
     @IBAction func doneTapped(_ sender: UIButton) {
         var allIngredients = [[String : Any]]()
         var ingredient = [String : Any]()
-        
         for ingr in ingredientsInMeal {
             if(ingr.type == "Database"){
                 let ref = db.document("water-footprint-data/" + ingr.name.capitalized)
@@ -80,11 +79,9 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
             }
             allIngredients.append(ingredient)
         }
-
         let total = ingredientsInMeal.map({$0.waterData * Double($0.quantity!)}).reduce(0, +)
         day.setData([mealType + "_total" : total], options: SetOptions.merge())
         day.setData([mealType : allIngredients], options: SetOptions.merge())
-        
         if let destination = self.navigationController?.viewControllers[1] {
             self.navigationController?.popToViewController(destination, animated: true)
         }
@@ -94,7 +91,6 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
         if(searchText == ""){
             displayedIngredients = ingredientsFromDatabase
         } else {
-            // Filter the results
             displayedIngredients = ingredientsFromDatabase.filter({$0.name.lowercased().contains(searchText.lowercased())})
         }
         self.tableView.reloadData()
