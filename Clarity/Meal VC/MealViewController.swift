@@ -167,7 +167,7 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
                                 }
                             }
                         } else {
-                            let ing = Ingredient(name: ing["name"] as! String, waterData: ing["total"] as! Double, description: "", servingSize: 1, category: "", source: "", quantity: ing["quantity"] as? Int, reference: nil)
+                            let ing = Ingredient(name: ing["name"] as! String, type: ing["type"] as! String, waterData: ing["total"] as! Double, description: "", servingSize: 1, category: "", source: "", quantity: ing["quantity"] as? Int, ingredients: ing["ingredients"] as? [DocumentReference], imageName: (ing["image"] as! String))
                             self.ingredientsInMeal.append(ing)
                         }
                     }
@@ -247,6 +247,7 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
             let json = JSON(data: dataToParse)
             let ingredientSelector = json["responses"][0]["textAnnotations"][0]["description"]
             let destination = self.storyboard?.instantiateViewController(withIdentifier: "addScannedItemViewController") as! addScannedItemViewController
+            destination.ingredientsInMeal = self.ingredientsInMeal
             destination.ingredientsList = ingredientSelector
             destination.mealType = self.mealType
             self.navigationController?.pushViewController(destination, animated: true)

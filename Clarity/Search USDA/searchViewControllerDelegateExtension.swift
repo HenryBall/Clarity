@@ -26,9 +26,12 @@ extension searchViewController {
         return cell
     }
     
+    //When the user selects a row, gets the quantity and calls addItemToList()
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath){
         let currentCell = tableView.cellForRow(at: indexPath) as! searchCell
+        let food = searchedProducts[indexPath.row]
+        
         let quantity = Int(currentCell.quantityTextField.text!)
-        addItemToList(number: searchedProducts[indexPath.row].ndbno, name: searchedProducts[indexPath.row].name, quantity: quantity!)
+        addItemToList(number: food.ndbno, name: food.name, quantity: quantity!)
     }
 }

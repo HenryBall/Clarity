@@ -72,12 +72,11 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
         var ingredient = [String : Any]()
         
         for ingr in ingredientsInMeal {
-            if(ingr.source != ""){
+            if(ingr.type == "Database"){
                 let ref = db.document("water-footprint-data/" + ingr.name.capitalized)
-                print(ingr.quantity)
                 ingredient = ["reference" : ref, "quantity" : ingr.quantity ?? 1]
             } else {
-                ingredient = ["name" : ingr.name, "total" : ingr.waterData, "quantity" : ingr.quantity ?? 1]
+                ingredient = ["name" : ingr.name, "total" : ingr.waterData, "ingredients": ingr.ingredients as Any, "image": ingr.imageName as Any, "quantity" : ingr.quantity ?? 1, "type" : ingr.type]
             }
             allIngredients.append(ingredient)
         }

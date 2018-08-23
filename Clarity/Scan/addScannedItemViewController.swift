@@ -22,13 +22,9 @@ class addScannedItemViewController: UIViewController, UITableViewDelegate, UITab
     var ingredientsList : JSON!
     var invertedIndex : CollectionReference!
     var ingredientDB : CollectionReference!
-    var matchedWaterTotal = 0.0
-    var currentWaterTotal = 0.0
-    var refsInMeal = [DocumentReference]()
-    var matchedRefs = [DocumentReference: Bool]()
-    var foodInMeal = [[String : Any]]()
-    var imageName = String()
-    var currentTotal = 0.0
+    var ingredientsInMeal = [Ingredient]()
+    var matchedIngredients = [Ingredient]()
+    var displayedIngredients = [Ingredient]()
     
     /* Tagger and options for NLP functions */
     let tagger = NSLinguisticTagger(tagSchemes:[.tokenType, .language, .lexicalClass, .nameType, .lemma], options: 0)
@@ -40,8 +36,6 @@ class addScannedItemViewController: UIViewController, UITableViewDelegate, UITab
         tableView.dataSource = self
         tableView.keyboardDismissMode = .onDrag
         setBannerImage()
-        getRefsInMeal()
-        getCurrentWaterTotal()
         ingredientDB = db.collection("water-footprint-data")
         invertedIndex = db.collection("water-data-inverted-index")
         doTextProcessing(text: ingredientsList)
@@ -73,44 +67,13 @@ class addScannedItemViewController: UIViewController, UITableViewDelegate, UITab
     }
     
     /*
-     - Get the current foods in the selected meal
-    */
-    func getRefsInMeal() {
-        day.getDocument { (document, error) in
-            if(document?.exists)!{
-                if(document?.data()?.keys.contains(self.mealType + "-meals"))!{
-                    self.foodInMeal = document?.data()![self.mealType + "-meals"] as! [[String : Any]]
-                }
-            } else {
-                print("No food exists for this meal")
-            }
-        }
-    }
-    
-    /*
-     - Get the current water total for the selected meal
-    */
-    func getCurrentWaterTotal() {
-        day.getDocument { (document, error) in
-            if(document?.exists)!{
-                if(document?.data()?.keys.contains(self.mealType))!{
-                    self.currentWaterTotal = document?.data()![self.mealType + "_total"] as! Double
-                }
-            } else {
-                print("No total exists for this meal")
-            }
-        }
-    }
-    
-    /*
      - Filter the matched refs, only taking those selected in the TableView
     */
     func getMatchedRefsToPush() -> [DocumentReference] {
         var matched = [DocumentReference]()
-        for (key, val) in matchedRefs {
-            if val == true {
-                matched.append(key)
-            }
+        for ing in matchedIngredients{
+            let ref = db.document("water-footprint-data/" + ing.name.capitalized)
+            matched.append(ref)
         }
         return matched
     }
@@ -120,36 +83,44 @@ class addScannedItemViewController: UIViewController, UITableViewDelegate, UITab
      - Push the selected ingredients and total to Firestore
     */
     @IBAction func saveTapped(_ sender: UIButton) {
-        let group = DispatchGroup()
-        let matched = getMatchedRefsToPush()
-        let refWithMostWater = 0.0
-        for ref in matched {
-            group.enter()
-            ref.getDocument { (document, error) in
-                group.leave()
-                if(document?.exists)!{
-                    let curWater = document?.data()!["gallons_water"] as! Double
-                    self.matchedWaterTotal += curWater
-                    if (curWater > refWithMostWater) {
-                        print(document?.documentID)
-                        self.imageName = (document?.documentID)!
+        if(itemName.text == ""){
+            let alert = UIAlertController(title: "Oops!", message: "Please enter a name", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }else{
+            let group = DispatchGroup()
+            let matched = getMatchedRefsToPush()
+            let refWithMostWater = matchedIngredients.max { $0.waterData < $1.waterData }
+            let imageName = (refWithMostWater?.name)!
+            let matchedWaterTotal = matchedIngredients.map({$0.waterData}).reduce(0, +)
+        
+            let ingredient = Ingredient(name: self.itemName.text!, type: "Scanned", waterData: matchedWaterTotal, description: "", servingSize: 1, category: nil, source: "", quantity: 1, ingredients: matched, imageName: imageName)
+            ingredientsInMeal.append(ingredient)
+        
+            group.notify(queue: .main) {
+                
+                var foodInMeal = [[String : Any]]()
+                var map = [String : Any]()
+        
+                for ing in self.ingredientsInMeal {
+                    if(ing.type == "Database"){
+                        let ref = db.document("water-footprint-data/" + ing.name.capitalized)
+                        map = ["reference" : ref, "quantity" : ing.quantity ?? 1]
+                    } else if(ing.type == "Scanned"){
+                        map = ["name" : ing.name, "total" : ing.waterData, "ingredients": matched, "image": ing.imageName as Any, "quantity" : ing.quantity ?? 1, "type" : ing.type]
+                    }else{
+                        map = ["name" : ing.name, "total" : ing.waterData, "quantity" : ing.quantity ?? 1]
                     }
-                } else {
-                    print("Document does not exist")
+                    foodInMeal.append(map)
                 }
-            }
-        }
-        group.notify(queue: .main) {
-            var map = [String : Any]()
-            let name = self.itemName.text as! String
-            map = ["name" : name, "total" : self.matchedWaterTotal, "refs": matched, "imagePath": self.imageName]
-            self.foodInMeal.append(map)
-            print(self.currentWaterTotal)
-            self.currentTotal = self.currentWaterTotal + self.matchedWaterTotal
-            day.setData([self.mealType + "-meals" : self.foodInMeal], options: SetOptions.merge())
-            day.setData([self.mealType + "_total" : self.currentTotal], options: SetOptions.merge())
-            if let destination = self.navigationController?.viewControllers[1] {
-                self.navigationController?.popToViewController(destination, animated: true)
+                
+                let total = self.ingredientsInMeal.map({$0.waterData}).reduce(0, +)
+                day.setData([self.mealType + "_total" : total], options: SetOptions.merge())
+                day.setData([self.mealType : foodInMeal], options: SetOptions.merge())
+                
+                if let destination = self.navigationController?.viewControllers[1] {
+                    self.navigationController?.popToViewController(destination, animated: true)
+                }
             }
         }
     }
@@ -216,9 +187,18 @@ class addScannedItemViewController: UIViewController, UITableViewDelegate, UITab
                     matchedItem = id
                 }
             }
-            let matchedRef = self.ingredientDB.document(matchedItem!)
-            self.matchedRefs[matchedRef] = true
-            self.tableView.reloadData()
+            
+            let currentIngredient = self.ingredientDB.document(matchedItem!)
+            currentIngredient.getDocument { (document, error) in
+                if(document?.exists)!{
+                    let current_ingredient = Ingredient(document: document!)
+                    self.matchedIngredients.append(current_ingredient)
+                    self.displayedIngredients = self.matchedIngredients
+                    self.tableView.reloadData()
+                } else {
+                    print("No food exists for this meal")
+                }
+            }
         }
     }
     
@@ -266,7 +246,7 @@ class addScannedItemViewController: UIViewController, UITableViewDelegate, UITab
      - Set the number of rows in the TableView to be equal to the number of matched ingredients
     */
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return matchedRefs.count
+        return displayedIngredients.count
     }
     
     /*
@@ -274,21 +254,15 @@ class addScannedItemViewController: UIViewController, UITableViewDelegate, UITab
     */
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "scannedItemCell") as! scannedItemCell
-        let matched = Array(self.matchedRefs.keys)
-        let curRef = matched[indexPath.row]
-        curRef.getDocument { (document, error) in
-            if(document?.exists)!{
-                let name = document?.documentID as! String
-                let gallons = document?.data()!["gallons_water"] as! Double
-                let imagePath = "food-icons/" + name.uppercased() + ".jpg"
-                let imageRef = storage.reference().child(imagePath)
-                cell.name.text = name
-                cell.gallons.text = String(gallons)
-                cell.icon.sd_setImage(with: imageRef, placeholderImage: #imageLiteral(resourceName: "Food"))
-            } else {
-                print("No food exists for this meal")
-            }
-        }
+        
+        let ingredient = displayedIngredients[indexPath.row]
+        
+        cell.name.text = ingredient.name.capitalized
+        cell.gallons.text = String(Int(ingredient.waterData))
+        let imagePath = "food-icons/" + ingredient.name.uppercased() + ".jpg"
+        let imageRef = storage.reference().child(imagePath)
+        cell.icon.sd_setImage(with: imageRef, placeholderImage: #imageLiteral(resourceName: "Food"))
+        
         return cell
     }
     
@@ -303,17 +277,18 @@ class addScannedItemViewController: UIViewController, UITableViewDelegate, UITab
      - Set the value corresponding to the tapped cell as true
     */
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let matched = Array(self.matchedRefs.keys)
-        let curRef = matched[indexPath.row]
-        matchedRefs[curRef] = true
+        let ingredient = displayedIngredients[indexPath.row]
+        matchedIngredients.append(ingredient)
     }
     
     /*
      - Set the value corresponding to the tapped cell as false
     */
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        let matched = Array(self.matchedRefs.keys)
-        let curRef = matched[indexPath.row]
-        matchedRefs[curRef] = false
+        let ingredient = displayedIngredients[indexPath.row]
+        
+        if let index = matchedIngredients.index(where: { $0.name == ingredient.name }) {
+            matchedIngredients.remove(at: index)
+        }
     }
 }

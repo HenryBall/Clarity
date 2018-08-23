@@ -3,7 +3,7 @@
 //  Clarity
 //
 //  Created by Celine Pena on 5/20/18.
-//  Copyright © 2018 Robert. All rights reserved.
+//  Copyright © 2018 Clarity. All rights reserved.
 //
 
 import UIKit
@@ -13,24 +13,26 @@ import Foundation
 import Firebase
 
 class searchViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
-
-    let search_url = "https://api.nal.usda.gov/ndb/search/"
-    let report_url = "https://api.nal.usda.gov/ndb/reports/"
-    let API_KEY = "TGfnBgw7WgOWmRSo24XcFgtaoFbhODXG7KQZzVk4"
     
+    /* IB Outlets */
     @IBOutlet weak var bannerImage: UIImageView!
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
+    
+    /* Class Globals */
     var searchedProducts = [SearchProduct]()
     var ingredientsInMeal = [Ingredient]()
     let today = Date()
     let formatter = DateFormatter()
     var mealType: String!
     
+    let search_url = "https://api.nal.usda.gov/ndb/search/"
+    let report_url = "https://api.nal.usda.gov/ndb/reports/"
+    let API_KEY = "TGfnBgw7WgOWmRSo24XcFgtaoFbhODXG7KQZzVk4"
+    
     // NLP stuffs
     let tagger = NSLinguisticTagger(tagSchemes:[.tokenType, .language, .lexicalClass, .nameType, .lemma], options: 0)
     let options: NSLinguisticTagger.Options = [.omitPunctuation, .omitWhitespace, .joinNames]
-    var ingredientsText: JSON = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,6 +47,9 @@ class searchViewController: UIViewController, UITableViewDataSource, UITableView
         setBanner()
     }
     
+    /**
+     Set the header image based on the meal type
+     */
     func setBanner(){
         switch mealType {
         case "breakfast":
@@ -59,12 +64,46 @@ class searchViewController: UIViewController, UITableViewDataSource, UITableView
             print("error")
         }
     }
-
-    @IBAction func backTapped(_ sender: UIButton) {
-        self.navigationController?.popViewController(animated: true)
+    
+    /**
+     Called when the user selects a row. This function makes a call to the USDA API to get the ingredients for the selected item (returned as JSON).
+     Once the JSON has been recieved, calls compareIngredients to return the list of ingredients that match ingredients for which we have data for.
+     Adds this item to the ingredientsInMeal() array.
+     - Parameter number: "ndbno" number supplied (needed) to query the USDA database (specific to each item)
+     - Parameter name: name of the selected food
+     - Parameter quantity: Quantity the user would like to add to the database
+     */
+    func addItemToList(number: String, name: String, quantity: Int){
+        let params : [String : String] = ["api_key" : API_KEY, "format": "JSON", "type": "b", "ndbno" : number]
+        Alamofire.request(report_url, method: .get, parameters: params).responseJSON{
+            response in
+            if response.result.isSuccess{
+                let itemJSON : JSON = JSON(response.result.value!)
+                
+                let matchedIngredients = self.compareIngredients(text: itemJSON["report"]["food"]["ing"]["desc"])
+                let totalGallons = matchedIngredients.map({$0.waterData}).reduce(0, +) * Double(quantity)
+                let refWithMostWater = matchedIngredients.max { $0.waterData < $1.waterData }
+                let imageName = (refWithMostWater?.name)!
+                
+                let ingredientRefs = self.getMatchedRefsToPush(matchedIngredients: matchedIngredients)
+                
+                let currentIngredient = Ingredient(name: name, type: "USDA", waterData: totalGallons, description: "", servingSize: 1, category: nil, source: "", quantity: quantity, ingredients: ingredientRefs, imageName: imageName)
+                self.ingredientsInMeal.append(currentIngredient)
+                
+            } else {
+                print("Request: \(String(describing: response.request))")
+                print("Error \(String(describing: response.result.error))")
+            }
+        }
     }
     
-    func compareIngredients(text: JSON) -> Double {
+    /**
+     Compares ingredients in the selected food against ingredients from database.
+     - Parameter text: JSON of ingredients in this food
+     - Returns: Array of Ingredients for which we have water footprint data for. If none exist, returns an empty array.
+     - Note: This comparison is based on substrings so it can probably be improved in the future.
+     */
+    func compareIngredients(text: JSON) -> [Ingredient] {
         var ingredientsList: [String]
         var matchedIngredients = [Ingredient]()
         
@@ -82,15 +121,18 @@ class searchViewController: UIViewController, UITableViewDataSource, UITableView
                     }
                 }
             }
-            
-           return matchedIngredients.map({$0.waterData}).reduce(0, +)
+           return matchedIngredients
             
         }else{
             print("Sorry the ingredients for this item are unavailable")
-            return 0.0
+            return []
         }
     }
     
+    /**
+     Splits ingredients list into single words
+     - Returns: Array of single words
+     */
     func tokenizeText(for text: String) -> [String] {
         var arr = [String]()
         tagger.string = text
@@ -106,34 +148,25 @@ class searchViewController: UIViewController, UITableViewDataSource, UITableView
         }
     }
     
-    func addItemToList(number: String, name: String, quantity: Int){
-        let params : [String : String] = ["api_key" : API_KEY, "format": "JSON", "type": "b", "ndbno" : number]
-        Alamofire.request(report_url, method: .get, parameters: params).responseJSON{
-            response in
-            if response.result.isSuccess{
-                let itemJSON : JSON = JSON(response.result.value!)
-                
-                let totalGallons = self.compareIngredients(text: itemJSON["report"]["food"]["ing"]["desc"]) * Double(quantity)
-                
-                let currentIngredient = Ingredient(name: name, waterData: totalGallons, description: "", servingSize: 1, category: nil, source: "", quantity: quantity, reference: nil)
-                self.ingredientsInMeal.append(currentIngredient)
-                
-            } else {
-                print("Request: \(String(describing: response.request))")
-                print("Error \(String(describing: response.result.error))")
-            }
+    /**
+     Creates reference for each ingredient, appends them to "matched" array
+     - Parameter matchedIngredients: Array of Ingredients for a food item
+     - Returns: Array of ingredient references to be pushed to database
+     */
+    func getMatchedRefsToPush(matchedIngredients: [Ingredient]) -> [DocumentReference] {
+        var matched = [DocumentReference]()
+        for ing in matchedIngredients{
+            let ref = db.document("water-footprint-data/" + ing.name.capitalized)
+            matched.append(ref)
         }
-    }
-    
-    //Set up parameters based on search bar value
-    func searchProducts(searchText: String){
-        let params : [String : String] = ["api_key" : API_KEY, "q" : searchText, "format": "JSON", "sort": "r"]
-        getSearchData(url: search_url, parameters: params)
+        return matched
     }
     
     //Make Call to API to search for Item
-    func getSearchData(url: String, parameters: [String: String]){
-        Alamofire.request(url, method: .get, parameters: parameters).responseJSON{
+    func searchProducts(searchText: String){
+        let params : [String : String] = ["api_key" : API_KEY, "q" : searchText, "format": "JSON", "sort": "r"]
+        
+        Alamofire.request(search_url, method: .get, parameters: params).responseJSON{
             response in
             if response.result.isSuccess{
                 let searchJSON : JSON = JSON(response.result.value!)
@@ -178,16 +211,28 @@ class searchViewController: UIViewController, UITableViewDataSource, UITableView
         self.tableView.reloadData()
     }
     
+    //------------------------------------------ IBActions --------------------------------------------------
+    
+    /**
+     When the user presses the "<" button, returns to the home screen
+     - Parameter sender: "<" back button */
+    @IBAction func backTapped(_ sender: UIButton) {
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    /**
+     When the user presses the "add" button, updates the ingredients in the database and returns to HomeViewController
+     - Parameter sender: "add" button on top right */
     @IBAction func doneTapped(_ sender: UIButton) {
         var foodInMeal = [[String : Any]]()
         var map = [String : Any]()
         
         for ing in ingredientsInMeal {
-            if(ing.source != ""){
+            if(ing.type == "Database"){
                 let ref = db.document("water-footprint-data/" + ing.name.capitalized)
                 map = ["reference" : ref, "quantity" : ing.quantity ?? 1]
-            } else {
-                map = ["name" : ing.name, "total" : ing.waterData, "quantity" : ing.quantity ?? 1]
+            }else {
+                map = ["name" : ing.name, "total" : ing.waterData, "ingredients": ing.ingredients as Any, "image": ing.imageName as Any, "quantity" : ing.quantity ?? 1, "type" : ing.type]
             }
             foodInMeal.append(map)
         }

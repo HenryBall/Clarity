@@ -29,12 +29,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
     
         let navigationController: UINavigationController = s.instantiateInitialViewController() as! UINavigationController
         
-        //if (!GIDSignIn.sharedInstance().hasAuthInKeychain()){
-          //  navigationController.viewControllers = [loginViewController]
-        //} else {
-            //navigationController.viewControllers = [homeViewController]
-            navigationController.viewControllers = [onBoarding]
-        //}
+        if (!GIDSignIn.sharedInstance().hasAuthInKeychain()){
+            navigationController.viewControllers = [loginViewController]
+        } else {
+            navigationController.viewControllers = [homeViewController]
+            //navigationController.viewControllers = [onBoarding]
+        }
         self.window.rootViewController = navigationController
         self.window.makeKeyAndVisible()
         

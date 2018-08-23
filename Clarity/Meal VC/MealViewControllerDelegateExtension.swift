@@ -21,10 +21,17 @@ extension MealViewController {
     //Set the name, # of gallons and image for each ingredient
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "IngredientCell") as! IngredientCell
-        cell.label.text = ingredientsInMeal[indexPath.row].name.capitalized + " (x" + String(ingredientsInMeal[indexPath.row].quantity!) + ")"
-        cell.gallonsWaterLabel.text = String(Int(ingredientsInMeal[indexPath.row].waterData) * ingredientsInMeal[indexPath.row].quantity!)
-        cell.gallonsPerServing.text = String(Int(ingredientsInMeal[indexPath.row].waterData)) + " gal / " + String(format: "%.2f", ingredientsInMeal[indexPath.row].servingSize!) + " oz"
-        let imagePath = "food-icons/" + ingredientsInMeal[indexPath.row].name.uppercased() + ".jpg"
+        let food = ingredientsInMeal[indexPath.row]
+        
+        cell.label.text = food.name.capitalized + " (x" + String(food.quantity!) + ")"
+        cell.gallonsWaterLabel.text = String(Int(food.waterData) * ingredientsInMeal[indexPath.row].quantity!)
+        cell.gallonsPerServing.text = String(Int(food.waterData)) + " gal / " + String(format: "%.2f", food.servingSize!) + " oz"
+        var imagePath = "food-icons/" + food.name.uppercased() + ".jpg"
+        
+        if(food.type != "Database"){
+            imagePath = "food-icons/" + (food.imageName?.uppercased())! + ".jpg"
+        }
+        
         let imageRef = storage.reference().child(imagePath)
         cell.icon.sd_setImage(with: imageRef, placeholderImage: #imageLiteral(resourceName: "Food"))
         return cell
@@ -66,11 +73,11 @@ extension MealViewController {
             var map = [String : Any]()
             
             for ing in ingredientsInMeal {
-                if(ing.source != ""){
+                if(ing.type == "Database"){
                     let ref = db.document("water-footprint-data/" + ing.name.capitalized)
                     map = ["reference" : ref, "quantity" : ing.quantity ?? 1]
                 } else {
-                    map = ["name" : ing.name, "total" : ing.waterData, "quantity" : ing.quantity ?? 1]
+                    map = ["name" : ing.name, "total" : ing.waterData, "ingredients": ing.ingredients as Any, "image": ing.imageName as Any, "quantity" : ing.quantity ?? 1, "type" : ing.type]
                 }
                 foodInMeal.append(map)
             }
@@ -79,5 +86,4 @@ extension MealViewController {
             self.tableView.deleteRows(at: [indexPath], with: .automatic)
         }
     }
-
 }
