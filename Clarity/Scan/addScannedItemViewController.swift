@@ -133,8 +133,8 @@ class addScannedItemViewController: UIViewController, UITableViewDelegate, UITab
         if text != JSON.null{
             let ingredientsList = text.string!.lowercased().components(separatedBy: ", ")
             for ingredient in ingredientsList {
-                partOfSpeech(text: ingredient)
-                findCandidates(ingredient: ingredient)
+                let strippedIngr = partOfSpeech(text: ingredient)
+                findCandidates(ingredient: strippedIngr)
             }
         }else{
             print("Sorry, the ingredients for this item are unavailable")
@@ -202,18 +202,27 @@ class addScannedItemViewController: UIViewController, UITableViewDelegate, UITab
         }
     }
     
-    func partOfSpeech(text: String) {
+    /*
+     - Takes in a string and removes verbs
+     */
+    func partOfSpeech(text: String) -> String {
         tagger.string = text
+        var outString = ""
         let range = NSRange(location: 0, length: text.utf16.count)
         if #available(iOS 11.0, *) {
             tagger.enumerateTags(in: range, unit: .word, scheme: .lexicalClass, options: options) { tag, tokenRange, _ in
                 if let tag = tag {
                     let word = (text as NSString).substring(with: tokenRange)
-                    print("\(word): \(tag)")
+                    if (tag.rawValue == "Verb") {
+                        print("We don't want verbs")
+                    } else {
+                        outString = outString + word
+                    }
                 }
             }
+            return outString
         } else {
-            print("iOS 11 not availible")
+            return outString
         }
     }
     
@@ -231,7 +240,7 @@ class addScannedItemViewController: UIViewController, UITableViewDelegate, UITab
             }
             return arr
         } else {
-            return []
+            return arr
         }
     }
     
@@ -246,7 +255,7 @@ class addScannedItemViewController: UIViewController, UITableViewDelegate, UITab
      - Set the number of rows in the TableView to be equal to the number of matched ingredients
     */
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return displayedIngredients.count
+        return matchedIngredients.count
     }
     
     /*
