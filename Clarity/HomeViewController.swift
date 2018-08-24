@@ -66,7 +66,6 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         super.viewDidLoad()
         self.navigationController?.isNavigationBarHidden = true
         self.scrollView.delegate = self
-        //dailyGoal = defaults.double(forKey: "water_limit")
         databaseDateFormatter.timeStyle = .none
         databaseDateFormatter.dateStyle = .long
         databaseDateFormatter.string(from: today)
@@ -79,7 +78,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         queryIngredientsFromFirebase()
         getBarGraphData()
         dateLabel.text = labelDateFormatter.string(from: today)
-        self.scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width * 3, height: 260.0)
+        //self.scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width * 3, height: 260.0)
         self.navigationItem.title = labelDateFormatter.string(from: today)
         
         initCircle()
@@ -300,9 +299,9 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
                 let dinnerTotal = self.getDinnerTotalForDay(document: document!)
                 let snacksTotal = self.getSnackTotalForDay(document: document!)
                 let totalAsString = String(Int(total))
-                self.getAverage()
+                //self.getAverage()
                 self.updateCircle(dailyTotal: Float(total))
-                self.dailyTotal.text = totalAsString
+                //self.dailyTotal.text = totalAsString
                 self.updatePieChart(breakfast: breakfastTotal, lunch: lunchTotal, dinner: dinnerTotal, snacks: snacksTotal)
             }
         }
