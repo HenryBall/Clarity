@@ -35,6 +35,7 @@ class addScannedItemViewController: UIViewController, UITableViewDelegate, UITab
         tableView.delegate = self
         tableView.dataSource = self
         tableView.keyboardDismissMode = .onDrag
+        tableView.tableFooterView = UIView(frame: CGRect.zero)
         setBannerImage()
         ingredientDB = db.collection("water-footprint-data")
         invertedIndex = db.collection("water-data-inverted-index")

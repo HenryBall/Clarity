@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "joseph-gonzalez-192345-unsplash.png",
+      "filename" : "Breakfast Banner.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "joseph-gonzalez-192345-unsplash@2x.png",
+      "filename" : "Breakfast Banner@2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "joseph-gonzalez-192345-unsplash@3x.png",
+      "filename" : "Breakfast Banner@3x.png",
       "scale" : "3x"
     }
   ],

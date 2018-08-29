@@ -12,15 +12,37 @@ class CirclePath: UIView {
 
     let shapeLayer = CAShapeLayer()
     
-    var value: Float = 0 {
+    var startAngle: Float = 0 {
         didSet {
             drawPath()
         }
     }
     
-    var color: CGColor = UIColor.gray.cgColor {
+    var endAngle: Float = 0 {
+        didSet {
+            drawPath()
+        }
+    }
+    
+    var color: CGColor = UIColor.clear.cgColor {
         didSet {
             shapeLayer.strokeColor = color
+        }
+    }
+    
+    var fillColor: CGColor = UIColor.clear.cgColor {
+        didSet {
+            shapeLayer.fillColor = fillColor
+        }
+    }
+    
+    var roundedLineCap: Bool = false {
+        didSet {
+            if roundedLineCap {
+                shapeLayer.lineCap = kCALineCapRound
+            } else {
+                shapeLayer.lineCap = kCALineCapSquare
+            }
         }
     }
     
@@ -31,7 +53,8 @@ class CirclePath: UIView {
     }
     
     func drawPath() {
-        shapeLayer.strokeEnd = CGFloat(value)
+        shapeLayer.strokeStart = CGFloat(startAngle)
+        shapeLayer.strokeEnd = CGFloat(endAngle)
     }
     
     override init(frame: CGRect) {
@@ -40,9 +63,10 @@ class CirclePath: UIView {
         layer.addSublayer(shapeLayer)
         let path = UIBezierPath(ovalIn: bounds)
         shapeLayer.path = path.cgPath
-        shapeLayer.fillColor = UIColor.clear.cgColor
-        shapeLayer.strokeEnd = CGFloat(value)
-        shapeLayer.lineCap = kCALineCapRound
+        shapeLayer.strokeColor = color
+        shapeLayer.fillColor = fillColor
+        shapeLayer.strokeStart = CGFloat(startAngle)
+        shapeLayer.strokeEnd = CGFloat(endAngle)
         shapeLayer.speed = 0.3
     }
     

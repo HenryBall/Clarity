@@ -47,7 +47,7 @@ extension MealViewController {
     
     //Set the number of ingredients to show
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        tableViewHeight.constant = CGFloat(Double(ingredientsInMeal.count)*75.0)
+        //tableViewHeight.constant = CGFloat(Double(ingredientsInMeal.count)*75.0)
         return ingredientsInMeal.count
     }
     

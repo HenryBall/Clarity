@@ -45,13 +45,24 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var pieChart: PieChartView!
     @IBOutlet weak var lineChart: LineChartView!
     @IBOutlet var barGraphDateLabels: [UILabel]!
+    @IBOutlet weak var breakfastSubLabel: UILabel!
+    @IBOutlet weak var lunchSubLabel: UILabel!
+    @IBOutlet weak var dinnerSubLabel: UILabel!
+    @IBOutlet weak var snacksSubLabel: UILabel!
+    @IBOutlet weak var breakfastLegend: UIView!
+    @IBOutlet weak var lunchLegend: UIView!
+    @IBOutlet weak var dinnerLegend: UIView!
+    @IBOutlet weak var snacksLegend: UIView!
     
     var todaysTotal: Double!
     var dailyGoal : Double!
     var cp : CirclePath!
     var track : CirclePath!
-    var trackPath : CAShapeLayer!
-    var motionPath : CAShapeLayer!
+    var breakfastCP : CirclePath!
+    var lunchCP : CirclePath!
+    var dinnerCP : CirclePath!
+    var snacksCP : CirclePath!
+    var pieChartTrack : CirclePath!
     
     @IBOutlet weak var scrollView: UIScrollView!
     
@@ -76,11 +87,8 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         userRef = db.collection("users").document(user)
         day = db.collection("users").document(defaults.string(forKey: "user_id")!).collection("meals").document(databaseDateFormatter.string(from: today))
         queryIngredientsFromFirebase()
-        getBarGraphData()
         dateLabel.text = labelDateFormatter.string(from: today)
-        //self.scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width * 3, height: 260.0)
         self.navigationItem.title = labelDateFormatter.string(from: today)
-        
         initCircle()
     }
     
@@ -110,11 +118,12 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         cp.color = mainBlue.cgColor
         cp.color = UIColor(red: 89/255, green: 166/255, blue: 255/255, alpha: 255/255).cgColor
         cp.transform = CGAffineTransform(rotationAngle: CGFloat(3*CFloat.pi/2))
+        cp.roundedLineCap = true
         
         track = CirclePath(frame: pathRect)
         track.color = lightGrey.cgColor
         track.width = 5
-        track.value = 1.0
+        track.endAngle = 1.0
         
         circleView.addSubview(track)
         circleView.addSubview(cp)
@@ -123,108 +132,80 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     func updateCircle(dailyTotal: Float) {
         let percentage = dailyTotal/Float(dailyGoal)
         let percent = percentage * 100
-   
-        if(percent < 25.0){
-            cp.color = lightestBlue.cgColor
-        }else if(percent < 50.0){
-            cp.color = mainBlue.cgColor
-        }else if(percent < 75.0){
-            cp.color = darkerBlue.cgColor
-        }else{
-            cp.color = darkestBlue.cgColor
-        }
+        cp.color = UIColor(red: CGFloat((187 - percent * 1.77)/255), green: CGFloat((218 - percent * 1.55)/255), blue: CGFloat((255 - percent * 1.3)/255), alpha: 1).cgColor
         percentLabel.text = String(describing: (Int(percent))) + "%"
-        cp.value = percentage
+        cp.endAngle = percentage
     }
     
-    //line chart
-    func updateChartWithData(allWaterData: [barChartEntry]) {
-        var dataEntries: [ChartDataEntry] = []
-
-        for i in 0..<allWaterData.count {
-            let dataEntry = ChartDataEntry(x: Double(i), y: Double(allWaterData[i].value))
-            dataEntries.append(dataEntry)
-        }
+    func drawPieChart(breakfast: Double, lunch: Double, dinner: Double, snacks: Double, dailyTotal : Double) {
+        let pathRect = CGRect(x: 0, y: 0, width: pieChart.bounds.width, height: pieChart.bounds.height)
+        let legendRect = CGRect(x: 0, y: 0, width: breakfastLegend.bounds.width, height: breakfastLegend.bounds.height)
         
-        let set1 = LineChartDataSet(values: dataEntries, label: "")
-        set1.drawIconsEnabled = false
+        let breakfastLegendCP = CirclePath(frame: legendRect)
+        breakfastLegendCP.fillColor = UIColor(red: 89/255, green: 166/255, blue: 255/255, alpha: 255/255).cgColor
+        breakfastLegendCP.endAngle = 1.0
+        breakfastLegendCP.width = 10
+        breakfastLegend.addSubview(breakfastLegendCP)
         
-        set1.setColor(.black)
-        set1.drawCirclesEnabled = false
-        set1.lineWidth = 0
-        set1.valueFont = .systemFont(ofSize: 9)
-        set1.formLineWidth = 1
-        set1.formSize = 15
-        set1.drawValuesEnabled = false
-        set1.mode = .cubicBezier
+        let lunchLegendCP = CirclePath(frame: legendRect)
+        lunchLegendCP.fillColor = UIColor(red: 255/255, green: 153/255, blue: 127/255, alpha: 255/255).cgColor
+        lunchLegendCP.endAngle = 1.0
+        lunchLegendCP.width = 10
+        lunchLegend.addSubview(lunchLegendCP)
         
-        let gradientColors = [UIColor.white.cgColor, mainBlue.cgColor]
-        let gradient = CGGradient(colorsSpace: nil, colors: gradientColors as CFArray, locations: nil)!
+        let dinnerLegendCP = CirclePath(frame: legendRect)
+        dinnerLegendCP.fillColor = UIColor(red: 155/255, green: 206/255, blue: 121/255, alpha: 255/255).cgColor
+        dinnerLegendCP.endAngle = 1.0
+        dinnerLegendCP.width = 10
+        dinnerLegend.addSubview(dinnerLegendCP)
         
-        set1.fillAlpha = 1
-        set1.fill = Fill(linearGradient: gradient, angle: 90)
-        set1.drawFilledEnabled = true
+        let snacksLegendCP = CirclePath(frame: legendRect)
+        snacksLegendCP.fillColor = UIColor(red: 239/255, green: 202/255, blue: 100/255, alpha: 255/255).cgColor
+        snacksLegendCP.endAngle = 1.0
+        snacksLegendCP.width = 10
+        snacksLegend.addSubview(snacksLegendCP)
         
-        let data = LineChartData(dataSet: set1)
-        lineChart.data = data
+        pieChartTrack = CirclePath(frame: pathRect)
+        pieChartTrack.color = lightGrey.cgColor
+        pieChartTrack.width = 5
+        pieChartTrack.endAngle = 1.0
         
-        lineChart.rightAxis.drawAxisLineEnabled = false //hide horizontal axis lines
-        lineChart.rightAxis.drawGridLinesEnabled = false //hide right axis line
-        lineChart.rightAxis.labelTextColor = textColor
+        let breakfastPercentage = Float(breakfast)/Float(dailyTotal)
+        breakfastCP = CirclePath(frame: pathRect)
+        breakfastCP.color = UIColor(red: 89/255, green: 166/255, blue: 255/255, alpha: 255/255).cgColor
+        breakfastCP.transform = CGAffineTransform(rotationAngle: CGFloat(3*CFloat.pi/2))
+        breakfastCP.width = 12
+        breakfastCP.endAngle = breakfastPercentage
         
-        lineChart.leftAxis.drawGridLinesEnabled = false //hide horizontal axis lines
-        lineChart.leftAxis.drawLabelsEnabled = false //don't show axis labels on left side
-        lineChart.leftAxis.drawAxisLineEnabled = false //hide left axis line
+        let lunchPercentage = Float(lunch)/Float(dailyTotal)
+        lunchCP = CirclePath(frame: pathRect)
+        lunchCP.width = 12
+        lunchCP.color = UIColor(red: 255/255, green: 153/255, blue: 127/255, alpha: 255/255).cgColor
+        lunchCP.transform = CGAffineTransform(rotationAngle: CGFloat(3*CFloat.pi/2))
+        lunchCP.startAngle = breakfastCP.endAngle
+        lunchCP.endAngle = breakfastCP.endAngle + lunchPercentage
         
-        lineChart.xAxis.drawGridLinesEnabled = false //hide vertical grid lines
-        lineChart.xAxis.drawLabelsEnabled = false //hide x axis label
-        lineChart.xAxis.axisLineColor = UIColor.clear //hides line at top of graph
+        let dinnerPercentage = Float(dinner)/Float(dailyTotal)
+        dinnerCP = CirclePath(frame: pathRect)
+        dinnerCP.width = 12
+        dinnerCP.color = UIColor(red: 155/255, green: 206/255, blue: 121/255, alpha: 255/255).cgColor
+        dinnerCP.transform = CGAffineTransform(rotationAngle: CGFloat(3*CFloat.pi/2))
+        dinnerCP.startAngle = lunchCP.endAngle
+        dinnerCP.endAngle = lunchCP.endAngle + dinnerPercentage
         
-        lineChart.legend.enabled = false //hide legend
-        lineChart.chartDescription?.enabled = false
-        lineChart.isUserInteractionEnabled = false
-    }
-    
-    //Pie Chart
-    func updatePieChart(breakfast: Double, lunch: Double, dinner: Double, snacks: Double)  {
+        let snacksPercentage = Float(snacks)/Float(dailyTotal)
+        snacksCP = CirclePath(frame: pathRect)
+        snacksCP.width = 12
+        snacksCP.color = UIColor(red: 239/255, green: 202/255, blue: 100/255, alpha: 255/255).cgColor
+        snacksCP.transform = CGAffineTransform(rotationAngle: CGFloat(3*CFloat.pi/2))
+        snacksCP.startAngle = dinnerCP.endAngle
+        snacksCP.endAngle = dinnerCP.endAngle + snacksPercentage
         
-        let meals = [breakfast, lunch, dinner, snacks]
-        let track = ["Breakfast", "Lunch", "Dinner", "Snacks"]
-        var entries = [PieChartDataEntry]()
-
-        for (index, value) in meals.enumerated() {
-            let entry = PieChartDataEntry()
-            entry.y = value
-            entry.label = track[index]
-            entries.append(entry)
-        }
-    
-        
-        let set = PieChartDataSet(values: entries, label: "")
-        set.colors = [lightestBlue, mainBlue, darkerBlue, darkestBlue]
-        set.drawValuesEnabled = true
-        
-        let data = PieChartData(dataSet: set)
-        let pFormatter = NumberFormatter()
-        pFormatter.numberStyle = .percent
-        pFormatter.maximumFractionDigits = 0
-        pFormatter.multiplier = 1
-        pFormatter.percentSymbol =  "%"
-        data.setValueFormatter(DefaultValueFormatter(formatter: pFormatter))
-        
-        pieChart.data = data
-        pieChart.chartDescription?.text = ""
-        pieChart.noDataText = "No data available"
-        pieChart.usePercentValuesEnabled = true
-        pieChart.noDataTextColor = textColor
-        pieChart.legend.horizontalAlignment = .center
-        pieChart.legend.formSize = 20.0
-        pieChart.legend.textColor = textColor
-        pieChart.drawEntryLabelsEnabled = false
-        pieChart.isUserInteractionEnabled = false
-        
-        pieChart.holeColor = UIColor.clear
-        pieChart.transparentCircleColor = UIColor.clear
+        pieChart.addSubview(pieChartTrack)
+        pieChart.addSubview(breakfastCP)
+        pieChart.addSubview(lunchCP)
+        pieChart.addSubview(dinnerCP)
+        pieChart.addSubview(snacksCP)
     }
     
     /* IBActions ********************************************************************************************************/
@@ -293,52 +274,57 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     func getTodaysTotal(){
         day.getDocument { (document, error) in
             if(document?.exists)!{
-                let total = self.getTotalForDay(document: document!)
-                let breakfastTotal = self.getBreakfastTotalForDay(document: document!)
-                let lunchTotal = self.getLunchTotalForDay(document: document!)
-                let dinnerTotal = self.getDinnerTotalForDay(document: document!)
-                let snacksTotal = self.getSnackTotalForDay(document: document!)
-                let totalAsString = String(Int(total))
-                //self.getAverage()
+                let total = floor(self.getTotalForDay(document: document!))
+                let breakfastTotal = floor(self.getBreakfastTotalForDay(document: document!))
+                let lunchTotal = floor(self.getLunchTotalForDay(document: document!))
+                let dinnerTotal = floor(self.getDinnerTotalForDay(document: document!))
+                let snacksTotal = floor(self.getSnackTotalForDay(document: document!))
                 self.updateCircle(dailyTotal: Float(total))
-                //self.dailyTotal.text = totalAsString
-                self.updatePieChart(breakfast: breakfastTotal, lunch: lunchTotal, dinner: dinnerTotal, snacks: snacksTotal)
+                self.drawPieChart(breakfast: breakfastTotal, lunch: lunchTotal, dinner: dinnerTotal, snacks: snacksTotal, dailyTotal: total)
             }
         }
     }
     
     func getBreakfastTotalForDay(document: DocumentSnapshot) -> Double {
         if let breakfast_total = document.data()!["breakfast_total"]{
-            let breakfastTotal = breakfast_total as! Double
+            let breakfastTotal = floor(breakfast_total as! Double)
+            breakfastSubLabel.text = String(Int(breakfastTotal)) + " gallons of water consumed"
             return breakfastTotal
         } else {
+            breakfastSubLabel.text = "No of water consumed"
             return 0.0
         }
     }
     
     func getLunchTotalForDay(document: DocumentSnapshot) -> Double {
         if let lunch_total = document.data()!["lunch_total"]{
-            let lunchTotal = lunch_total as! Double
+            let lunchTotal = floor(lunch_total as! Double)
+            lunchSubLabel.text = String(Int(lunchTotal)) + " gallons of water consumed"
             return lunchTotal
         } else {
+            lunchSubLabel.text = "No water consumed"
             return 0.0
         }
     }
     
     func getDinnerTotalForDay(document: DocumentSnapshot) -> Double {
-        if let Dinner_total = document.data()!["dinner_total"]{
-            let DinnerTotal = Dinner_total as! Double
-            return DinnerTotal
+        if let dinner_total = document.data()!["dinner_total"]{
+            let dinnerTotal = floor(dinner_total as! Double)
+            dinnerSubLabel.text = String(Int(dinnerTotal)) + " gallons of water consumed"
+            return dinnerTotal
         } else {
+            dinnerSubLabel.text = "No water consumed"
             return 0.0
         }
     }
     
     func getSnackTotalForDay(document: DocumentSnapshot) -> Double {
-        if let Snack_total = document.data()!["snacks_total"]{
-            let SnackTotal = Snack_total as! Double
-            return SnackTotal
+        if let snack_total = document.data()!["snacks_total"]{
+            let snackTotal = floor(snack_total as! Double)
+            snacksSubLabel.text = String(Int(snackTotal)) + " gallons of water consumed"
+            return snackTotal
         } else {
+            snacksSubLabel.text = "No water consumed"
             return 0.0
         }
     }
@@ -380,7 +366,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     }
     
     func getBarGraphData(){
-        var waterData = [Double]()
+        let waterData = [Double]()
         var entries = [barChartEntry]()
         var dates = [Date]()
         
@@ -438,7 +424,6 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
                         entries.append (barChartEntry(date: date!, value: 0))
                     }
                 }
-                self.updateChartWithData(allWaterData: entries)
             }
         }
     }
