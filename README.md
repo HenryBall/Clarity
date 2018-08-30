@@ -1,2 +1,2 @@
 # Clarity
-![img_5402](https://user-images.githubusercontent.com/20412561/44828238-d7adc300-abcb-11e8-86dd-f61fc39d9106.png)
+![group](https://user-images.githubusercontent.com/20412561/44828340-4ab73980-abcc-11e8-813d-c3420147e52f.png)
