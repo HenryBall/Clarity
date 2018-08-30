@@ -60,6 +60,8 @@ extension MealViewController {
             day.getDocument { (document, error) in
                 if(document?.exists)!{
                     if var currentTotal = document?.data()![self.mealType + "_total"] as? Double {
+                        print(currentTotal)
+                        print(deletedIngredient.waterData)
                         currentTotal = currentTotal - (deletedIngredient.waterData * Double(deletedIngredient.quantity!))
                         self.gallonsInMeal.text = String(Int(currentTotal))
                         self.day.setData([self.self.mealType + "_total" : currentTotal], options: SetOptions.merge())
