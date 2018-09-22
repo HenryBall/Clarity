@@ -10,7 +10,6 @@ import UIKit
 import FirebaseStorage
 import SDWebImage
 import FirebaseStorageUI
-import Charts
 
 class IngredientsDetailsViewController: UIViewController {
     var ingredientToShow: Ingredient!
@@ -20,7 +19,7 @@ class IngredientsDetailsViewController: UIViewController {
     @IBOutlet weak var ingredientDescription: UITextView!
     @IBOutlet weak var compareLabel: UILabel!
     @IBOutlet weak var sourceLabel: UITextView!
-    @IBOutlet weak var barChart: BarChartView!
+    //@IBOutlet weak var barChart: BarChartView!
     @IBOutlet weak var servingSizeLabel: UILabel!
     
     override func viewDidLoad() {
@@ -45,7 +44,7 @@ class IngredientsDetailsViewController: UIViewController {
         sourceLabel.text = "Source: " + ingredientToShow.source!
         servingSizeLabel.text = String(ingredientToShow.servingSize!) + " oz"
         
-        switch(ingredientToShow.category){
+        /*switch(ingredientToShow.category){
         case "protein":
             updateChartWithData(dataToShow: proteins)
         case "fruit":
@@ -60,10 +59,10 @@ class IngredientsDetailsViewController: UIViewController {
             updateChartWithData(dataToShow: other)
         default:
             print("other")
-        }
+        }*/
     }
 
-    func updateChartWithData(dataToShow: [Ingredient]) {
+    /*func updateChartWithData(dataToShow: [Ingredient]) {
         var data = dataToShow
         data.sort(by: { $0.waterData < $1.waterData })
         var dataEntries: [BarChartDataEntry] = []
@@ -99,7 +98,7 @@ class IngredientsDetailsViewController: UIViewController {
         barChart.drawBordersEnabled = false
         barChart.legend.enabled = false
         barChart.data = chartData
-    }
+    }*/
     
     @IBAction func backTapped(_ sender: UIButton) {
         navigationController?.popViewController(animated: true)

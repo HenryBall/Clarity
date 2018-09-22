@@ -21,6 +21,7 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var bannerImage: UIImageView!
     @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var mealLabel: UILabel!
     
     /* Class Globals */
     var mealType: String!
@@ -44,12 +45,16 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
         switch mealType {
         case "breakfast":
             bannerImage.image = #imageLiteral(resourceName: "breakfastBanner")
+            mealLabel.text = "Breakfast"
         case "lunch":
             bannerImage.image = #imageLiteral(resourceName: "lunchBanner")
+            mealLabel.text = "Lunch"
         case "dinner":
             bannerImage.image = #imageLiteral(resourceName: "dinnerBanner")
+            mealLabel.text = "Dinner"
         case "snacks":
             bannerImage.image = #imageLiteral(resourceName: "snacksBanner")
+            mealLabel.text = "Snacks"
         default:
             print("error")
         }

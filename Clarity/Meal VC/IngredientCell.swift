@@ -11,6 +11,8 @@ import UIKit
 class IngredientCell: UITableViewCell {
 
     @IBOutlet weak var icon: UIImageView!
+    @IBOutlet weak var point: UIView!
+    //@IBOutlet weak var icon: UIImageView!
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var gallonsWaterLabel: UILabel!
     @IBOutlet weak var gallonsPerServing: UILabel!

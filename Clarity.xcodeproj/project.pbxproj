@@ -26,6 +26,7 @@
 		9CFD02D120AEAE85007D4BEF /* AddFromDatabaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFD02D020AEAE85007D4BEF /* AddFromDatabaseViewController.swift */; };
 		9CFD02D320AEB1F9007D4BEF /* addDatabaseIngredientCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFD02D220AEB1F9007D4BEF /* addDatabaseIngredientCell.swift */; };
 		BA56D60E21235BB500260AF9 /* scannedItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA56D60D21235BB500260AF9 /* scannedItemCell.swift */; };
+		BA83D3592149E0B3004026FD /* LinePath.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA83D3582149E0B3004026FD /* LinePath.swift */; };
 		E7C0A5E920A9F23E007A8F39 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C0A5E820A9F23E007A8F39 /* AppDelegate.swift */; };
 		E7C0A5EE20A9F23E007A8F39 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E7C0A5EC20A9F23E007A8F39 /* Main.storyboard */; };
 		E7C0A5F320A9F23F007A8F39 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E7C0A5F120A9F23F007A8F39 /* LaunchScreen.storyboard */; };
@@ -81,6 +82,7 @@
 		9CFD02D020AEAE85007D4BEF /* AddFromDatabaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFromDatabaseViewController.swift; sourceTree = "<group>"; };
 		9CFD02D220AEB1F9007D4BEF /* addDatabaseIngredientCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = addDatabaseIngredientCell.swift; sourceTree = "<group>"; };
 		BA56D60D21235BB500260AF9 /* scannedItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = scannedItemCell.swift; sourceTree = "<group>"; };
+		BA83D3582149E0B3004026FD /* LinePath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinePath.swift; sourceTree = "<group>"; };
 		CDD35D5BF6B1106C6A550085 /* Pods_ClarityTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ClarityTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E274A5A283688D6A31B4A23D /* Pods-ClarityUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ClarityUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ClarityUITests/Pods-ClarityUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		E7C0A5E520A9F23E007A8F39 /* Clarity.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Clarity.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -241,6 +243,7 @@
 				9C8BC3DC2128D431006CE451 /* Search Firestore */,
 				E7C0A5E820A9F23E007A8F39 /* AppDelegate.swift */,
 				EB1884B620CDAD4D0000FA98 /* CirclePath.swift */,
+				BA83D3582149E0B3004026FD /* LinePath.swift */,
 				9CB90C3520AA108A00BEADCA /* HomeViewController.swift */,
 				E7F7DB0620AA251500252AA1 /* SettingsViewController.swift */,
 				E7C0A5EC20A9F23E007A8F39 /* Main.storyboard */,
@@ -416,15 +419,11 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Clarity/Pods-Clarity-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
-				"${BUILT_PRODUCTS_DIR}/BoringSSL/openssl.framework",
-				"${BUILT_PRODUCTS_DIR}/Charts/Charts.framework",
-				"${BUILT_PRODUCTS_DIR}/ChartsRealm/ChartsRealm.framework",
+				"${BUILT_PRODUCTS_DIR}/BoringSSL-GRPC/openssl.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMOAuth2/GTMOAuth2.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
-				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
-				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 				"${BUILT_PRODUCTS_DIR}/gRPC/GRPCClient.framework",
@@ -438,14 +437,10 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Charts.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ChartsRealm.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMOAuth2.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GRPCClient.framework",
@@ -547,6 +542,7 @@
 				9CB90C3820AA11B500BEADCA /* MealViewController.swift in Sources */,
 				9C1C29C020B267CA004B7953 /* SearchProduct.swift in Sources */,
 				9C1C29BB20B25585004B7953 /* Food.swift in Sources */,
+				BA83D3592149E0B3004026FD /* LinePath.swift in Sources */,
 				EB1884B920CF78080000FA98 /* SpinnerView.swift in Sources */,
 				EB008A0E20BCEC4E00CE8EC3 /* IngredientsDetailsViewController.swift in Sources */,
 				9CFD02D320AEB1F9007D4BEF /* addDatabaseIngredientCell.swift in Sources */,

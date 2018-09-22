@@ -59,7 +59,6 @@ class CirclePath: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         layer.addSublayer(shapeLayer)
         let path = UIBezierPath(ovalIn: bounds)
         shapeLayer.path = path.cgPath

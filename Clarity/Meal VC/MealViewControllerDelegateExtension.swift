@@ -24,16 +24,29 @@ extension MealViewController {
         let food = ingredientsInMeal[indexPath.row]
         
         cell.label.text = food.name.capitalized + " (x" + String(food.quantity!) + ")"
-        cell.gallonsWaterLabel.text = String(Int(food.waterData) * ingredientsInMeal[indexPath.row].quantity!)
+        cell.gallonsWaterLabel.text = String(Int(food.waterData) * ingredientsInMeal[indexPath.row].quantity!) + " gal."
         cell.gallonsPerServing.text = String(Int(food.waterData)) + " gal / " + String(format: "%.2f", food.servingSize!) + " oz"
-        var imagePath = "food-icons/" + food.name.uppercased() + ".jpg"
+        //cell.gallonsPerServing.text = ingredientsInMeal[indexPath.row].category
+        if (ingredientsInMeal[indexPath.row].category == "fruit") {
+            cell.icon.image = #imageLiteral(resourceName: "fruit")
+        } else if (ingredientsInMeal[indexPath.row].category == "vegetable") {
+            cell.icon.image = #imageLiteral(resourceName: "veg")
+        } else if (ingredientsInMeal[indexPath.row].category == "drinks") {
+            cell.icon.image = #imageLiteral(resourceName: "drink")
+        } else if (ingredientsInMeal[indexPath.row].category == "protein") {
+            cell.icon.image = #imageLiteral(resourceName: "protein")
+        } else {
+            cell.icon.image = #imageLiteral(resourceName: "drink")
+        }
+        cell.point.layer.cornerRadius = cell.point.bounds.width/2
         
+        /*var imagePath = "food-icons/" + food.name.uppercased() + ".jpg"
         if(food.type != "Database"){
             imagePath = "food-icons/" + (food.imageName?.uppercased())! + ".jpg"
         }
-        
         let imageRef = storage.reference().child(imagePath)
-        cell.icon.sd_setImage(with: imageRef, placeholderImage: #imageLiteral(resourceName: "Food"))
+        cell.icon.sd_setImage(with: imageRef, placeholderImage: #imageLiteral(resourceName: "Food"))*/
+        
         return cell
     }
     

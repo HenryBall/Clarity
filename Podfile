@@ -12,8 +12,6 @@ pod 'Firebase/Firestore'
 pod 'Firebase/Storage'
 pod 'SDWebImage', '~> 4.0'
 pod 'FirebaseUI/Storage', '~> 4.0'
-pod 'Charts'
-pod 'ChartsRealm'
 pod 'GoogleSignIn'
 pod 'Firebase/Auth'
 

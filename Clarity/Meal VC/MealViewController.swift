@@ -23,6 +23,7 @@ import SwiftyJSON
 class MealViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     /* IBOutlets */
+    @IBOutlet weak var mealName: UILabel!
     @IBOutlet weak var bannerImageTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var loadingView: UIView!
     @IBOutlet weak var scrollView: UIScrollView!
@@ -32,7 +33,6 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tableViewHeight: NSLayoutConstraint!
     @IBOutlet weak var addIngredientsView: UIView!
-    @IBOutlet weak var bannerLabel: UILabel!
     
     /* Views */
     var spinner : SpinnerView!
@@ -94,17 +94,17 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
     func setBannerImage(){
         switch mealType {
         case "breakfast":
-            bannerImage.image = #imageLiteral(resourceName: "breakfastBanner")
-            bannerLabel.text = "Breakfast"
+            bannerImage.image = #imageLiteral(resourceName: "mugLarge")
+            mealName.text = "Breakfast"
         case "lunch":
-            bannerImage.image = #imageLiteral(resourceName: "lunchBanner")
-            bannerLabel.text = "Lunch"
+            bannerImage.image = #imageLiteral(resourceName: "sandoLarge")
+            mealName.text = "Lunch"
         case "dinner":
-            bannerImage.image = #imageLiteral(resourceName: "dinnerBanner")
-            bannerLabel.text = "Dinner"
+            bannerImage.image = #imageLiteral(resourceName: "chickenLarge")
+            mealName.text = "Dinner"
         case "snacks":
-            bannerImage.image = #imageLiteral(resourceName: "snacksBanner")
-            bannerLabel.text = "Snacks"
+            bannerImage.image = #imageLiteral(resourceName: "nutLarge")
+            mealName.text = "Snacks"
         default:
             print("error")
         }
@@ -124,10 +124,10 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     /**
      Creates parallax scrolling effect over the banner image */
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    /*func scrollViewDidScroll(_ scrollView: UIScrollView) {
         self.bannerImage.alpha = ((UIScreen.main.bounds.width * 45/100)-self.scrollView.contentOffset.y)/(UIScreen.main.bounds.width*45/100)
         bannerImageTopConstraint?.constant = min(0, -scrollView.contentOffset.y / 2.0)
-    }
+    }*/
 
     /**
      Get the ingredients stored in Firebase for this specific meal.
@@ -140,7 +140,7 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
         day.getDocument { (document, error) in
             if(document?.exists)!{
                 if let gallonsTotal = document?.data()![self.mealType + "_total"] as? Double {
-                    self.gallonsInMeal.text = String(Int(gallonsTotal)) + " gal"
+                    self.gallonsInMeal.text = String(Int(gallonsTotal)) + " gal."
                 } else {
                     self.gallonsInMeal.text = ""
                 }

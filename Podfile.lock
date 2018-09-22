@@ -1,17 +1,11 @@
 PODS:
-  - Alamofire (4.7.2)
-  - BoringSSL (10.0.2):
-    - BoringSSL/Implementation (= 10.0.2)
-    - BoringSSL/Interface (= 10.0.2)
-  - BoringSSL/Implementation (10.0.2):
-    - BoringSSL/Interface (= 10.0.2)
-  - BoringSSL/Interface (10.0.2)
-  - Charts (3.0.5):
-    - Charts/Core (= 3.0.5)
-  - Charts/Core (3.0.5)
-  - ChartsRealm (3.0.5):
-    - Charts (= 3.0.5)
-    - RealmSwift (~> 3.1.1)
+  - Alamofire (4.7.3)
+  - BoringSSL-GRPC (0.0.1):
+    - BoringSSL-GRPC/Implementation (= 0.0.1)
+    - BoringSSL-GRPC/Interface (= 0.0.1)
+  - BoringSSL-GRPC/Implementation (0.0.1):
+    - BoringSSL-GRPC/Interface (= 0.0.1)
+  - BoringSSL-GRPC/Interface (0.0.1)
   - Firebase/Auth (4.13.0):
     - Firebase/Core
     - FirebaseAuth (= 4.6.1)
@@ -50,68 +44,63 @@ PODS:
   - FirebaseUI/Storage (4.5.5):
     - Firebase/Storage (~> 4.0)
     - SDWebImage (~> 4.0)
-  - GoogleSignIn (4.1.2):
+  - GoogleSignIn (4.2.0):
     - "GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)"
     - "GoogleToolboxForMac/NSString+URLArguments (~> 2.1)"
     - GTMOAuth2 (~> 1.0)
     - GTMSessionFetcher/Core (~> 1.1)
-  - GoogleToolboxForMac/DebugUtils (2.1.3):
-    - GoogleToolboxForMac/Defines (= 2.1.3)
-  - GoogleToolboxForMac/Defines (2.1.3)
-  - "GoogleToolboxForMac/NSData+zlib (2.1.3)":
-    - GoogleToolboxForMac/Defines (= 2.1.3)
-  - "GoogleToolboxForMac/NSDictionary+URLArguments (2.1.3)":
-    - GoogleToolboxForMac/DebugUtils (= 2.1.3)
-    - GoogleToolboxForMac/Defines (= 2.1.3)
-    - "GoogleToolboxForMac/NSString+URLArguments (= 2.1.3)"
-  - "GoogleToolboxForMac/NSString+URLArguments (2.1.3)"
-  - gRPC (1.11.0):
-    - gRPC-RxLibrary (= 1.11.0)
-    - gRPC/Main (= 1.11.0)
-  - gRPC-Core (1.11.0):
-    - gRPC-Core/Implementation (= 1.11.0)
-    - gRPC-Core/Interface (= 1.11.0)
-  - gRPC-Core/Implementation (1.11.0):
-    - BoringSSL (~> 10.0)
-    - gRPC-Core/Interface (= 1.11.0)
+  - GoogleToolboxForMac/DebugUtils (2.1.4):
+    - GoogleToolboxForMac/Defines (= 2.1.4)
+  - GoogleToolboxForMac/Defines (2.1.4)
+  - "GoogleToolboxForMac/NSData+zlib (2.1.4)":
+    - GoogleToolboxForMac/Defines (= 2.1.4)
+  - "GoogleToolboxForMac/NSDictionary+URLArguments (2.1.4)":
+    - GoogleToolboxForMac/DebugUtils (= 2.1.4)
+    - GoogleToolboxForMac/Defines (= 2.1.4)
+    - "GoogleToolboxForMac/NSString+URLArguments (= 2.1.4)"
+  - "GoogleToolboxForMac/NSString+URLArguments (2.1.4)"
+  - gRPC (1.15.0):
+    - gRPC-RxLibrary (= 1.15.0)
+    - gRPC/Main (= 1.15.0)
+  - gRPC-Core (1.15.0):
+    - gRPC-Core/Implementation (= 1.15.0)
+    - gRPC-Core/Interface (= 1.15.0)
+  - gRPC-Core/Implementation (1.15.0):
+    - BoringSSL-GRPC (= 0.0.1)
+    - gRPC-Core/Interface (= 1.15.0)
     - nanopb (~> 0.3)
-  - gRPC-Core/Interface (1.11.0)
-  - gRPC-ProtoRPC (1.11.0):
-    - gRPC (= 1.11.0)
-    - gRPC-RxLibrary (= 1.11.0)
+  - gRPC-Core/Interface (1.15.0)
+  - gRPC-ProtoRPC (1.15.0):
+    - gRPC-ProtoRPC/Main (= 1.15.0)
+  - gRPC-ProtoRPC/Main (1.15.0):
+    - gRPC (= 1.15.0)
+    - gRPC-RxLibrary (= 1.15.0)
     - Protobuf (~> 3.0)
-  - gRPC-RxLibrary (1.11.0)
-  - gRPC/Main (1.11.0):
-    - gRPC-Core (= 1.11.0)
-    - gRPC-RxLibrary (= 1.11.0)
+  - gRPC-RxLibrary (1.15.0)
+  - gRPC/Main (1.15.0):
+    - gRPC-Core (= 1.15.0)
+    - gRPC-RxLibrary (= 1.15.0)
   - GTMOAuth2 (1.1.6):
     - GTMSessionFetcher (~> 1.1)
-  - GTMSessionFetcher (1.1.15):
-    - GTMSessionFetcher/Full (= 1.1.15)
-  - GTMSessionFetcher/Core (1.1.15)
-  - GTMSessionFetcher/Full (1.1.15):
-    - GTMSessionFetcher/Core (= 1.1.15)
+  - GTMSessionFetcher (1.2.0):
+    - GTMSessionFetcher/Full (= 1.2.0)
+  - GTMSessionFetcher/Core (1.2.0)
+  - GTMSessionFetcher/Full (1.2.0):
+    - GTMSessionFetcher/Core (= 1.2.0)
   - leveldb-library (1.20)
   - nanopb (0.3.8):
     - nanopb/decode (= 0.3.8)
     - nanopb/encode (= 0.3.8)
   - nanopb/decode (0.3.8)
   - nanopb/encode (0.3.8)
-  - Protobuf (3.5.0)
-  - Realm (3.1.1):
-    - Realm/Headers (= 3.1.1)
-  - Realm/Headers (3.1.1)
-  - RealmSwift (3.1.1):
-    - Realm (= 3.1.1)
-  - SDWebImage (4.3.3):
-    - SDWebImage/Core (= 4.3.3)
-  - SDWebImage/Core (4.3.3)
+  - Protobuf (3.6.1)
+  - SDWebImage (4.4.2):
+    - SDWebImage/Core (= 4.4.2)
+  - SDWebImage/Core (4.4.2)
   - SwiftyJSON (3.1.4)
 
 DEPENDENCIES:
   - Alamofire
-  - Charts
-  - ChartsRealm
   - Firebase/Auth
   - Firebase/Core
   - Firebase/Firestore
@@ -124,9 +113,7 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
-    - BoringSSL
-    - Charts
-    - ChartsRealm
+    - BoringSSL-GRPC
     - Firebase
     - FirebaseAnalytics
     - FirebaseAuth
@@ -146,16 +133,12 @@ SPEC REPOS:
     - leveldb-library
     - nanopb
     - Protobuf
-    - Realm
-    - RealmSwift
     - SDWebImage
     - SwiftyJSON
 
 SPEC CHECKSUMS:
-  Alamofire: e4fa87002c137ba2d8d634d2c51fabcda0d5c223
-  BoringSSL: 60dd24df4af296bf41d78e5841dbb95d75f88c0d
-  Charts: 45cdc985b764c838b35ee47eb1365d15735f6d1a
-  ChartsRealm: a08d5fd4d3bfb51d0f0608e4d2218253919fa396
+  Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
+  BoringSSL-GRPC: b7941e85a30e48d3704cfdfe5fb48d3e14106714
   Firebase: 5ec5e863d269d82d66b4bf56856726f8fb8f0fb3
   FirebaseAnalytics: 7ef69e76a5142f643aeb47c780e1cdce4e23632e
   FirebaseAuth: bf22cacf22c60ab454bf2636f556d8892b10b53f
@@ -164,22 +147,20 @@ SPEC CHECKSUMS:
   FirebaseInstanceID: 8d20d890d65c917f9f7d9950b6e10a760ad34321
   FirebaseStorage: 0c223481c8f89ed300cf1239ddd2d9833622c65f
   FirebaseUI: 7f149d40db1a67c459df16540256b66d8f8e8c70
-  GoogleSignIn: d9ef55b10f0aa401a5de2747f59b725e4b9732ac
-  GoogleToolboxForMac: 2501e2ad72a52eb3dfe7bd9aee7dad11b858bd20
-  gRPC: 70703dc9ba31c72341fc7f37745cc1c379edee96
-  gRPC-Core: 164639cd8ae18ca8b65477fafb2efbaecf4f181a
-  gRPC-ProtoRPC: bb5fddf3424aa4fad74d76736578a79fe40e244e
-  gRPC-RxLibrary: 26d53d1b1f306befd4ad4e15bd6de27839a82481
+  GoogleSignIn: 591e46382014e591269f862ba6e7bc0fbd793532
+  GoogleToolboxForMac: 91c824d21e85b31c2aae9bb011c5027c9b4e738f
+  gRPC: d30ff914108c3a4f839e5a93adf70461f3ecbce7
+  gRPC-Core: 96b2b7e7dcc5ece02e2d4fed30919eb9a2800517
+  gRPC-ProtoRPC: d5bbb8b854889b7ec3a9b84aeccc08e639e98b77
+  gRPC-RxLibrary: 99199a2405838e59ac37eed2121c793633878803
   GTMOAuth2: c77fe325e4acd453837e72d91e3b5f13116857b2
-  GTMSessionFetcher: 5fa5b80fd20e439ef5f545fb2cb3ca6c6714caa2
+  GTMSessionFetcher: 0c4baf0a73acd0041bf9f71ea018deedab5ea84e
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
-  Protobuf: 8a9838fba8dae3389230e1b7f8c104aa32389c03
-  Realm: 42d1c38a5b1bbcc828b48a7ce702cb86fc68adf4
-  RealmSwift: d31937ca6a6ee54acde64ec839523c0a3c04924b
-  SDWebImage: de4d90b5bff3571eae7bd16202b1f43135409fa5
+  Protobuf: 1eb9700044745f00181c136ef21b8ff3ad5a0fd5
+  SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
 
-PODFILE CHECKSUM: d7c24b59317f7a1fd8f37c45917a1d96c4817d93
+PODFILE CHECKSUM: 297217f1580961811fde78f745bacbdcb96f6c6e
 
 COCOAPODS: 1.5.3
