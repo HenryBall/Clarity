@@ -18,6 +18,7 @@ class searchViewController: UIViewController, UITableViewDataSource, UITableView
     @IBOutlet weak var bannerImage: UIImageView!
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var mealLabel: UILabel!
     
     /* Class Globals */
     var searchedProducts = [SearchProduct]()
@@ -44,25 +45,7 @@ class searchViewController: UIViewController, UITableViewDataSource, UITableView
         formatter.dateStyle = .long
         formatter.string(from: today)
     
-        setBanner()
-    }
-    
-    /**
-     Set the header image based on the meal type
-     */
-    func setBanner(){
-        switch mealType {
-        case "breakfast":
-            bannerImage.image = #imageLiteral(resourceName: "breakfastBanner")
-        case "lunch":
-            bannerImage.image = #imageLiteral(resourceName: "lunchBanner")
-        case "dinner":
-            bannerImage.image = #imageLiteral(resourceName: "dinnerBanner")
-        case "snacks":
-            bannerImage.image = #imageLiteral(resourceName: "snacksBanner")
-        default:
-            print("error")
-        }
+        setBannerImage(mealType: mealType, imageView: bannerImage, label: mealLabel)
     }
     
     /**

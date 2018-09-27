@@ -9,7 +9,6 @@
 import UIKit
 import Firebase
 import FirebaseStorage
-import SDWebImage
 import FirebaseStorageUI
 import GoogleSignIn
 import SwiftyJSON
@@ -64,7 +63,7 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
         tableView.keyboardDismissMode = .onDrag
         tableView.tableFooterView = UIView(frame: CGRect.zero)
         day = db.collection("users").document(defaults.string(forKey: "user_id")!).collection("meals").document(formatter.string(from: today))
-        setBannerImage()
+        setBannerImage(mealType: mealType, imageView: bannerImage, label: mealName)
         initSpinner()
     }
     
@@ -87,27 +86,6 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
         spinner = SpinnerView(frame: rect)
         loadingView.addSubview(spinner)
         spinner.isHidden = false
-    }
-    
-    /**
-     Set the header image based on the meal type */
-    func setBannerImage(){
-        switch mealType {
-        case "breakfast":
-            bannerImage.image = #imageLiteral(resourceName: "mugLarge")
-            mealName.text = "Breakfast"
-        case "lunch":
-            bannerImage.image = #imageLiteral(resourceName: "sandoLarge")
-            mealName.text = "Lunch"
-        case "dinner":
-            bannerImage.image = #imageLiteral(resourceName: "chickenLarge")
-            mealName.text = "Dinner"
-        case "snacks":
-            bannerImage.image = #imageLiteral(resourceName: "nutLarge")
-            mealName.text = "Snacks"
-        default:
-            print("error")
-        }
     }
     
     /**
@@ -142,7 +120,7 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
                 if let gallonsTotal = document?.data()![self.mealType + "_total"] as? Double {
                     self.gallonsInMeal.text = String(Int(gallonsTotal)) + " gal."
                 } else {
-                    self.gallonsInMeal.text = ""
+                    self.gallonsInMeal.text = "0 gal."
                 }
 
                 if let foodInMeal = document?.data()![self.mealType] as? [[String : Any]] {
@@ -319,5 +297,26 @@ extension MealViewController {
             self.analyzeResults(data)
         }
         task.resume()
+    }
+}
+
+extension UIViewController {
+    /** Set the header image based on the meal type */
+    func setBannerImage(mealType: String, imageView: UIImageView, label: UILabel){
+        switch mealType {
+        case "Breakfast":
+            view.backgroundColor = teal
+        case "Lunch":
+            view.backgroundColor = green
+        case "Dinner":
+            view.backgroundColor = coral
+        case "Snacks":
+            view.backgroundColor = yellow
+        default:
+            print("error")
+        }
+        
+        imageView.image = UIImage(named: mealType)
+        label.text = mealType
     }
 }

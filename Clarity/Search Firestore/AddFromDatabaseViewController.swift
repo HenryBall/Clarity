@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import SDWebImage
 import FirebaseStorageUI
 import Firebase
 
@@ -35,29 +34,7 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
         self.tableView.delegate = self
         self.tableView.dataSource = self
         tableView.keyboardDismissMode = .onDrag
-        setBanner()
-    }
-    
-    /*
-     - Set the header image based on the meal type
-    */
-    func setBanner(){
-        switch mealType {
-        case "breakfast":
-            bannerImage.image = #imageLiteral(resourceName: "breakfastBanner")
-            mealLabel.text = "Breakfast"
-        case "lunch":
-            bannerImage.image = #imageLiteral(resourceName: "lunchBanner")
-            mealLabel.text = "Lunch"
-        case "dinner":
-            bannerImage.image = #imageLiteral(resourceName: "dinnerBanner")
-            mealLabel.text = "Dinner"
-        case "snacks":
-            bannerImage.image = #imageLiteral(resourceName: "snacksBanner")
-            mealLabel.text = "Snacks"
-        default:
-            print("error")
-        }
+        setBannerImage(mealType: mealType, imageView: bannerImage, label: mealLabel)
     }
     
     /*

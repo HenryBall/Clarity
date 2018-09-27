@@ -12,73 +12,71 @@ import GoogleSignIn
 import Foundation
 import CoreGraphics
 
-let defaults = UserDefaults.standard
-let db = Firestore.firestore()
-let storage = Storage.storage()
-var day : DocumentReference!
-let lightGrey = UIColor(red: 230/255, green: 230/255, blue: 230/255, alpha: 1)
-let textColor = UIColor(red: 170/255, green: 170/255, blue: 170/255, alpha: 1)
-let mainBlue = UIColor(red: 89/255, green: 166/255, blue: 255/255, alpha: 1)
-let lightestBlue = UIColor(red: 187/255, green: 218/255, blue: 255/255, alpha: 1)
-let darkerBlue = UIColor(red: 39/255, green: 106/255, blue: 184/255, alpha: 1)
-let darkestBlue = UIColor(red: 10/255, green: 63/255, blue: 125/255, alpha: 1)
-var ingredientsFromDatabase = [Ingredient]()
-var proteins = [Ingredient]()
-var fruits = [Ingredient]()
-var vegetables = [Ingredient]()
-var dairy = [Ingredient]()
-var drinks = [Ingredient]()
-var other = [Ingredient]()
+let defaults                 = UserDefaults.standard
+let db                       = Firestore.firestore()
+let storage                  = Storage.storage()
+var day                      : DocumentReference!
+let lightGrey                = UIColor(red: 200/255, green: 200/255, blue: 200/255, alpha: 1)
+let textColor                = UIColor(red: 170/255, green: 170/255, blue: 170/255, alpha: 1)
+let teal                     = UIColor(red: 143/255, green: 216/255, blue: 210/255, alpha: 1)
+let green                    = UIColor(red: 150/255, green: 205/255, blue: 176/255, alpha: 1)
+let coral                    = UIColor(red: 217/255, green: 139/255, blue: 108/255, alpha: 1)
+let yellow                   = UIColor(red: 247/255, green: 214/255, blue: 120/255, alpha: 1)
+var ingredientsFromDatabase  = [Ingredient]()
+var proteins                 = [Ingredient]()
+var fruits                   = [Ingredient]()
+var vegetables               = [Ingredient]()
+var dairy                    = [Ingredient]()
+var drinks                   = [Ingredient]()
+var other                    = [Ingredient]()
 
 class HomeViewController: UIViewController, UIScrollViewDelegate {
-    @IBOutlet weak var remToAvgLabel: UILabel!
-    @IBOutlet weak var remToLimitLabel: UILabel!
-    @IBOutlet weak var consumedTodayLabel: UILabel!
-    @IBOutlet weak var slideMenuLeadingConstraint: NSLayoutConstraint!
-    @IBOutlet weak var statusLabel: UILabel!
-    @IBOutlet weak var limitLabel: UILabel!
-    @IBOutlet weak var averageLabel: UILabel!
-    @IBOutlet weak var slideMenu: UIView!
-    @IBOutlet weak var percentLabel: UILabel!
-    @IBOutlet weak var circleView: UIView!
-    @IBOutlet weak var scrollView: UIScrollView!
-    @IBOutlet weak var pieChart: UIView!
-    @IBOutlet weak var snacksLegendCircle: UIView!
-    @IBOutlet weak var snacksLegendPercent: UILabel!
-    @IBOutlet weak var breakfastLegendCircle: UIView!
-    @IBOutlet weak var breakfastLegendPercent: UILabel!
-    @IBOutlet weak var lunchLegendCircle: UIView!
-    @IBOutlet weak var lunchLegendPercent: UILabel!
-    @IBOutlet weak var dinnerLegendCircle: UIView!
-    @IBOutlet weak var dinnerLegendPercent: UILabel!
-    @IBOutlet weak var totalGallonsLabel: UILabel!
-    @IBOutlet weak var barOne: UIView!
-    @IBOutlet weak var barTwo: UIView!
-    @IBOutlet weak var barThree: UIView!
-    @IBOutlet weak var dateOne: UILabel!
-    @IBOutlet weak var dateTwo: UILabel!
-    @IBOutlet weak var dateThree: UILabel!
     
+    //UILabel
+    @IBOutlet weak var dateLabel                    : UILabel!
+    @IBOutlet weak var statusLabel                  : UILabel!
+    @IBOutlet weak var percentLabel                 : UILabel!
+    @IBOutlet weak var consumedTodayLabel           : UILabel!
+    @IBOutlet weak var limitLabel                   : UILabel!
+    @IBOutlet weak var averageLabel                 : UILabel!
+    @IBOutlet weak var snacksLegendPercent          : UILabel!
+    @IBOutlet weak var breakfastLegendPercent       : UILabel!
+    @IBOutlet weak var lunchLegendPercent           : UILabel!
+    @IBOutlet weak var dinnerLegendPercent          : UILabel!
+    @IBOutlet weak var totalGallonsLabel            : UILabel!
+    @IBOutlet weak var dateOne                      : UILabel!
+    @IBOutlet weak var dateTwo                      : UILabel!
+    @IBOutlet weak var dateThree                    : UILabel!
     
-    //var todaysTotal: Double!
-    var dailyGoal : Double!
-    var homeCircle : CirclePath!
-    var homeTrack : CirclePath!
-    var breakfastCircle : CirclePath!
-    var lunchCircle : CirclePath!
-    var dinnerCircle : CirclePath!
-    var snacksCircle : CirclePath!
-    var pieChartTrack : CirclePath!
-    var barOnePath : LinePath!
-    var barTwoPath : LinePath!
-    var barThreePath : LinePath!
+    //UIView
+    @IBOutlet weak var slideMenu                    : UIView!
+    @IBOutlet weak var circleView                   : UIView!
+    @IBOutlet weak var pieChart                     : UIView!
+    @IBOutlet weak var barOne                       : UIView!
+    @IBOutlet weak var barTwo                       : UIView!
+    @IBOutlet weak var barThree                     : UIView!
+    @IBOutlet weak var leftArrow: UIButton!
+    @IBOutlet weak var rightArrow: UIButton!
+    
+    @IBOutlet weak var scrollView                   : UIScrollView!
+    @IBOutlet weak var slideMenuLeadingConstraint   : NSLayoutConstraint!
+    
+    var dailyGoal                                   : Double!
+    var homeCircle                                  : CirclePath!
+    var homeTrack                                   : CirclePath!
+    var breakfastCircle                             : CirclePath!
+    var lunchCircle                                 : CirclePath!
+    var dinnerCircle                                : CirclePath!
+    var snacksCircle                                : CirclePath!
+    var pieChartTrack                               : CirclePath!
+    var barOnePath                                  : LinePath!
+    var barTwoPath                                  : LinePath!
+    var barThreePath                                : LinePath!
     
     let today = Date()
     let databaseDateFormatter = DateFormatter()
     let labelDateFormatter = DateFormatter()
     let dayDateFormatter = DateFormatter()
-    
-    var user: String!
     var userRef: DocumentReference!
     
     override func viewDidLoad() {
@@ -103,8 +101,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         dayDateFormatter.timeStyle = .none
         dayDateFormatter.dateStyle = .long
         dayDateFormatter.dateFormat = "MM d"
-        //dateLabel.text = labelDateFormatter.string(from: today)
-        //self.navigationItem.title = labelDateFormatter.string(from: today)
+        dateLabel.text = labelDateFormatter.string(from: today)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -128,7 +125,6 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
                 print("Document does not exist")
             }
         }
-        
         group.notify(queue: .main) {
             self.getTotalForDay(day: day)
         }
@@ -197,23 +193,18 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         pieChartTrack.width = 5
         pieChartTrack.endAngle = 1.0
         pieChart.addSubview(pieChartTrack)
-        setUpLegend()
     }
     
     func updatePieChart(breakfast: Double, lunch: Double, dinner: Double, snacks: Double, dailyTotal : Double) {
         totalGallonsLabel.text = String(Int(dailyTotal))
         let breakfastPercentage = Float(breakfast/dailyTotal)
-        let breakfastColor = UIColor(red: 218/255, green: 68/255, blue: 83/255, alpha: 1)
-        drawSlice(slice: breakfastCircle, percentLabel: breakfastLegendPercent, percentage: breakfastPercentage, startAngle: 0.0, color: breakfastColor)
+        drawSlice(slice: breakfastCircle, percentLabel: breakfastLegendPercent, percentage: breakfastPercentage, startAngle: 0.0, color: teal)
         let lunchPercentage = Float(lunch/dailyTotal)
-        let lunchColor = UIColor(red: 160/255, green: 212/255, blue: 104/255, alpha: 1)
-        drawSlice(slice: lunchCircle, percentLabel: lunchLegendPercent, percentage: lunchPercentage, startAngle: breakfastPercentage, color: lunchColor)
+        drawSlice(slice: lunchCircle, percentLabel: lunchLegendPercent, percentage: lunchPercentage, startAngle: breakfastPercentage, color: green)
         let dinnerPercentage = Float(dinner/dailyTotal)
-        let dinnerColor = UIColor(red: 79/255, green: 193/255, blue: 233/255, alpha: 1)
-        drawSlice(slice: dinnerCircle, percentLabel: dinnerLegendPercent, percentage: dinnerPercentage, startAngle: (breakfastPercentage+lunchPercentage), color: dinnerColor)
+        drawSlice(slice: dinnerCircle, percentLabel: dinnerLegendPercent, percentage: dinnerPercentage, startAngle: (breakfastPercentage+lunchPercentage), color: coral)
         let snacksPercentage = Float(snacks/dailyTotal)
-        let snacksColor = UIColor(red: 255/255, green: 206/255, blue: 84/255, alpha: 1)
-        drawSlice(slice: snacksCircle, percentLabel: snacksLegendPercent, percentage: snacksPercentage, startAngle: (breakfastPercentage+lunchPercentage+dinnerPercentage), color: snacksColor)
+        drawSlice(slice: snacksCircle, percentLabel: snacksLegendPercent, percentage: snacksPercentage, startAngle: (breakfastPercentage+lunchPercentage+dinnerPercentage), color: yellow)
     }
     
     func drawSlice(slice: CirclePath, percentLabel: UILabel, percentage: Float, startAngle: Float, color: UIColor) {
@@ -228,22 +219,6 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
             percentLabel.text = String(Int(percentage*100)) + "%"
         }
         pieChart.addSubview(slice)
-    }
-    
-    func setUpLegend() {
-        fillLegendCircle(legendView: breakfastLegendCircle, color: UIColor(red: 218/255, green: 68/255, blue: 83/255, alpha: 1))
-        fillLegendCircle(legendView: lunchLegendCircle, color: UIColor(red: 160/255, green: 212/255, blue: 104/255, alpha: 1))
-        fillLegendCircle(legendView: dinnerLegendCircle, color: UIColor(red: 79/255, green: 193/255, blue: 233/255, alpha: 1))
-        fillLegendCircle(legendView: snacksLegendCircle, color: UIColor(red: 255/255, green: 206/255, blue: 84/255, alpha: 1))
-    }
-    
-    func fillLegendCircle(legendView: UIView, color: UIColor) {
-        let legendRect = CGRect(x: 0, y: 0, width: breakfastLegendCircle.bounds.width, height: breakfastLegendCircle.bounds.height)
-        let circle = CirclePath(frame: legendRect)
-        circle.width = 2.0
-        circle.fillColor = color.cgColor
-        circle.endAngle = 1.0
-        legendView.addSubview(circle)
     }
     
     /** Bar chart code, not yet fully implemented
@@ -341,22 +316,12 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
                 let dinnerTotal = self.getMealTotalForDay(meal: "dinner_total", document: document!)
                 let snacksTotal = self.getMealTotalForDay(meal: "snacks_total", document: document!)
                 let total = breakfastTotal + lunchTotal + dinnerTotal + snacksTotal
-                self.consumedTodayLabel.text = String(Int(total)) + " gal."
-                self.setRemToLimitLabel(total: Int(total))
-                self.updateCircle(circle: self.homeCircle, label: self.percentLabel, total: Float(total), limit: Float(self.dailyGoal), color: UIColor(red: 79/255, green: 193/255, blue: 233/255, alpha: 1))
+                self.consumedTodayLabel.text = String(Int(total)) + " gal. consumed today"
+                self.updateCircle(circle: self.homeCircle, label: self.percentLabel, total: Float(total), limit: Float(self.dailyGoal), color: teal)
                 self.updatePieChart(breakfast: breakfastTotal, lunch: lunchTotal, dinner: dinnerTotal, snacks: snacksTotal, dailyTotal: total)
                 self.setStatusLabel(total: Int(total))
                 self.getAverage(total: Int(total))
             }
-        }
-    }
-    
-    func setRemToLimitLabel(total: Int) {
-        if (total < Int(dailyGoal)) {
-            let rem = Int(dailyGoal) - total
-            remToLimitLabel.text = String(rem) + " gal."
-        } else {
-            remToLimitLabel.text = "0 gal."
         }
     }
     
@@ -370,28 +335,52 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         }
     }
     
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let offset = scrollView.contentOffset.x
+        if(offset == 0.0){
+            leftArrow.isHidden = true
+        }else if(offset > 0 && offset <= view.bounds.width){
+            leftArrow.isHidden = false
+            rightArrow.isHidden = false
+        }else if(offset > view.bounds.width){
+            rightArrow.isHidden = true
+        }
+    }
+    
     /* IBActions ********************************************************************************************************/
+    @IBAction func rightArrowTapped(_ sender: UIButton) {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.scrollView.contentOffset.x += self.view.bounds.width
+        })
+    }
+    
+    @IBAction func leftArrowTapped(_ sender: UIButton) {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.scrollView.contentOffset.x -= self.view.bounds.width
+        })
+    }
+    
     @IBAction func breakfastTapped(_ sender: Any) {
         let destination = self.storyboard?.instantiateViewController(withIdentifier: "MealViewController") as! MealViewController
-        destination.mealType = "breakfast"
+        destination.mealType = "Breakfast"
         self.navigationController?.pushViewController(destination, animated: true)
     }
     
     @IBAction func lunchTapped(_ sender: Any) {
         let destination = self.storyboard?.instantiateViewController(withIdentifier: "MealViewController") as! MealViewController
-        destination.mealType = "lunch"
+        destination.mealType = "Lunch"
         self.navigationController?.pushViewController(destination, animated: true)
     }
     
     @IBAction func dinnerTapped(_ sender: Any) {
         let destination = self.storyboard?.instantiateViewController(withIdentifier: "MealViewController") as! MealViewController
-        destination.mealType = "dinner"
+        destination.mealType = "Dinner"
         self.navigationController?.pushViewController(destination, animated: true)
     }
     
     @IBAction func snacksTapped(_ sender: Any) {
         let destination = self.storyboard?.instantiateViewController(withIdentifier: "MealViewController") as! MealViewController
-        destination.mealType = "snacks"
+        destination.mealType = "Snacks"
         self.navigationController?.pushViewController(destination, animated: true)
     }
     
@@ -403,7 +392,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     @IBAction func addBtnTapped(_ sender: Any) {
         print(slideMenuLeadingConstraint.constant)
         if (slideMenuLeadingConstraint.constant == 0) {
-            slideMenuLeadingConstraint.constant = -view.frame.width/2
+            slideMenuLeadingConstraint.constant = -view.frame.width
             UIView.animate(withDuration: 0.3, animations: {
                 self.view.layoutIfNeeded()
             })
@@ -460,37 +449,25 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
                         if ((average["days"] as! Int) == 1) {
                             map = ["day": today, "days": average["days"]!, "totalDay": total, "totalOverall": total]
                             self.averageLabel.text = String(total) + " gal."
-                            self.setRemToAvgLabel(avg: total, total: total)
                         } else {
                             map = ["day": today, "days": average["days"]!, "totalDay": total, "totalOverall": average["totalOverall"]!]
                             let avg = (average["totalOverall"] as! Int)/(average["days"] as! Int)
                             self.averageLabel.text = String(avg) + " gal."
-                            self.setRemToAvgLabel(avg: avg, total: total)
                         }
                     } else {
                         let newOverallTotal = (average["totalOverall"] as! Int) + (average["totalDay"] as! Int)
                         let newNumDays = (average["days"] as! Int) + 1
                         map = ["day": today, "days": newNumDays, "totalDay": total, "totalOverall": newOverallTotal]
                         self.averageLabel.text = String(newOverallTotal/newNumDays) + " gal."
-                        self.setRemToAvgLabel(avg: (newOverallTotal/newNumDays), total: total)
                     }
                 } else {
                     map = ["day": today, "days": 1, "totalDay": total, "totalOverall": total]
                     self.averageLabel.text = String(total) + " gal."
-                    self.setRemToAvgLabel(avg: total, total: total)
                 }
                 self.userRef.setData(["average" : map], options: SetOptions.merge())
             } else {
                 print("Document does not exist")
             }
-        }
-    }
-    
-    func setRemToAvgLabel(avg: Int, total: Int) {
-        if (total > avg) {
-            remToAvgLabel.text = "0 gal."
-        } else {
-            remToAvgLabel.text = String(avg-total) + " gal."
         }
     }
     
@@ -506,5 +483,4 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         self.pageControl.currentPage = Int(currentPage)
     }*/
 }
-
 
