@@ -15,25 +15,23 @@ import Firebase
 class searchViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
     
     /* IB Outlets */
-    @IBOutlet weak var bannerImage: UIImageView!
-    @IBOutlet weak var searchBar: UISearchBar!
-    @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var mealLabel: UILabel!
+    @IBOutlet weak var bannerImage  : UIImageView!
+    @IBOutlet weak var searchBar    : UISearchBar!
+    @IBOutlet weak var tableView    : UITableView!
+    @IBOutlet weak var mealLabel    : UILabel!
     
     /* Class Globals */
-    var searchedProducts = [SearchProduct]()
-    var ingredientsInMeal = [Ingredient]()
-    let today = Date()
-    let formatter = DateFormatter()
-    var mealType: String!
+    var searchedProducts            = [SearchProduct]()
+    var ingredientsInMeal           = [Ingredient]()
+    var mealType                    : String!
     
-    let search_url = "https://api.nal.usda.gov/ndb/search/"
-    let report_url = "https://api.nal.usda.gov/ndb/reports/"
-    let API_KEY = "TGfnBgw7WgOWmRSo24XcFgtaoFbhODXG7KQZzVk4"
+    let search_url                  = "https://api.nal.usda.gov/ndb/search/"
+    let report_url                  = "https://api.nal.usda.gov/ndb/reports/"
+    let API_KEY                     = "TGfnBgw7WgOWmRSo24XcFgtaoFbhODXG7KQZzVk4"
     
     // NLP stuffs
-    let tagger = NSLinguisticTagger(tagSchemes:[.tokenType, .language, .lexicalClass, .nameType, .lemma], options: 0)
-    let options: NSLinguisticTagger.Options = [.omitPunctuation, .omitWhitespace, .joinNames]
+    let tagger                      = NSLinguisticTagger(tagSchemes:[.tokenType, .language, .lexicalClass, .nameType, .lemma], options: 0)
+    let options                     : NSLinguisticTagger.Options = [.omitPunctuation, .omitWhitespace, .joinNames]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,8 +39,11 @@ class searchViewController: UIViewController, UITableViewDataSource, UITableView
         tableView.delegate = self
         tableView.dataSource = self
         searchBar.delegate = self
+        
+        let formatter = DateFormatter()
         formatter.timeStyle = .none
         formatter.dateStyle = .long
+        let today = Date()
         formatter.string(from: today)
     
         setBannerImage(mealType: mealType, imageView: bannerImage, label: mealLabel)

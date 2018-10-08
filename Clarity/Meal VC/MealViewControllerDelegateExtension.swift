@@ -15,7 +15,7 @@ extension MealViewController {
 
     //Set the height of the table view cells
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 75.0
+        return 85.0
     }
     
     //Set the name, # of gallons and image for each ingredient
@@ -44,7 +44,7 @@ extension MealViewController {
     
     //Set the number of ingredients to show
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        //tableViewHeight.constant = CGFloat(Double(ingredientsInMeal.count)*75.0)
+        tableViewHeight.constant = CGFloat(Double(ingredientsInMeal.count)*75.0)
         return ingredientsInMeal.count
     }
     

@@ -93,11 +93,11 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
      Either hides or shows the view and rotates the "x" button
      - Parameter hidden: hide or show addIngredientsView
      - Parameter angle: either pi or -pi, based on whether hiding or showing view */
-    func setView(hidden: Bool, angle: CGFloat) {
-        UIView.transition(with: addIngredientsView, duration: 0.3, options: .transitionCrossDissolve, animations: {
-            self.addIngredientsView.isHidden = hidden
+    func setView(alpha: CGFloat, angle: CGFloat) {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.addIngredientsView.alpha = alpha
             self.closeButton.transform = CGAffineTransform(rotationAngle: angle / 4.0)
-        }, completion: nil)
+        })
     }
     
     /**
@@ -118,9 +118,9 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
         day.getDocument { (document, error) in
             if(document?.exists)!{
                 if let gallonsTotal = document?.data()![self.mealType + "_total"] as? Double {
-                    self.gallonsInMeal.text = String(Int(gallonsTotal)) + " gal."
+                    self.gallonsInMeal.text = String(Int(gallonsTotal)) + " gal"
                 } else {
-                    self.gallonsInMeal.text = "0 gal."
+                    self.gallonsInMeal.text = "0 gal"
                 }
 
                 if let foodInMeal = document?.data()![self.mealType] as? [[String : Any]] {
@@ -156,21 +156,21 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
      When the user presses the "x" button, hides the buttons view
      - Parameter sender: "x" button */
     @IBAction func closeTapped(_ sender: UIButton) {
-        setView(hidden: true, angle: -CGFloat.pi)
+        setView(alpha: 0.0, angle: -CGFloat.pi)
     }
     
     /**
      When the user presses the "<" button, returns to the home screen
      - Parameter sender: "<" back button */
     @IBAction func backTapped(_ sender: UIButton) {
+        print("go back????")
         self.navigationController?.popViewController(animated: true)
     }
-    
     /**
      When the user presses the "+" button, unhides the buttons view to reveal the 3 methods to add ingredients
      - Parameter sender: "+" button */
     @IBAction func addTapped(_ sender: UIButton) {
-        setView(hidden: false, angle: CGFloat.pi)
+        setView(alpha: 1.0, angle: CGFloat.pi)
     }
     
     /**
@@ -180,7 +180,7 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
         let destination = storyboard?.instantiateViewController(withIdentifier: "searchViewController") as! searchViewController
         destination.mealType = mealType
         destination.ingredientsInMeal = ingredientsInMeal
-        setView(hidden: true, angle: -CGFloat.pi)
+        setView(alpha: 0.0, angle: -CGFloat.pi)
         navigationController?.pushViewController(destination, animated: true)
     }
     
@@ -193,7 +193,7 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
             imagePicker.delegate = self
             imagePicker.allowsEditing = false
             imagePicker.sourceType = .camera
-            setView(hidden: true, angle: -CGFloat.pi)
+            setView(alpha: 0.0, angle: -CGFloat.pi)
             present(imagePicker, animated: true, completion: nil)
         } else {
             let alert = UIAlertController(title: "Oops!", message: "You need iOS 11 to access this feature", preferredStyle: .alert)
@@ -209,7 +209,7 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
         let destination = storyboard?.instantiateViewController(withIdentifier: "AddFromDatabase") as! AddFromDatabaseViewController
         destination.mealType = mealType
         destination.ingredientsInMeal = ingredientsInMeal
-        setView(hidden: true, angle: -CGFloat.pi)
+        setView(alpha: 0.0, angle: -CGFloat.pi)
         navigationController?.pushViewController(destination, animated: true)
     }
     
@@ -305,13 +305,13 @@ extension UIViewController {
     func setBannerImage(mealType: String, imageView: UIImageView, label: UILabel){
         switch mealType {
         case "Breakfast":
-            view.backgroundColor = teal
+            view.backgroundColor = orange
         case "Lunch":
-            view.backgroundColor = green
-        case "Dinner":
-            view.backgroundColor = coral
-        case "Snacks":
             view.backgroundColor = yellow
+        case "Dinner":
+            view.backgroundColor = periwinkle
+        case "Snacks":
+            view.backgroundColor = blue
         default:
             print("error")
         }

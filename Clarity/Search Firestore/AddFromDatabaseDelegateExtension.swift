@@ -36,6 +36,7 @@ extension AddFromDatabaseViewController {
         let quantity = Int(cell.quantityTextField.text!)
         currentIngredient.quantity = quantity
         ingredientsInMeal.append(currentIngredient)
+        addedIngredients.append(currentIngredient)
     }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {

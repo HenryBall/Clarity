@@ -26,7 +26,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         swipeToHideKeyboard()
-        saveButton.layer.borderColor = textColor.cgColor
+        saveButton.layer.borderColor = UIColor.white.cgColor
         logoutButton.layer.borderColor = UIColor.white.cgColor
         let user = db.collection("users").document(defaults.string(forKey: "user_id")!)
         user.getDocument { (document, error) in
