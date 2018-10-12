@@ -8,27 +8,33 @@
 
 import UIKit
 import FirebaseStorage
-import SDWebImage
 import FirebaseStorageUI
 
 class IngredientsDetailsViewController: UIViewController {
-    var ingredientToShow: Ingredient!
-    @IBOutlet weak var gallonsWaterLabel: UILabel!
-    @IBOutlet weak var name: UILabel!
-    @IBOutlet weak var icon: UIImageView!
-    @IBOutlet weak var ingredientDescription: UITextView!
-    @IBOutlet weak var compareLabel: UILabel!
-    @IBOutlet weak var sourceLabel: UITextView!
-    //@IBOutlet weak var barChart: BarChartView!
-    @IBOutlet weak var servingSizeLabel: UILabel!
+    
+    //UILabel
+    @IBOutlet weak var gallonsWaterLabel        : UILabel!
+    @IBOutlet weak var name                     : UILabel!
+    @IBOutlet weak var servingSizeLabel         : UILabel!
+    @IBOutlet weak var compareLabel             : UILabel!
+    
+    //UITextView
+    @IBOutlet weak var ingredientDescription    : UITextView!
+    @IBOutlet weak var sourceLabel              : UITextView!
+    
+    //@IBOutlet weak var barChart                 : BarChartView!
+    @IBOutlet weak var icon                     : UIImageView!
+    
+    //Class Globals
+    var ingredientToShow                        : Ingredient!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         name.text = ingredientToShow.name.capitalized
         gallonsWaterLabel.text = String(Int(ingredientToShow.waterData))
-        let imagePath = "food-icons/" + ingredientToShow.name.uppercased() + ".jpg"
-        let imageRef = storage.reference().child(imagePath)
-        icon.sd_setImage(with: imageRef, placeholderImage: #imageLiteral(resourceName: "Food"))
+        if let category = ingredientToShow.category {
+            icon.image = UIImage(named: category)
+        }
         
         if(ingredientToShow.description != ""){
             ingredientDescription.text = ingredientToShow.description

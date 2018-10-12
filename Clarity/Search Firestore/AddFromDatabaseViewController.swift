@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import SDWebImage
 import FirebaseStorageUI
 import Firebase
 
@@ -27,6 +26,7 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
     var mealType: String!
     var ingredientsInMeal = [Ingredient]()
     var displayedIngredients = [Ingredient]()
+    var addedIngredients = [Ingredient]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,29 +35,7 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
         self.tableView.delegate = self
         self.tableView.dataSource = self
         tableView.keyboardDismissMode = .onDrag
-        setBanner()
-    }
-    
-    /*
-     - Set the header image based on the meal type
-    */
-    func setBanner(){
-        switch mealType {
-        case "breakfast":
-            bannerImage.image = #imageLiteral(resourceName: "breakfastBanner")
-            mealLabel.text = "Breakfast"
-        case "lunch":
-            bannerImage.image = #imageLiteral(resourceName: "lunchBanner")
-            mealLabel.text = "Lunch"
-        case "dinner":
-            bannerImage.image = #imageLiteral(resourceName: "dinnerBanner")
-            mealLabel.text = "Dinner"
-        case "snacks":
-            bannerImage.image = #imageLiteral(resourceName: "snacksBanner")
-            mealLabel.text = "Snacks"
-        default:
-            print("error")
-        }
+        setBannerImage(mealType: mealType, imageView: bannerImage, label: mealLabel)
     }
     
     /*
@@ -75,6 +53,7 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
     @IBAction func doneTapped(_ sender: UIButton) {
         var allIngredients = [[String : Any]]()
         var ingredient = [String : Any]()
+        
         for ingr in ingredientsInMeal {
             if(ingr.type == "Database"){
                 let ref = db.document("water-footprint-data/" + ingr.name.capitalized)
@@ -87,9 +66,37 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
         let total = ingredientsInMeal.map({$0.waterData * Double($0.quantity!)}).reduce(0, +)
         day.setData([mealType + "_total" : total], options: SetOptions.merge())
         day.setData([mealType : allIngredients], options: SetOptions.merge())
+        
+        setRecent()
+
         if let destination = self.navigationController?.viewControllers[1] {
             self.navigationController?.popToViewController(destination, animated: true)
         }
+    }
+    
+    func setRecent() {
+        let userRef = db.collection("users").document(defaults.string(forKey: "user_id")!)
+        var pushToDatabase = [[String : Any]]()
+        
+        if(self.addedIngredients.count == 1){
+            for item in recent {
+                if (item["index"] as? Int == 0){
+                    pushToDatabase.append(["index": 1, "reference": item["reference"] as! DocumentReference])
+                }
+            }
+        }
+        var index = 0
+        if self.addedIngredients.count > 1 {
+            index = addedIngredients.count-2
+            let ref2 = db.document("water-footprint-data/" + self.addedIngredients[index+1].name.capitalized)
+            pushToDatabase.append(["index": 1, "reference": ref2])
+        }
+        
+        let ref1 = db.document("water-footprint-data/" + self.addedIngredients[index].name.capitalized)
+        pushToDatabase.append(["index": 0, "reference": ref1])
+        pushToDatabase.reverse()
+
+        userRef.setData(["recent" : pushToDatabase], options: SetOptions.merge())
     }
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {

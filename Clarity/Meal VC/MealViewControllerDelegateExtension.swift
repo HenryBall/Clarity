@@ -15,7 +15,7 @@ extension MealViewController {
 
     //Set the height of the table view cells
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 75.0
+        return 85.0
     }
     
     //Set the name, # of gallons and image for each ingredient
@@ -27,26 +27,10 @@ extension MealViewController {
         cell.gallonsWaterLabel.text = String(Int(food.waterData) * ingredientsInMeal[indexPath.row].quantity!) + " gal."
         cell.gallonsPerServing.text = String(Int(food.waterData)) + " gal / " + String(format: "%.2f", food.servingSize!) + " oz"
         //cell.gallonsPerServing.text = ingredientsInMeal[indexPath.row].category
-        if (ingredientsInMeal[indexPath.row].category == "fruit") {
-            cell.icon.image = #imageLiteral(resourceName: "fruit")
-        } else if (ingredientsInMeal[indexPath.row].category == "vegetable") {
-            cell.icon.image = #imageLiteral(resourceName: "veg")
-        } else if (ingredientsInMeal[indexPath.row].category == "drinks") {
-            cell.icon.image = #imageLiteral(resourceName: "drink")
-        } else if (ingredientsInMeal[indexPath.row].category == "protein") {
-            cell.icon.image = #imageLiteral(resourceName: "protein")
-        } else {
-            cell.icon.image = #imageLiteral(resourceName: "drink")
+        if let category = ingredientsInMeal[indexPath.row].category {
+            cell.icon.image = UIImage(named: category)
         }
-        cell.point.layer.cornerRadius = cell.point.bounds.width/2
-        
-        /*var imagePath = "food-icons/" + food.name.uppercased() + ".jpg"
-        if(food.type != "Database"){
-            imagePath = "food-icons/" + (food.imageName?.uppercased())! + ".jpg"
-        }
-        let imageRef = storage.reference().child(imagePath)
-        cell.icon.sd_setImage(with: imageRef, placeholderImage: #imageLiteral(resourceName: "Food"))*/
-        
+
         return cell
     }
     
@@ -60,7 +44,7 @@ extension MealViewController {
     
     //Set the number of ingredients to show
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        //tableViewHeight.constant = CGFloat(Double(ingredientsInMeal.count)*75.0)
+        tableViewHeight.constant = CGFloat(Double(ingredientsInMeal.count)*75.0)
         return ingredientsInMeal.count
     }
     

@@ -18,8 +18,9 @@ extension AddFromDatabaseViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "addDatabaseIngredientCell") as! addDatabaseIngredientCell
         cell.label.text = displayedIngredients[indexPath.row].name.capitalized
         cell.gallonsWaterLabel.text = String(Int(displayedIngredients[indexPath.row].waterData))
-        let imagePath = "food-icons/" + displayedIngredients[indexPath.row].name.uppercased() + ".jpg"
-        cell.icon.sd_setImage(with: storage.reference().child(imagePath), placeholderImage: #imageLiteral(resourceName: "Food"))
+        if let category = displayedIngredients[indexPath.row].category {
+            cell.icon.image = UIImage(named: category)
+        }
         setCellTags(cell: cell, index: indexPath.row)
         setCellTargets(cell: cell)
         return cell
@@ -35,6 +36,7 @@ extension AddFromDatabaseViewController {
         let quantity = Int(cell.quantityTextField.text!)
         currentIngredient.quantity = quantity
         ingredientsInMeal.append(currentIngredient)
+        addedIngredients.append(currentIngredient)
     }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {

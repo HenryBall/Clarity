@@ -16,6 +16,7 @@ class addScannedItemViewController: UIViewController, UITableViewDelegate, UITab
     @IBOutlet weak var bannerImage: UIImageView!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var itemName: UITextField!
+    @IBOutlet weak var mealLabel: UILabel!
     
     /* Class Globals */
     var mealType : String!
@@ -36,28 +37,10 @@ class addScannedItemViewController: UIViewController, UITableViewDelegate, UITab
         tableView.dataSource = self
         tableView.keyboardDismissMode = .onDrag
         tableView.tableFooterView = UIView(frame: CGRect.zero)
-        setBannerImage()
+        setBannerImage(mealType: mealType, imageView: bannerImage, label: mealLabel)
         ingredientDB = db.collection("water-footprint-data")
         invertedIndex = db.collection("water-data-inverted-index")
         doTextProcessing(text: ingredientsList)
-    }
-    
-    /*
-     - Set the banner based on the meal type
-    */
-    func setBannerImage() {
-        switch mealType {
-        case "breakfast":
-            bannerImage.image = #imageLiteral(resourceName: "breakfastBanner")
-        case "lunch":
-            bannerImage.image = #imageLiteral(resourceName: "lunchBanner")
-        case "dinner":
-            bannerImage.image = #imageLiteral(resourceName: "dinnerBanner")
-        case "snacks":
-            bannerImage.image = #imageLiteral(resourceName: "snacksBanner")
-        default:
-            print("error setting banner image")
-        }
     }
     
     /*
@@ -269,10 +252,9 @@ class addScannedItemViewController: UIViewController, UITableViewDelegate, UITab
         
         cell.name.text = ingredient.name.capitalized
         cell.gallons.text = String(Int(ingredient.waterData))
-        let imagePath = "food-icons/" + ingredient.name.uppercased() + ".jpg"
-        let imageRef = storage.reference().child(imagePath)
-        cell.icon.sd_setImage(with: imageRef, placeholderImage: #imageLiteral(resourceName: "Food"))
-        
+        if let category = ingredient.category {
+            cell.icon.image = UIImage(named: category)
+        }
         return cell
     }
     
