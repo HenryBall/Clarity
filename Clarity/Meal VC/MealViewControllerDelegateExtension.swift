@@ -24,7 +24,7 @@ extension MealViewController {
         let food = ingredientsInMeal[indexPath.row]
         
         cell.label.text = food.name.capitalized + " (x" + String(food.quantity!) + ")"
-        cell.gallonsWaterLabel.text = String(Int(food.waterData) * ingredientsInMeal[indexPath.row].quantity!) + " gal."
+        cell.gallonsWaterLabel.text = String(Int(food.waterData) * ingredientsInMeal[indexPath.row].quantity!) + " gal"
         cell.gallonsPerServing.text = String(Int(food.waterData)) + " gal / " + String(format: "%.2f", food.servingSize!) + " oz"
         //cell.gallonsPerServing.text = ingredientsInMeal[indexPath.row].category
         if let category = ingredientsInMeal[indexPath.row].category {
@@ -44,7 +44,7 @@ extension MealViewController {
     
     //Set the number of ingredients to show
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        tableViewHeight.constant = CGFloat(Double(ingredientsInMeal.count)*75.0)
+        //tableViewHeight.constant = CGFloat(Double(ingredientsInMeal.count)*75.0)
         return ingredientsInMeal.count
     }
     

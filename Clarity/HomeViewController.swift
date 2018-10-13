@@ -44,16 +44,16 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var dateOne                  : UILabel!
     @IBOutlet weak var dateTwo                  : UILabel!
     @IBOutlet weak var dateThree                : UILabel!
-    @IBOutlet weak var recent1Name: UILabel!
-    @IBOutlet weak var recent1Total: UILabel!
-    @IBOutlet weak var recent1Serving: UILabel!
-    @IBOutlet weak var recent2Name: UILabel!
-    @IBOutlet weak var recent2Total: UILabel!
-    @IBOutlet weak var recent2Serving: UILabel!
+    @IBOutlet weak var recent1Name              : UILabel!
+    @IBOutlet weak var recent1Total             : UILabel!
+    @IBOutlet weak var recent1Serving           : UILabel!
+    @IBOutlet weak var recent2Name              : UILabel!
+    @IBOutlet weak var recent2Total             : UILabel!
+    @IBOutlet weak var recent2Serving           : UILabel!
     
     //UIView
     @IBOutlet weak var circleView               : UIView!
-    @IBOutlet weak var addMealMenu: UIView!
+    @IBOutlet weak var addMealMenu              : UIView!
     @IBOutlet weak var pieChart                 : UIView!
     @IBOutlet weak var barOne                   : UIView!
     @IBOutlet weak var barTwo                   : UIView!
@@ -63,8 +63,8 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var shadowView3              : UIView!
     @IBOutlet weak var limitShadowView          : UIView!
     @IBOutlet weak var averageShadowView        : UIView!
-    @IBOutlet weak var recent1Shadow: UIView!
-    @IBOutlet weak var recent2Shadow: UIView!
+    @IBOutlet weak var recent1Shadow            : UIView!
+    @IBOutlet weak var recent2Shadow            : UIView!
     
     @IBOutlet weak var leftArrow                : UIButton!
     @IBOutlet weak var rightArrow               : UIButton!
@@ -132,15 +132,18 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     }
     
     func loadData() {
+        self.addMealMenu.alpha = 0.0
         let group = DispatchGroup()
         group.enter()
         userRef.getDocument { (doc, error) in
             if let doc = doc, doc.exists {
                 self.dailyGoal = doc.data()!["water_goal"] as? Double
                 self.limitLabel.text = String(Int(self.dailyGoal))
-                recent = (doc.data()!["recent"] as? [[String : Any]])!
-                self.showRecent()
-            
+                let rawRecent = doc.get("recent")
+                if rawRecent != nil {
+                    recent = doc.get("recent") as! [[String : Any]]
+                    self.showRecent()
+                }
                 group.leave()
             } else {
                 // Display error screen
@@ -384,11 +387,12 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let offset = scrollView.contentOffset.x
-        if(offset == 0.0){
+        if(offset == 0){
             leftArrow.isHidden = true
+            rightArrow.isHidden = false
         }else if(offset > 0 && offset <= view.bounds.width){
             leftArrow.isHidden = false
-            rightArrow.isHidden = false
+            rightArrow.isHidden = true
         }else if(offset > view.bounds.width){
             rightArrow.isHidden = true
         }

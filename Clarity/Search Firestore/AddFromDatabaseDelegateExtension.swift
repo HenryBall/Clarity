@@ -11,13 +11,16 @@ import UIKit
 extension AddFromDatabaseViewController {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 75.0
+        return 85.0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "addDatabaseIngredientCell") as! addDatabaseIngredientCell
+        let food = displayedIngredients[indexPath.row]
+        
         cell.label.text = displayedIngredients[indexPath.row].name.capitalized
-        cell.gallonsWaterLabel.text = String(Int(displayedIngredients[indexPath.row].waterData))
+        //cell.gallonsWaterLabel.text = String(Int(displayedIngredients[indexPath.row].waterData))
+        cell.gallonsWaterLabel.text = String(Int(food.waterData)) + " gal / " + String(format: "%.2f", food.servingSize!) + " oz"
         if let category = displayedIngredients[indexPath.row].category {
             cell.icon.image = UIImage(named: category)
         }
