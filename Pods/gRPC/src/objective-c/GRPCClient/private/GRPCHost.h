@@ -37,6 +37,12 @@ struct grpc_channel_credentials;
 @property(nonatomic) grpc_compression_algorithm compressAlgorithm;
 @property(nonatomic) int keepaliveInterval;
 @property(nonatomic) int keepaliveTimeout;
+@property(nonatomic) id logContext;
+@property(nonatomic) BOOL retryEnabled;
+
+@property(nonatomic) unsigned int minConnectTimeout;
+@property(nonatomic) unsigned int initialConnectBackoff;
+@property(nonatomic) unsigned int maxConnectBackoff;
 
 /** The following properties should only be modified for testing: */
 
@@ -46,7 +52,6 @@ struct grpc_channel_credentials;
 
 /** The default response size limit is 4MB. Set this to override that default. */
 @property(nonatomic, strong, nullable) NSNumber *responseSizeLimitOverride;
-
 
 - (nullable instancetype)init NS_UNAVAILABLE;
 /** Host objects initialized with the same address are the same. */

@@ -9,7 +9,6 @@
 import UIKit
 import Firebase
 import FirebaseStorage
-import SDWebImage
 import FirebaseStorageUI
 import GoogleSignIn
 import SwiftyJSON
@@ -23,6 +22,7 @@ import SwiftyJSON
 class MealViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     /* IBOutlets */
+    @IBOutlet weak var mealName: UILabel!
     @IBOutlet weak var bannerImageTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var loadingView: UIView!
     @IBOutlet weak var scrollView: UIScrollView!
@@ -38,7 +38,7 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     /* Class Globals */
     var loadingScreenShouldBeActive = false
-    var mealType: String! //"Breakfast", "Lunch", "Dinner" or "Snacks"
+    var mealType: String!
     let db = Firestore.firestore()
     let storage = Storage.storage()
     let today = Date()
@@ -48,7 +48,6 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
     var ingredientsInMeal = [Ingredient]()
     let imagePicker = UIImagePickerController()
     let session = URLSession.shared
-    
     var googleAPIKey = "AIzaSyAzRUSHeNGqtwILEr098EODn14I83j-CQI"
     var googleURL: URL {
         return URL(string: "https://vision.googleapis.com/v1/images:annotate?key=\(googleAPIKey)")!
@@ -56,58 +55,37 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        //Show date as Month, day
         formatter.timeStyle = .none
         formatter.dateStyle = .long
         formatter.string(from: today)
-        
-        tableView.keyboardDismissMode = .onDrag
-        
-        //var day holds a reference to today's meal
-        day = db.collection("users").document(defaults.string(forKey: "user_id")!).collection("meals").document(formatter.string(from: today))
-        
         tableView.delegate = self
         tableView.dataSource = self
-        
-        setBannerImage()
-        
-        let rect = CGRect(x: loadingView.bounds.width/2-40, y: loadingView.bounds.height/2-50, width: 75, height: 75)
-        spinner = SpinnerView(frame: rect)
-        loadingView.addSubview(spinner)
-        spinner.isHidden = false
+        tableView.keyboardDismissMode = .onDrag
+        tableView.tableFooterView = UIView(frame: CGRect.zero)
+        day = db.collection("users").document(defaults.string(forKey: "user_id")!).collection("meals").document(formatter.string(from: today))
+        setBannerImage(mealType: mealType, imageView: bannerImage, label: mealName)
+        initSpinner()
     }
     
-    /*
-    Each time the view is shown again, query in case something has changed
-     */
+    /**
+     Each time the view is shown again, query in case something has changed */
     override func viewDidAppear(_ animated: Bool) {
         queryIngredients()
     }
     
-    /*
-     - If the user scans an item, show the loading screen
-     */
+    /**
+     If the user scans an item, show the loading screen */
     override func viewWillAppear(_ animated: Bool) {
         loadingView.isHidden = !loadingScreenShouldBeActive
     }
     
     /**
-     Set the header image based on the meal type
-     */
-    func setBannerImage(){
-        switch mealType {
-        case "breakfast":
-            bannerImage.image = #imageLiteral(resourceName: "breakfastBanner")
-        case "lunch":
-            bannerImage.image = #imageLiteral(resourceName: "lunchBanner")
-        case "dinner":
-            bannerImage.image = #imageLiteral(resourceName: "dinnerBanner")
-        case "snacks":
-            bannerImage.image = #imageLiteral(resourceName: "snacksBanner")
-        default:
-            print("error")
-        }
+     Initialize loading view with spinner */
+    func initSpinner() {
+        let rect = CGRect(x: loadingView.bounds.width/2-40, y: loadingView.bounds.height/2-50, width: 75, height: 75)
+        spinner = SpinnerView(frame: rect)
+        loadingView.addSubview(spinner)
+        spinner.isHidden = false
     }
     
     /**
@@ -115,45 +93,38 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
      Either hides or shows the view and rotates the "x" button
      - Parameter hidden: hide or show addIngredientsView
      - Parameter angle: either pi or -pi, based on whether hiding or showing view */
-    func setView(hidden: Bool, angle: CGFloat) {
-        UIView.transition(with: addIngredientsView, duration: 0.3, options: .transitionCrossDissolve, animations: {
-            self.addIngredientsView.isHidden = hidden
+    func setView(alpha: CGFloat, angle: CGFloat) {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.addIngredientsView.alpha = alpha
             self.closeButton.transform = CGAffineTransform(rotationAngle: angle / 4.0)
-        }, completion: nil)
+        })
     }
     
     /**
-     Creates parallax scrolling effect over the banner image
-     */
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+     Creates parallax scrolling effect over the banner image */
+    /*func scrollViewDidScroll(_ scrollView: UIScrollView) {
         self.bannerImage.alpha = ((UIScreen.main.bounds.width * 45/100)-self.scrollView.contentOffset.y)/(UIScreen.main.bounds.width*45/100)
         bannerImageTopConstraint?.constant = min(0, -scrollView.contentOffset.y / 2.0)
-    }
-    
-    // -------------------------------- Queries ----------------------------------------------------------
+    }*/
+
     /**
      Get the ingredients stored in Firebase for this specific meal.
      1. Put all ingredients into "foodInMeal" array
      2. If the item contains a reference, i.e. is an item in water-footprint-data, queries that reference to get the ingredient data.
      3. If the item is not in our database, get the name, water data and
      4. Save the ingredient as type Ingredient
-     5. Append to ingredientsInMeal array
-     */
+     5. Append to ingredientsInMeal array */
     func queryIngredients(){
-
         day.getDocument { (document, error) in
             if(document?.exists)!{
-                
-                //Set the "gallons total" label 
                 if let gallonsTotal = document?.data()![self.mealType + "_total"] as? Double {
-                    self.gallonsInMeal.text = String(Int(gallonsTotal))
+                    self.gallonsInMeal.text = String(Int(gallonsTotal)) + " gal"
+                } else {
+                    self.gallonsInMeal.text = "0 gal"
                 }
-                
-                //Put ingredients in ingredientsInMeal array
+
                 if let foodInMeal = document?.data()![self.mealType] as? [[String : Any]] {
-                    
                     self.ingredientsInMeal = []
-                    
                     for ing in foodInMeal {
                         if let ref = ing["reference"] as? DocumentReference {
                             ref.getDocument { (document, error) in
@@ -161,6 +132,7 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
                                     let ingredient = Ingredient(document: document)
                                     ingredient.quantity = ing["quantity"] as? Int
                                     self.ingredientsInMeal.append(ingredient)
+                                    self.tableView.reloadData()
                                 } else {
                                     print("Document does not exist")
                                 }
@@ -168,8 +140,8 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
                         } else {
                             let ing = Ingredient(name: ing["name"] as! String, type: ing["type"] as! String, waterData: ing["total"] as! Double, description: "", servingSize: 1, category: "", source: "", quantity: ing["quantity"] as? Int, ingredients: ing["ingredients"] as? [DocumentReference], imageName: (ing["image"] as! String))
                             self.ingredientsInMeal.append(ing)
+                            self.tableView.reloadData()
                         }
-                        self.tableView.reloadData()
                     }
                 }
             }else{
@@ -178,13 +150,13 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     
-    //------------------------------------------ IBActions --------------------------------------------------
+    // ***** IBActions ***** //
     
     /**
      When the user presses the "x" button, hides the buttons view
      - Parameter sender: "x" button */
     @IBAction func closeTapped(_ sender: UIButton) {
-        setView(hidden: true, angle: -CGFloat.pi)
+        setView(alpha: 0.0, angle: -CGFloat.pi)
     }
     
     /**
@@ -198,7 +170,7 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
      When the user presses the "+" button, unhides the buttons view to reveal the 3 methods to add ingredients
      - Parameter sender: "+" button */
     @IBAction func addTapped(_ sender: UIButton) {
-        setView(hidden: false, angle: CGFloat.pi)
+        setView(alpha: 1.0, angle: CGFloat.pi)
     }
     
     /**
@@ -208,7 +180,7 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
         let destination = storyboard?.instantiateViewController(withIdentifier: "searchViewController") as! searchViewController
         destination.mealType = mealType
         destination.ingredientsInMeal = ingredientsInMeal
-        setView(hidden: true, angle: -CGFloat.pi)
+        setView(alpha: 0.0, angle: -CGFloat.pi)
         navigationController?.pushViewController(destination, animated: true)
     }
     
@@ -221,7 +193,7 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
             imagePicker.delegate = self
             imagePicker.allowsEditing = false
             imagePicker.sourceType = .camera
-            setView(hidden: true, angle: -CGFloat.pi)
+            setView(alpha: 0.0, angle: -CGFloat.pi)
             present(imagePicker, animated: true, completion: nil)
         } else {
             let alert = UIAlertController(title: "Oops!", message: "You need iOS 11 to access this feature", preferredStyle: .alert)
@@ -237,11 +209,12 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
         let destination = storyboard?.instantiateViewController(withIdentifier: "AddFromDatabase") as! AddFromDatabaseViewController
         destination.mealType = mealType
         destination.ingredientsInMeal = ingredientsInMeal
-        setView(hidden: true, angle: -CGFloat.pi)
+        setView(alpha: 0.0, angle: -CGFloat.pi)
         navigationController?.pushViewController(destination, animated: true)
     }
     
-    // ------------------------------------- text recognition functions ------------------------------------------------------------
+    // ***** CLOUD VISION API REQUEST ***** //
+    
     func analyzeResults(_ dataToParse: Data) {
         DispatchQueue.main.async(execute: {
             let json = JSON(data: dataToParse)
@@ -257,12 +230,10 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
-            // Base64 encode the image and create the request
             let binaryImageData = base64EncodeImage(pickedImage)
             createRequest(with: binaryImageData)
         }
-        
-        loadingView.isHidden = false
+        loadingView.alpha = 1.0
         loadingScreenShouldBeActive = true
         dismiss(animated: true, completion: nil)
     }
@@ -284,26 +255,19 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
 extension MealViewController {
     func base64EncodeImage(_ image: UIImage) -> String {
         var imagedata = UIImagePNGRepresentation(image)
-        
-        // Resize the image if it exceeds the 2MB API limit
         if ((imagedata?.count)! > 2097152) {
             let oldSize: CGSize = image.size
             let newSize: CGSize = CGSize(width: 800, height: oldSize.height / oldSize.width * 800)
             imagedata = resizeImage(newSize, image: image)
         }
-        
         return imagedata!.base64EncodedString(options: .endLineWithCarriageReturn)
     }
     
     func createRequest(with imageBase64: String) {
-        // Create our request URL
-        
         var request = URLRequest(url: googleURL)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue(Bundle.main.bundleIdentifier ?? "", forHTTPHeaderField: "X-Ios-Bundle-Identifier")
-        
-        // Build our API request
         let jsonRequest = [
             "requests": [
                 "image": [
@@ -317,30 +281,42 @@ extension MealViewController {
             ]
         ]
         let jsonObject = JSON(jsonRequest)
-        
-        // Serialize the JSON
         guard let data = try? jsonObject.rawData() else {
             return
         }
-        
         request.httpBody = data
-        
-        // Run the request on a background thread
         DispatchQueue.global().async { self.runRequestOnBackgroundThread(request) }
     }
     
     func runRequestOnBackgroundThread(_ request: URLRequest) {
-        // run the request
-        
         let task: URLSessionDataTask = session.dataTask(with: request) { (data, response, error) in
             guard let data = data, error == nil else {
                 print(error?.localizedDescription ?? "")
                 return
             }
-            
             self.analyzeResults(data)
         }
-        
         task.resume()
+    }
+}
+
+extension UIViewController {
+    /** Set the header image based on the meal type */
+    func setBannerImage(mealType: String, imageView: UIImageView, label: UILabel){
+        switch mealType {
+        case "Breakfast":
+            view.backgroundColor = orange
+        case "Lunch":
+            view.backgroundColor = yellow
+        case "Dinner":
+            view.backgroundColor = periwinkle
+        case "Snacks":
+            view.backgroundColor = blue
+        default:
+            print("error")
+        }
+        
+        imageView.image = UIImage(named: mealType)
+        label.text = mealType
     }
 }

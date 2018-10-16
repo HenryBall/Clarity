@@ -15,7 +15,7 @@ extension MealViewController {
 
     //Set the height of the table view cells
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 75.0
+        return 85.0
     }
     
     //Set the name, # of gallons and image for each ingredient
@@ -24,16 +24,23 @@ extension MealViewController {
         let food = ingredientsInMeal[indexPath.row]
         
         cell.label.text = food.name.capitalized + " (x" + String(food.quantity!) + ")"
-        cell.gallonsWaterLabel.text = String(Int(food.waterData) * ingredientsInMeal[indexPath.row].quantity!)
+        cell.gallonsWaterLabel.text = String(Int(food.waterData) * food.quantity!) + " gal"
         cell.gallonsPerServing.text = String(Int(food.waterData)) + " gal / " + String(format: "%.2f", food.servingSize!) + " oz"
-        var imagePath = "food-icons/" + food.name.uppercased() + ".jpg"
-        
-        if(food.type != "Database"){
-            imagePath = "food-icons/" + (food.imageName?.uppercased())! + ".jpg"
+        //cell.gallonsPerServing.text = ingredientsInMeal[indexPath.row].category
+        if let category = food.category {
+            cell.icon.image = UIImage(named: category)
         }
         
-        let imageRef = storage.reference().child(imagePath)
-        cell.icon.sd_setImage(with: imageRef, placeholderImage: #imageLiteral(resourceName: "Food"))
+        if let imageName = food.imageName {
+            cell.icon.image = UIImage(named: imageName)
+        }
+        
+        if(food.type == "USDA" || food.type == "Scanned"){
+            cell.gallonsPerServing.isHidden = true
+        } else {
+            cell.gallonsPerServing.isHidden = false
+        }
+
         return cell
     }
     
@@ -47,7 +54,7 @@ extension MealViewController {
     
     //Set the number of ingredients to show
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        tableViewHeight.constant = CGFloat(Double(ingredientsInMeal.count)*75.0)
+        //tableViewHeight.constant = CGFloat(Double(ingredientsInMeal.count)*75.0)
         return ingredientsInMeal.count
     }
     
@@ -60,6 +67,8 @@ extension MealViewController {
             day.getDocument { (document, error) in
                 if(document?.exists)!{
                     if var currentTotal = document?.data()![self.mealType + "_total"] as? Double {
+                        print(currentTotal)
+                        print(deletedIngredient.waterData)
                         currentTotal = currentTotal - (deletedIngredient.waterData * Double(deletedIngredient.quantity!))
                         self.gallonsInMeal.text = String(Int(currentTotal))
                         self.day.setData([self.self.mealType + "_total" : currentTotal], options: SetOptions.merge())

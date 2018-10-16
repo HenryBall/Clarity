@@ -11,15 +11,18 @@ import UIKit
 extension AddFromDatabaseViewController {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 75.0
+        return 85.0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "addDatabaseIngredientCell") as! addDatabaseIngredientCell
+        let food = displayedIngredients[indexPath.row]
+        
         cell.label.text = displayedIngredients[indexPath.row].name.capitalized
-        cell.gallonsWaterLabel.text = String(Int(displayedIngredients[indexPath.row].waterData))
-        let imagePath = "food-icons/" + displayedIngredients[indexPath.row].name.uppercased() + ".jpg"
-        cell.icon.sd_setImage(with: storage.reference().child(imagePath), placeholderImage: #imageLiteral(resourceName: "Food"))
+        cell.gallonsWaterLabel.text = String(Int(food.waterData)) + " gal / " + String(format: "%.2f", food.servingSize!) + " oz"
+        if let category = displayedIngredients[indexPath.row].category {
+            cell.icon.image = UIImage(named: category)
+        }
         setCellTags(cell: cell, index: indexPath.row)
         setCellTargets(cell: cell)
         return cell
@@ -35,12 +38,17 @@ extension AddFromDatabaseViewController {
         let quantity = Int(cell.quantityTextField.text!)
         currentIngredient.quantity = quantity
         ingredientsInMeal.append(currentIngredient)
+        addedIngredients.append(currentIngredient)
     }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         let item = displayedIngredients[indexPath.row]
         if let index = ingredientsInMeal.index(where: { $0.name == item.name }) {
             ingredientsInMeal.remove(at: index)
+        }
+        
+        if let index = addedIngredients.index(where: { $0.name == item.name }) {
+            addedIngredients.remove(at: index)
         }
     }
     

@@ -12,19 +12,20 @@ import Firebase
 
 class addScannedItemViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    /* Banner and TableView outlets */
-    @IBOutlet weak var bannerImage: UIImageView!
-    @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var itemName: UITextField!
+    /* IBOutlets */
+    @IBOutlet weak var bannerImage  : UIImageView!
+    @IBOutlet weak var tableView    : UITableView!
+    @IBOutlet weak var itemName     : UITextField!
+    @IBOutlet weak var mealLabel    : UILabel!
     
     /* Class Globals */
-    var mealType : String!
-    var ingredientsList : JSON!
-    var invertedIndex : CollectionReference!
-    var ingredientDB : CollectionReference!
-    var ingredientsInMeal = [Ingredient]()
-    var matchedIngredients = [Ingredient]()
-    var displayedIngredients = [Ingredient]()
+    var mealType                    : String!
+    var ingredientsList             : JSON!
+    var invertedIndex               : CollectionReference!
+    var ingredientDB                : CollectionReference!
+    var ingredientsInMeal           = [Ingredient]()
+    var matchedIngredients          = [Ingredient]()
+    var displayedIngredients        = [Ingredient]()
     
     /* Tagger and options for NLP functions */
     let tagger = NSLinguisticTagger(tagSchemes:[.tokenType, .language, .lexicalClass, .nameType, .lemma], options: 0)
@@ -35,28 +36,11 @@ class addScannedItemViewController: UIViewController, UITableViewDelegate, UITab
         tableView.delegate = self
         tableView.dataSource = self
         tableView.keyboardDismissMode = .onDrag
-        setBannerImage()
+        tableView.tableFooterView = UIView(frame: CGRect.zero)
+        setBannerImage(mealType: mealType, imageView: bannerImage, label: mealLabel)
         ingredientDB = db.collection("water-footprint-data")
         invertedIndex = db.collection("water-data-inverted-index")
         doTextProcessing(text: ingredientsList)
-    }
-    
-    /*
-     - Set the banner based on the meal type
-    */
-    func setBannerImage() {
-        switch mealType {
-        case "breakfast":
-            bannerImage.image = #imageLiteral(resourceName: "breakfastBanner")
-        case "lunch":
-            bannerImage.image = #imageLiteral(resourceName: "lunchBanner")
-        case "dinner":
-            bannerImage.image = #imageLiteral(resourceName: "dinnerBanner")
-        case "snacks":
-            bannerImage.image = #imageLiteral(resourceName: "snacksBanner")
-        default:
-            print("error setting banner image")
-        }
     }
     
     /*
@@ -77,6 +61,26 @@ class addScannedItemViewController: UIViewController, UITableViewDelegate, UITab
         }
         return matched
     }
+    
+    func updateRecent(ingredient: Ingredient) {
+        let userRef = db.collection("users").document(defaults.string(forKey: "user_id")!)
+        var pushToDatabase = [[String : Any]]()
+        
+        for item in recent {
+            if (item["index"] as? Int == 0){
+                if let itemRef = item["reference"] as? DocumentReference {
+                    pushToDatabase.append(["index": 1, "reference": itemRef])
+                } else {
+                    pushToDatabase.append(["index": 1, "image": item["image"], "name": item["name"], "total": item["total"]])
+                }
+            }
+        }
+        
+        pushToDatabase.append(["index": 0, "image": ingredient.imageName, "name": ingredient.name, "total": ingredient.waterData])
+        pushToDatabase.reverse()
+        
+        userRef.setData(["recent" : pushToDatabase], options: SetOptions.merge())
+    }
 
     /*
      - Get the water total for the selected ingredients
@@ -91,7 +95,7 @@ class addScannedItemViewController: UIViewController, UITableViewDelegate, UITab
             let group = DispatchGroup()
             let matched = getMatchedRefsToPush()
             let refWithMostWater = matchedIngredients.max { $0.waterData < $1.waterData }
-            let imageName = (refWithMostWater?.name)!
+            let imageName = (refWithMostWater?.category)!
             let matchedWaterTotal = matchedIngredients.map({$0.waterData}).reduce(0, +)
         
             let ingredient = Ingredient(name: self.itemName.text!, type: "Scanned", waterData: matchedWaterTotal, description: "", servingSize: 1, category: nil, source: "", quantity: 1, ingredients: matched, imageName: imageName)
@@ -117,6 +121,7 @@ class addScannedItemViewController: UIViewController, UITableViewDelegate, UITab
                 let total = self.ingredientsInMeal.map({$0.waterData}).reduce(0, +)
                 day.setData([self.mealType + "_total" : total], options: SetOptions.merge())
                 day.setData([self.mealType : foodInMeal], options: SetOptions.merge())
+                self.updateRecent(ingredient: ingredient)
                 
                 if let destination = self.navigationController?.viewControllers[1] {
                     self.navigationController?.popToViewController(destination, animated: true)
@@ -268,10 +273,9 @@ class addScannedItemViewController: UIViewController, UITableViewDelegate, UITab
         
         cell.name.text = ingredient.name.capitalized
         cell.gallons.text = String(Int(ingredient.waterData))
-        let imagePath = "food-icons/" + ingredient.name.uppercased() + ".jpg"
-        let imageRef = storage.reference().child(imagePath)
-        cell.icon.sd_setImage(with: imageRef, placeholderImage: #imageLiteral(resourceName: "Food"))
-        
+        if let category = ingredient.category {
+            cell.icon.image = UIImage(named: category)
+        }
         return cell
     }
     
