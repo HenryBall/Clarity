@@ -23,6 +23,7 @@ class searchViewController: UIViewController, UITableViewDataSource, UITableView
     /* Class Globals */
     var searchedProducts            = [SearchProduct]()
     var ingredientsInMeal           = [Ingredient]()
+    var addedIngredients            = [Ingredient]()
     var mealType                    : String!
     
     let search_url                  = "https://api.nal.usda.gov/ndb/search/"
@@ -67,12 +68,13 @@ class searchViewController: UIViewController, UITableViewDataSource, UITableView
                 let matchedIngredients = self.compareIngredients(text: itemJSON["report"]["food"]["ing"]["desc"])
                 let totalGallons = matchedIngredients.map({$0.waterData}).reduce(0, +) * Double(quantity)
                 let refWithMostWater = matchedIngredients.max { $0.waterData < $1.waterData }
-                let imageName = (refWithMostWater?.name)!
+                let imageName = (refWithMostWater?.category)!
                 
                 let ingredientRefs = self.getMatchedRefsToPush(matchedIngredients: matchedIngredients)
                 
                 let currentIngredient = Ingredient(name: name, type: "USDA", waterData: totalGallons, description: "", servingSize: 1, category: nil, source: "", quantity: quantity, ingredients: ingredientRefs, imageName: imageName)
                 self.ingredientsInMeal.append(currentIngredient)
+                self.addedIngredients.append(currentIngredient)
                 
             } else {
                 print("Request: \(String(describing: response.request))")
@@ -195,6 +197,35 @@ class searchViewController: UIViewController, UITableViewDataSource, UITableView
         self.tableView.reloadData()
     }
     
+    func setRecent() {
+        let userRef = db.collection("users").document(defaults.string(forKey: "user_id")!)
+        var pushToDatabase = [[String : Any]]()
+        
+        if(self.addedIngredients.count == 1){
+            for item in recent {
+                if (item["index"] as? Int == 0){
+                    if let itemRef = item["reference"] as? DocumentReference {
+                        pushToDatabase.append(["index": 1, "reference": itemRef])
+                    } else {
+                        pushToDatabase.append(["index": 1, "image": item["image"], "name": item["name"], "total": item["total"]])
+                    }
+                }
+            }
+        }
+        var index = 0
+        if self.addedIngredients.count > 1 {
+            index = addedIngredients.count-2
+            let ing = self.addedIngredients[index+1]
+            pushToDatabase.append(["index": 1, "image": ing.imageName as Any, "name": ing.name.capitalized, "total": ing.waterData])
+        }
+        
+        let ing2 = self.addedIngredients[index]
+        pushToDatabase.append(["index": 0, "image": ing2.imageName as Any, "name": ing2.name.capitalized, "total": ing2.waterData])
+        pushToDatabase.reverse()
+        
+        userRef.setData(["recent" : pushToDatabase], options: SetOptions.merge())
+    }
+    
     //------------------------------------------ IBActions --------------------------------------------------
     
     /**
@@ -224,6 +255,7 @@ class searchViewController: UIViewController, UITableViewDataSource, UITableView
         let total = ingredientsInMeal.map({$0.waterData}).reduce(0, +)
         day.setData([self.mealType + "_total" : total], options: SetOptions.merge())
         day.setData([self.mealType : foodInMeal], options: SetOptions.merge())
+        setRecent()
         
         if let destination = self.navigationController?.viewControllers[1] {
             self.navigationController?.popToViewController(destination, animated: true)

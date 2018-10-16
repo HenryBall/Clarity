@@ -163,9 +163,9 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
      When the user presses the "<" button, returns to the home screen
      - Parameter sender: "<" back button */
     @IBAction func backTapped(_ sender: UIButton) {
-        print("go back????")
         self.navigationController?.popViewController(animated: true)
     }
+    
     /**
      When the user presses the "+" button, unhides the buttons view to reveal the 3 methods to add ingredients
      - Parameter sender: "+" button */

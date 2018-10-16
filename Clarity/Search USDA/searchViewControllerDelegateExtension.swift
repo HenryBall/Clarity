@@ -34,4 +34,15 @@ extension searchViewController {
         let quantity = Int(currentCell.quantityTextField.text!)
         addItemToList(number: food.ndbno, name: food.name, quantity: quantity!)
     }
+    
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        let item = searchedProducts[indexPath.row]
+        if let index = ingredientsInMeal.index(where: { $0.name == item.name }) {
+            ingredientsInMeal.remove(at: index)
+        }
+        
+        if let index = addedIngredients.index(where: { $0.name == item.name }) {
+            addedIngredients.remove(at: index)
+        }
+    }
 }

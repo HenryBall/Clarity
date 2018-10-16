@@ -17,16 +17,16 @@ import Firebase
 class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
 
     /* IBOutlets */
-    @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var bannerImage: UIImageView!
-    @IBOutlet weak var searchBar: UISearchBar!
-    @IBOutlet weak var mealLabel: UILabel!
+    @IBOutlet weak var tableView    : UITableView!
+    @IBOutlet weak var bannerImage  : UIImageView!
+    @IBOutlet weak var searchBar    : UISearchBar!
+    @IBOutlet weak var mealLabel    : UILabel!
     
     /* Class Globals */
-    var mealType: String!
-    var ingredientsInMeal = [Ingredient]()
-    var displayedIngredients = [Ingredient]()
-    var addedIngredients = [Ingredient]()
+    var mealType                    : String!
+    var ingredientsInMeal           = [Ingredient]()
+    var displayedIngredients        = [Ingredient]()
+    var addedIngredients            = [Ingredient]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,7 +38,7 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
         setBannerImage(mealType: mealType, imageView: bannerImage, label: mealLabel)
     }
     
-    /*
+    /**
      When the user presses the "<" button, returns to HomeViewController
      - Parameter sender: "<" back button
     */
@@ -46,7 +46,7 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
         self.navigationController?.popViewController(animated: true)
     }
     
-    /*
+    /**
      When the user presses the "add" button, updates the ingredients in the database and returns to HomeViewController
      - Parameter sender: "add" button on top right
     */
@@ -67,21 +67,25 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
         day.setData([mealType + "_total" : total], options: SetOptions.merge())
         day.setData([mealType : allIngredients], options: SetOptions.merge())
         
-        setRecent()
+        updateRecent()
 
         if let destination = self.navigationController?.viewControllers[1] {
             self.navigationController?.popToViewController(destination, animated: true)
         }
     }
     
-    func setRecent() {
+    func updateRecent() {
         let userRef = db.collection("users").document(defaults.string(forKey: "user_id")!)
         var pushToDatabase = [[String : Any]]()
         
         if(self.addedIngredients.count == 1){
             for item in recent {
                 if (item["index"] as? Int == 0){
-                    pushToDatabase.append(["index": 1, "reference": item["reference"] as! DocumentReference])
+                    if let itemRef = item["reference"] as? DocumentReference {
+                        pushToDatabase.append(["index": 1, "reference": itemRef])
+                    } else {
+                        pushToDatabase.append(["index": 1, "image": item["image"], "name": item["name"], "total": item["total"]])
+                    }
                 }
             }
         }

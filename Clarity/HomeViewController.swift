@@ -355,7 +355,13 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
                     }
                 }
             } else {
-                //let ing = Ingredient(name: i["name"] as! String, type: i["type"] as! String, waterData: i["total"] as! Double, description: "", servingSize: 1, category: "", source: "", quantity: i["quantity"] as? Int, ingredients: i["ingredients"] as? [DocumentReference], imageName: (i["image"] as! String))
+                guard let item_name = i["name"] as? String else { return }
+                names[index]?.text = item_name.capitalized
+                guard let image_name = i["image"] as? String else { return }
+                images[index]?.image = UIImage(named: image_name)
+                guard let water_total = i["total"] as? Int else { return }
+                totals[index]?.text = String(Int(water_total)) + " gal"
+                servingSize[index]?.isHidden = true
             }
         }
     }

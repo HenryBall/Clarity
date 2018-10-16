@@ -19,7 +19,6 @@ extension AddFromDatabaseViewController {
         let food = displayedIngredients[indexPath.row]
         
         cell.label.text = displayedIngredients[indexPath.row].name.capitalized
-        //cell.gallonsWaterLabel.text = String(Int(displayedIngredients[indexPath.row].waterData))
         cell.gallonsWaterLabel.text = String(Int(food.waterData)) + " gal / " + String(format: "%.2f", food.servingSize!) + " oz"
         if let category = displayedIngredients[indexPath.row].category {
             cell.icon.image = UIImage(named: category)
@@ -46,6 +45,10 @@ extension AddFromDatabaseViewController {
         let item = displayedIngredients[indexPath.row]
         if let index = ingredientsInMeal.index(where: { $0.name == item.name }) {
             ingredientsInMeal.remove(at: index)
+        }
+        
+        if let index = addedIngredients.index(where: { $0.name == item.name }) {
+            addedIngredients.remove(at: index)
         }
     }
     

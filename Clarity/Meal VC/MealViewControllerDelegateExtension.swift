@@ -24,11 +24,21 @@ extension MealViewController {
         let food = ingredientsInMeal[indexPath.row]
         
         cell.label.text = food.name.capitalized + " (x" + String(food.quantity!) + ")"
-        cell.gallonsWaterLabel.text = String(Int(food.waterData) * ingredientsInMeal[indexPath.row].quantity!) + " gal"
+        cell.gallonsWaterLabel.text = String(Int(food.waterData) * food.quantity!) + " gal"
         cell.gallonsPerServing.text = String(Int(food.waterData)) + " gal / " + String(format: "%.2f", food.servingSize!) + " oz"
         //cell.gallonsPerServing.text = ingredientsInMeal[indexPath.row].category
-        if let category = ingredientsInMeal[indexPath.row].category {
+        if let category = food.category {
             cell.icon.image = UIImage(named: category)
+        }
+        
+        if let imageName = food.imageName {
+            cell.icon.image = UIImage(named: imageName)
+        }
+        
+        if(food.type == "USDA"){
+            cell.gallonsPerServing.isHidden = true
+        } else {
+            cell.gallonsPerServing.isHidden = false
         }
 
         return cell
