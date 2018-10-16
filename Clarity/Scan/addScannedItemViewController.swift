@@ -76,8 +76,7 @@ class addScannedItemViewController: UIViewController, UITableViewDelegate, UITab
             }
         }
         
-        let ref = db.document("water-footprint-data/" + ingredient.name.uppercased())
-        pushToDatabase.append(["index": 0, "reference": ref])
+        pushToDatabase.append(["index": 0, "image": ingredient.imageName, "name": ingredient.name, "total": ingredient.waterData])
         pushToDatabase.reverse()
         
         userRef.setData(["recent" : pushToDatabase], options: SetOptions.merge())

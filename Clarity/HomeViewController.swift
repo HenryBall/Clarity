@@ -359,7 +359,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
                 names[index]?.text = item_name.capitalized
                 guard let image_name = i["image"] as? String else { return }
                 images[index]?.image = UIImage(named: image_name)
-                guard let water_total = i["total"] as? Int else { return }
+                guard let water_total = i["total"] as? Double else { return }
                 totals[index]?.text = String(Int(water_total)) + " gal"
                 servingSize[index]?.isHidden = true
             }

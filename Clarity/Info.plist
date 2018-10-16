@@ -32,7 +32,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>Getting Images</string>
+	<string>Used to scan an ingredients label</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Pacifico.ttf</string>

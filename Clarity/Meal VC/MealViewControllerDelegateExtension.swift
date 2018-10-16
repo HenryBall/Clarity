@@ -35,7 +35,7 @@ extension MealViewController {
             cell.icon.image = UIImage(named: imageName)
         }
         
-        if(food.type == "USDA"){
+        if(food.type == "USDA" || food.type == "Scanned"){
             cell.gallonsPerServing.isHidden = true
         } else {
             cell.gallonsPerServing.isHidden = false

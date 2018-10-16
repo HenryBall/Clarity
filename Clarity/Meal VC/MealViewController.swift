@@ -233,7 +233,7 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
             let binaryImageData = base64EncodeImage(pickedImage)
             createRequest(with: binaryImageData)
         }
-        loadingView.isHidden = false
+        loadingView.alpha = 1.0
         loadingScreenShouldBeActive = true
         dismiss(animated: true, completion: nil)
     }
