@@ -10,7 +10,7 @@ import UIKit
 import SwiftyJSON
 import Firebase
 
-class addScannedItemViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class AddScannedItemViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     /* IBOutlets */
     @IBOutlet weak var bannerImage  : UIImageView!

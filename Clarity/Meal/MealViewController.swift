@@ -177,7 +177,7 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
      When the user presses the "search" option, pushes the search screen onto the navigation stack.
      - Parameter sender: "Search USDA" button */
     @IBAction func searchTapped(_ sender: UIButton) {
-        let destination = storyboard?.instantiateViewController(withIdentifier: "searchViewController") as! searchViewController
+        let destination = storyboard?.instantiateViewController(withIdentifier: "searchViewController") as! SearchViewController
         destination.mealType = mealType
         destination.ingredientsInMeal = ingredientsInMeal
         setView(alpha: 0.0, angle: -CGFloat.pi)
@@ -219,7 +219,7 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
         DispatchQueue.main.async(execute: {
             let json = JSON(data: dataToParse)
             let ingredientSelector = json["responses"][0]["textAnnotations"][0]["description"]
-            let destination = self.storyboard?.instantiateViewController(withIdentifier: "addScannedItemViewController") as! addScannedItemViewController
+            let destination = self.storyboard?.instantiateViewController(withIdentifier: "addScannedItemViewController") as! AddScannedItemViewController
             destination.ingredientsInMeal = self.ingredientsInMeal
             destination.ingredientsList = ingredientSelector
             destination.mealType = self.mealType

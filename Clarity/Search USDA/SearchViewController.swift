@@ -12,7 +12,7 @@ import SwiftyJSON
 import Foundation
 import Firebase
 
-class searchViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
+class SearchViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
     
     /* IB Outlets */
     @IBOutlet weak var bannerImage  : UIImageView!

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class searchCell: UITableViewCell {
+class SearchCell: UITableViewCell {
 
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var quantityTextField: UITextField!

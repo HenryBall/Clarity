@@ -8,7 +8,7 @@
 
 import UIKit
 
-class scannedItemCell: UITableViewCell {
+class ScannedItemCell: UITableViewCell {
 
     @IBOutlet weak var name: UILabel!
     @IBOutlet weak var gallons: UILabel!
