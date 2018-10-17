@@ -267,7 +267,7 @@ class AddScannedItemViewController: UIViewController, UITableViewDelegate, UITab
      - Set the ContentView of each cell
     */
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "scannedItemCell") as! scannedItemCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "scannedItemCell") as! ScannedItemCell
         
         let ingredient = displayedIngredients[indexPath.row]
         

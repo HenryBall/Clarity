@@ -22,6 +22,7 @@ var fruits                   = [Ingredient]()
 var vegetables               = [Ingredient]()
 var dairy                    = [Ingredient]()
 var drinks                   = [Ingredient]()
+var grains                   = [Ingredient]()
 var other                    = [Ingredient]()
 var recent                   = [[String: Any]]()
 let orange                   = UIColor(red: 246/255, green: 121/255, blue: 79/255, alpha: 1)
@@ -99,7 +100,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         self.navigationController?.isNavigationBarHidden = true
         self.scrollView.delegate = self
         setUpDateFormatter()
-        welcomeTransition()
+        //welcomeTransition()
         userRef = db.collection("users").document(defaults.string(forKey: "user_id")!)
         day = userRef.collection("meals").document(databaseDateFormatter.string(from: today))
         queryIngredientsFromFirebase()
@@ -278,6 +279,8 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
                         dairy.append(current_ingredient)
                     case "drinks":
                         drinks.append(current_ingredient)
+                    case "grains":
+                        grains.append(current_ingredient)
                     case "other":
                         other.append(current_ingredient)
                     default:
