@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="bUs-0D-f2x">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="bUs-0D-f2x">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
-        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -569,23 +565,23 @@
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Search Ingredients" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b5E-BB-caS">
                                         <rect key="frame" x="136" y="236" width="138" height="22"/>
                                         <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="16"/>
-                                        <color key="textColor" red="0.28353581970000002" green="0.28235294119999998" blue="0.28235294119999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Search USDA" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wkP-i0-LR9">
                                         <rect key="frame" x="176" y="396" width="98" height="22"/>
                                         <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="16"/>
-                                        <color key="textColor" red="0.28353581970000002" green="0.28235294119999998" blue="0.28235294119999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Scan Ingredients" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E9z-xq-cJB">
                                         <rect key="frame" x="150.5" y="316" width="123.5" height="22"/>
                                         <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="16"/>
-                                        <color key="textColor" red="0.28353581970000002" green="0.28235294119999998" blue="0.28235294119999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
-                                <color key="backgroundColor" white="0.75" alpha="0.84864656690140849" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.89945532570422537" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="csW-SI-Xwh" firstAttribute="width" secondItem="rHc-Fb-sZW" secondAttribute="width" id="F6g-w6-VrY"/>
                                     <constraint firstItem="6n7-eo-9fQ" firstAttribute="top" secondItem="GOe-cN-r6K" secondAttribute="bottom" constant="15" id="Ghi-MQ-WlF"/>
@@ -814,9 +810,6 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fZ7-un-eqb" userLabel="Settings Button">
                                 <rect key="frame" x="25" y="45" width="24" height="22"/>
                                 <state key="normal" image="settings"/>
-                                <connections>
-                                    <action selector="settingsBtnTapped:" destination="V4S-hq-XRe" eventType="touchUpInside" id="4D8-Mb-yxH"/>
-                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GVD-AG-Od4" userLabel="Add Button">
                                 <rect key="frame" x="328" y="45" width="22" height="22"/>
@@ -951,7 +944,7 @@
                                                                 <rect key="frame" x="230" y="47" width="115" height="172.5"/>
                                                                 <subviews>
                                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="veo-ds-8Mk" userLabel="Breakfast">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="115" height="43"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="115" height="43.5"/>
                                                                         <subviews>
                                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="myP-yM-b3P" userLabel="circle">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="16" height="16"/>
@@ -990,7 +983,7 @@
                                                                         </constraints>
                                                                     </view>
                                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rIC-78-cpk" userLabel="Lunch">
-                                                                        <rect key="frame" x="0.0" y="43" width="115" height="43.5"/>
+                                                                        <rect key="frame" x="0.0" y="43.5" width="115" height="43"/>
                                                                         <subviews>
                                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bQV-a4-1sc" userLabel="circle">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="16" height="16"/>
@@ -1599,6 +1592,7 @@
                             <constraint firstItem="GVD-AG-Od4" firstAttribute="top" secondItem="XqH-eV-WpQ" secondAttribute="top" constant="25" id="6Bt-jy-etR"/>
                             <constraint firstItem="Ix9-cx-aXq" firstAttribute="top" secondItem="pIh-Ua-91F" secondAttribute="bottom" constant="10" id="6aW-d6-apl"/>
                             <constraint firstItem="pIh-Ua-91F" firstAttribute="leading" secondItem="XqH-eV-WpQ" secondAttribute="leading" constant="15" id="6ba-JE-WRS"/>
+                            <constraint firstItem="fZ7-un-eqb" firstAttribute="leading" secondItem="XqH-eV-WpQ" secondAttribute="leading" constant="15" id="8D7-fc-lw3"/>
                             <constraint firstItem="b6k-pu-Sci" firstAttribute="top" secondItem="D2O-1E-JmC" secondAttribute="bottom" id="9Sb-6F-1wy"/>
                             <constraint firstItem="b6k-pu-Sci" firstAttribute="height" secondItem="D2O-1E-JmC" secondAttribute="height" multiplier="30/100" id="B2D-Rw-5eZ"/>
                             <constraint firstItem="Ix9-cx-aXq" firstAttribute="leading" secondItem="pIh-Ua-91F" secondAttribute="leading" id="C7f-Ob-yev"/>
@@ -1629,6 +1623,7 @@
                             <constraint firstItem="D2O-1E-JmC" firstAttribute="trailing" secondItem="XqH-eV-WpQ" secondAttribute="trailing" id="v8q-pi-WVf"/>
                             <constraint firstItem="tGG-cl-Rzc" firstAttribute="leading" secondItem="Esv-RW-ptb" secondAttribute="leading" id="w12-J7-O2n"/>
                             <constraint firstItem="b6k-pu-Sci" firstAttribute="width" secondItem="jzY-7h-62v" secondAttribute="width" multiplier="1/2" constant="-22.5" id="xKb-N4-Pmk"/>
+                            <constraint firstItem="bUB-qo-X5M" firstAttribute="centerX" secondItem="jzY-7h-62v" secondAttribute="centerX" id="yVS-nx-Q0e"/>
                             <constraint firstItem="D2O-1E-JmC" firstAttribute="top" secondItem="bUB-qo-X5M" secondAttribute="bottom" id="z34-7C-6V2"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="XqH-eV-WpQ"/>

@@ -11,11 +11,11 @@
 		4A3C89E96AAD5B51EED42B15 /* Pods_Clarity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F01538DE5D7B296F77D75B8 /* Pods_Clarity.framework */; };
 		9C1C29BD20B262EC004B7953 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1C29BC20B262EC004B7953 /* SearchViewController.swift */; };
 		9C1C29C020B267CA004B7953 /* SearchProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1C29BF20B267CA004B7953 /* SearchProduct.swift */; };
-		9C1C29C320B2683E004B7953 /* SearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1C29C220B2683E004B7953 /* SearchCell.swift */; };
 		9C1D87D320CF6C1400C68C81 /* AddScannedItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1D87D220CF6C1300C68C81 /* AddScannedItemViewController.swift */; };
 		9C7A195E20CF77CD0029108A /* Pacifico.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9C7A195D20CF76110029108A /* Pacifico.ttf */; };
 		9C8BC3D82128CAF3006CE451 /* MealViewControllerDelegateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C8BC3D72128CAF3006CE451 /* MealViewControllerDelegateExtension.swift */; };
-		9C8BC3DB2128CF37006CE451 /* SearchViewControllerDelegateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C8BC3DA2128CF37006CE451 /* SearchViewControllerDelegateExtension.swift */; };
+		9C93407A217715D200D80BEF /* SearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C934079217715D200D80BEF /* SearchCell.swift */; };
+		9C93407C2177185B00D80BEF /* SearchViewControllerDelegateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C93407B2177185B00D80BEF /* SearchViewControllerDelegateExtension.swift */; };
 		9CB90C3620AA108B00BEADCA /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB90C3520AA108A00BEADCA /* HomeViewController.swift */; };
 		9CB90C3820AA11B500BEADCA /* MealViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB90C3720AA11B400BEADCA /* MealViewController.swift */; };
 		9CC4093A212A0A60004B7C3B /* OnBoardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CC40939212A0A60004B7C3B /* OnBoardingViewController.swift */; };
@@ -70,11 +70,11 @@
 		731279D8CB126C6DD31848EB /* Pods-ClarityTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ClarityTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ClarityTests/Pods-ClarityTests.release.xcconfig"; sourceTree = "<group>"; };
 		9C1C29BC20B262EC004B7953 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		9C1C29BF20B267CA004B7953 /* SearchProduct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchProduct.swift; sourceTree = "<group>"; };
-		9C1C29C220B2683E004B7953 /* SearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCell.swift; sourceTree = "<group>"; };
 		9C1D87D220CF6C1300C68C81 /* AddScannedItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddScannedItemViewController.swift; sourceTree = "<group>"; };
 		9C7A195D20CF76110029108A /* Pacifico.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Pacifico.ttf; sourceTree = "<group>"; };
 		9C8BC3D72128CAF3006CE451 /* MealViewControllerDelegateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealViewControllerDelegateExtension.swift; sourceTree = "<group>"; };
-		9C8BC3DA2128CF37006CE451 /* SearchViewControllerDelegateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewControllerDelegateExtension.swift; sourceTree = "<group>"; };
+		9C934079217715D200D80BEF /* SearchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchCell.swift; sourceTree = "<group>"; };
+		9C93407B2177185B00D80BEF /* SearchViewControllerDelegateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewControllerDelegateExtension.swift; sourceTree = "<group>"; };
 		9CB90C3520AA108A00BEADCA /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		9CB90C3720AA11B400BEADCA /* MealViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MealViewController.swift; sourceTree = "<group>"; };
 		9CC40939212A0A60004B7C3B /* OnBoardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingViewController.swift; sourceTree = "<group>"; };
@@ -157,8 +157,8 @@
 			isa = PBXGroup;
 			children = (
 				9C1C29BC20B262EC004B7953 /* SearchViewController.swift */,
-				9C1C29C220B2683E004B7953 /* SearchCell.swift */,
-				9C8BC3DA2128CF37006CE451 /* SearchViewControllerDelegateExtension.swift */,
+				9C934079217715D200D80BEF /* SearchCell.swift */,
+				9C93407B2177185B00D80BEF /* SearchViewControllerDelegateExtension.swift */,
 			);
 			path = "Search USDA";
 			sourceTree = "<group>";
@@ -581,13 +581,13 @@
 				EB008A0E20BCEC4E00CE8EC3 /* IngredientsDetailsViewController.swift in Sources */,
 				BA915902217C3D73009521D2 /* UIViewControllerExtension.swift in Sources */,
 				9CFD02D320AEB1F9007D4BEF /* addDatabaseIngredientCell.swift in Sources */,
-				9C8BC3DB2128CF37006CE451 /* SearchViewControllerDelegateExtension.swift in Sources */,
+				9C93407A217715D200D80BEF /* SearchCell.swift in Sources */,
+				9C93407C2177185B00D80BEF /* SearchViewControllerDelegateExtension.swift in Sources */,
 				BA56D60E21235BB500260AF9 /* ScannedItemCell.swift in Sources */,
 				E7C0A5E920A9F23E007A8F39 /* AppDelegate.swift in Sources */,
 				9C8BC3D82128CAF3006CE451 /* MealViewControllerDelegateExtension.swift in Sources */,
 				BA6CFFCA2176FDAF00E72478 /* UIViewExtensions.swift in Sources */,
 				E7F7DB0720AA251500252AA1 /* SettingsViewController.swift in Sources */,
-				9C1C29C320B2683E004B7953 /* SearchCell.swift in Sources */,
 				9CE2851D2129233B00C951BB /* AddFromDatabaseDelegateExtension.swift in Sources */,
 				9CFD02D120AEAE85007D4BEF /* AddFromDatabaseViewController.swift in Sources */,
 				BA6CFFC32176C91F00E72478 /* HomeCircleExtension.swift in Sources */,
