@@ -11,11 +11,11 @@ import UIKit
 class IngredientCell: UITableViewCell {
 
     @IBOutlet weak var shadowView: UIView!
-    @IBOutlet weak var icon: UIImageView!
-    @IBOutlet weak var point: UIView!
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var gallonsWaterLabel: UILabel!
     @IBOutlet weak var gallonsPerServing: UILabel!
+    @IBOutlet weak var point: UIView!
+    @IBOutlet weak var category: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

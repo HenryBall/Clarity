@@ -30,6 +30,7 @@
 		BA6CFFC72176CBBD00E72478 /* BarChartExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6CFFC62176CBBD00E72478 /* BarChartExtension.swift */; };
 		BA6CFFCA2176FDAF00E72478 /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6CFFC92176FDAF00E72478 /* UIViewExtensions.swift */; };
 		BA83D3592149E0B3004026FD /* LinePath.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA83D3582149E0B3004026FD /* LinePath.swift */; };
+		BA915902217C3D73009521D2 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA915901217C3D73009521D2 /* UIViewControllerExtension.swift */; };
 		E7C0A5E920A9F23E007A8F39 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C0A5E820A9F23E007A8F39 /* AppDelegate.swift */; };
 		E7C0A5EE20A9F23E007A8F39 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E7C0A5EC20A9F23E007A8F39 /* Main.storyboard */; };
 		E7C0A5F320A9F23F007A8F39 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E7C0A5F120A9F23F007A8F39 /* LaunchScreen.storyboard */; };
@@ -88,6 +89,7 @@
 		BA6CFFC62176CBBD00E72478 /* BarChartExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarChartExtension.swift; sourceTree = "<group>"; };
 		BA6CFFC92176FDAF00E72478 /* UIViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtensions.swift; sourceTree = "<group>"; };
 		BA83D3582149E0B3004026FD /* LinePath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinePath.swift; sourceTree = "<group>"; };
+		BA915901217C3D73009521D2 /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
 		CDD35D5BF6B1106C6A550085 /* Pods_ClarityTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ClarityTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E274A5A283688D6A31B4A23D /* Pods-ClarityUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ClarityUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ClarityUITests/Pods-ClarityUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		E7C0A5E520A9F23E007A8F39 /* Clarity.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Clarity.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -196,8 +198,8 @@
 				EB1884B820CF78080000FA98 /* SpinnerView.swift */,
 				EB008A0D20BCEC4500CE8EC3 /* IngredientsDetailsViewController.swift */,
 				EB13408920AA51400084B79B /* IngredientCell.swift */,
-				9CB90C3720AA11B400BEADCA /* MealViewController.swift */,
 				9C8BC3D72128CAF3006CE451 /* MealViewControllerDelegateExtension.swift */,
+				9CB90C3720AA11B400BEADCA /* MealViewController.swift */,
 			);
 			path = Meal;
 			sourceTree = "<group>";
@@ -243,6 +245,7 @@
 			isa = PBXGroup;
 			children = (
 				BA6CFFC92176FDAF00E72478 /* UIViewExtensions.swift */,
+				BA915901217C3D73009521D2 /* UIViewControllerExtension.swift */,
 			);
 			path = "General Extensions";
 			sourceTree = "<group>";
@@ -576,6 +579,7 @@
 				BA83D3592149E0B3004026FD /* LinePath.swift in Sources */,
 				EB1884B920CF78080000FA98 /* SpinnerView.swift in Sources */,
 				EB008A0E20BCEC4E00CE8EC3 /* IngredientsDetailsViewController.swift in Sources */,
+				BA915902217C3D73009521D2 /* UIViewControllerExtension.swift in Sources */,
 				9CFD02D320AEB1F9007D4BEF /* addDatabaseIngredientCell.swift in Sources */,
 				9C8BC3DB2128CF37006CE451 /* SearchViewControllerDelegateExtension.swift in Sources */,
 				BA56D60E21235BB500260AF9 /* ScannedItemCell.swift in Sources */,

@@ -23,15 +23,19 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
 
     /* IBOutlets */
     @IBOutlet weak var mealName: UILabel!
-    @IBOutlet weak var bannerImageTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var loadingView: UIView!
-    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var closeButton: UIButton!
     @IBOutlet weak var bannerImage: UIImageView!
     @IBOutlet weak var gallonsInMeal: UILabel!
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var tableViewHeight: NSLayoutConstraint!
     @IBOutlet weak var addIngredientsView: UIView!
+    @IBOutlet weak var tappedName: UILabel!
+    @IBOutlet weak var infoView: UIView!
+    @IBOutlet weak var infoLine: UIView!
+    @IBOutlet weak var infoViewCategory: UILabel!
+    @IBOutlet weak var infoViewPercentile: UILabel!
+    @IBOutlet weak var infoViewRatingBoarder: UIView!
+    @IBOutlet weak var infoViewRatingLabel: UILabel!
     
     /* Views */
     var spinner : SpinnerView!
@@ -62,6 +66,7 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
         tableView.dataSource = self
         tableView.keyboardDismissMode = .onDrag
         tableView.tableFooterView = UIView(frame: CGRect.zero)
+        initInfoView()
         day = db.collection("users").document(defaults.string(forKey: "user_id")!).collection("meals").document(formatter.string(from: today))
         setBannerImage(mealType: mealType, imageView: bannerImage, label: mealName)
         initSpinner()
@@ -77,6 +82,13 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
      If the user scans an item, show the loading screen */
     override func viewWillAppear(_ animated: Bool) {
         loadingView.isHidden = !loadingScreenShouldBeActive
+    }
+    
+    func initInfoView() {
+        infoView.alpha = 0.0
+        infoLine.layer.cornerRadius = infoLine.bounds.height/2
+        infoViewRatingBoarder.layer.borderWidth = 2.0
+        infoViewRatingBoarder.layer.cornerRadius = infoViewRatingBoarder.bounds.height/2
     }
     
     /**
@@ -202,6 +214,12 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
 
+    @IBAction func closeInfoView(_ sender: UITapGestureRecognizer) {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.infoView.alpha = 0.0
+        })
+    }
+    
     /**
      When the user presses the "Search Ingredients" button, pushes the ingredients screen onto the navigation stack.
      - Parameter sender: "Search Ingredients" button */

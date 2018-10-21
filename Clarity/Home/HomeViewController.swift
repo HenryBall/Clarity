@@ -27,7 +27,9 @@ var recent                   = [[String: Any]]()
 let orange                   = UIColor(red: 246/255, green: 121/255, blue: 79/255, alpha: 1)
 let periwinkle               = UIColor(red: 153/255, green: 192/255, blue: 243/255, alpha: 1)
 let blue                     = UIColor(red: 154/255, green: 225/255, blue: 241/255, alpha: 1)
+let darkBlue                 = UIColor(red: 107/255, green: 161/255, blue: 228/255, alpha: 1)
 let yellow                   = UIColor(red: 255/255, green: 215/255, blue: 130/255, alpha: 1)
+let green                    = UIColor(red: 178/255, green: 218/255, blue: 134/255, alpha: 1)
 
 class HomeViewController: UIViewController, UIScrollViewDelegate {
     
@@ -50,7 +52,8 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var recent2Name              : UILabel!
     @IBOutlet weak var recent2Total             : UILabel!
     @IBOutlet weak var recent2Serving           : UILabel!
-    @IBOutlet weak var welcomeLabel: UILabel!
+    @IBOutlet weak var recentCategory1: UILabel!
+    @IBOutlet weak var recentCategory2: UILabel!
     
     //UIView
     @IBOutlet weak var circleView               : UIView!
@@ -66,10 +69,11 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var averageShadowView        : UIView!
     @IBOutlet weak var recent1Shadow            : UIView!
     @IBOutlet weak var recent2Shadow            : UIView!
+    @IBOutlet weak var recentPoint1: UIView!
+    @IBOutlet weak var recentPoint2: UIView!
     
     @IBOutlet weak var leftArrow                : UIButton!
     @IBOutlet weak var rightArrow               : UIButton!
-    @IBOutlet weak var settingsBtn              : UIButton!
     
     @IBOutlet weak var scrollView               : UIScrollView!
     
@@ -99,7 +103,6 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         self.navigationController?.isNavigationBarHidden = true
         self.scrollView.delegate = self
         setUpDateFormatter()
-        welcomeTransition()
         userRef = db.collection("users").document(defaults.string(forKey: "user_id")!)
         day = userRef.collection("meals").document(databaseDateFormatter.string(from: today))
         queryIngredientsFromFirebase()
@@ -134,14 +137,14 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         dateLabel.text = labelDateFormatter.string(from: today)
     }
     
-    func welcomeTransition() {
+    /*func welcomeTransition() {
         settingsBtn.alpha = 0.0
         welcomeLabel.alpha = 1.0
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.welcomeLabel.fadeOut()
             self.settingsBtn.fadeIn()
         }
-    }
+    }*/
     
     func loadData() {
         self.addMealMenu.alpha = 0.0
@@ -227,10 +230,11 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     }
     
     func showRecent(){
-        let images = [recentImage1, recentImage2]
+        let images = [recentPoint1, recentPoint2]
         let names = [recent1Name, recent2Name]
         let totals = [recent1Total, recent2Total]
         let servingSize = [recent1Serving, recent2Serving]
+        let categoryLabels = [recentCategory1, recentCategory2]
         
         for (index, i) in recent.enumerated() {
             if let ref = i["reference"] as? DocumentReference {
@@ -239,7 +243,9 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
                         let ingredient = Ingredient(document: document)
                         names[index]?.text = ingredient.name.capitalized
                         if let category = ingredient.category {
-                            images[index]?.image = UIImage(named: category)
+                            categoryLabels[index]?.text = self.setCategory(category: category)
+                            images[index]?.backgroundColor = self.setColor(category: category)
+                            images[index]?.layer.cornerRadius = (images[index]?.bounds.width)!/2
                         }
                         totals[index]?.text = String(Int(ingredient.waterData)) + " gal"
                         servingSize[index]?.text = String(Int(ingredient.waterData)) + " gal / " + String(format: "%.2f", ingredient.servingSize!) + " oz"
@@ -250,8 +256,10 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
             } else {
                 guard let item_name = i["name"] as? String else { return }
                 names[index]?.text = item_name.capitalized
-                guard let image_name = i["image"] as? String else { return }
-                images[index]?.image = UIImage(named: image_name)
+                guard let category = i["category"] as? String else { return }
+                categoryLabels[index]?.text = setCategory(category: category)
+                images[index]?.backgroundColor = setColor(category: category)
+                images[index]?.layer.cornerRadius = (images[index]?.bounds.width)!/2
                 guard let water_total = i["total"] as? Double else { return }
                 totals[index]?.text = String(Int(water_total)) + " gal"
                 servingSize[index]?.isHidden = true
