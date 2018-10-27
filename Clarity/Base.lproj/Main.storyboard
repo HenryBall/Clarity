@@ -2109,14 +2109,14 @@
                                                     <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                                 </textField>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fqg-tN-7ua" userLabel="name">
-                                                    <rect key="frame" x="55" y="30.5" width="14.5" height="22"/>
-                                                    <fontDescription key="fontDescription" name="AvenirNext-Bold" family="Avenir Next" pointSize="16"/>
+                                                    <rect key="frame" x="55" y="43" width="12.5" height="22"/>
+                                                    <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="16"/>
                                                     <color key="textColor" red="0.28235294119999998" green="0.28235294119999998" blue="0.28235294119999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=".../..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DZM-H9-Ya1">
                                                     <rect key="frame" x="55" y="65" width="23.5" height="16.5"/>
-                                                    <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="12"/>
+                                                    <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="12"/>
                                                     <color key="textColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -2126,11 +2126,11 @@
                                                 <constraint firstItem="5Gb-ar-MNq" firstAttribute="centerY" secondItem="hWm-ZA-feb" secondAttribute="centerY" id="6zz-Rz-i7n"/>
                                                 <constraint firstItem="cXJ-bQ-zWD" firstAttribute="leading" secondItem="5Gb-ar-MNq" secondAttribute="leading" constant="15" id="AHO-Qz-BXq"/>
                                                 <constraint firstItem="DZM-H9-Ya1" firstAttribute="leading" secondItem="fqg-tN-7ua" secondAttribute="leading" id="Aau-aS-EV6"/>
-                                                <constraint firstItem="fqg-tN-7ua" firstAttribute="centerY" secondItem="hWm-ZA-feb" secondAttribute="centerY" multiplier="3:4" id="BzI-7z-kGw"/>
                                                 <constraint firstItem="SQK-Jn-km4" firstAttribute="centerY" secondItem="hWm-ZA-feb" secondAttribute="centerY" id="Dn5-mz-87q"/>
                                                 <constraint firstItem="F0b-ee-UK4" firstAttribute="centerY" secondItem="hWm-ZA-feb" secondAttribute="centerY" id="EdE-VF-8CF"/>
                                                 <constraint firstItem="DZM-H9-Ya1" firstAttribute="centerY" secondItem="hWm-ZA-feb" secondAttribute="centerY" multiplier="4:3" id="Lke-7h-8jr"/>
                                                 <constraint firstItem="SQK-Jn-km4" firstAttribute="leading" secondItem="F0b-ee-UK4" secondAttribute="trailing" constant="10" id="Mme-nd-OoW"/>
+                                                <constraint firstItem="DZM-H9-Ya1" firstAttribute="top" secondItem="fqg-tN-7ua" secondAttribute="bottom" id="N4e-v2-IYK"/>
                                                 <constraint firstItem="cXJ-bQ-zWD" firstAttribute="centerY" secondItem="hWm-ZA-feb" secondAttribute="centerY" id="RJw-5E-pUp"/>
                                                 <constraint firstItem="7V4-is-tEP" firstAttribute="centerY" secondItem="hWm-ZA-feb" secondAttribute="centerY" id="SyV-VA-gQH"/>
                                                 <constraint firstAttribute="trailing" secondItem="7V4-is-tEP" secondAttribute="trailing" constant="15" id="c3H-7r-W4o"/>
@@ -2206,7 +2206,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6uL-M0-T1P" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1537" y="27"/>
+            <point key="canvasLocation" x="1394" y="48"/>
         </scene>
         <!--Search View Controller-->
         <scene sceneID="mXy-vE-Pf0">
