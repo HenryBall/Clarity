@@ -36,6 +36,8 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet weak var infoViewPercentile: UILabel!
     @IBOutlet weak var infoViewRatingBoarder: UIView!
     @IBOutlet weak var infoViewRatingLabel: UILabel!
+    @IBOutlet weak var infoViewSource: UILabel!
+    @IBOutlet weak var infoViewGallons: UILabel!
     
     /* Views */
     var spinner : SpinnerView!

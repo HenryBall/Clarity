@@ -30,7 +30,7 @@
 		BA6CFFC72176CBBD00E72478 /* BarChartExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6CFFC62176CBBD00E72478 /* BarChartExtension.swift */; };
 		BA6CFFCA2176FDAF00E72478 /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6CFFC92176FDAF00E72478 /* UIViewExtensions.swift */; };
 		BA83D3592149E0B3004026FD /* LinePath.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA83D3582149E0B3004026FD /* LinePath.swift */; };
-		BA915902217C3D73009521D2 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA915901217C3D73009521D2 /* UIViewControllerExtension.swift */; };
+		BA915902217C3D73009521D2 /* InfoViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA915901217C3D73009521D2 /* InfoViewExtension.swift */; };
 		E7C0A5E920A9F23E007A8F39 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C0A5E820A9F23E007A8F39 /* AppDelegate.swift */; };
 		E7C0A5EE20A9F23E007A8F39 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E7C0A5EC20A9F23E007A8F39 /* Main.storyboard */; };
 		E7C0A5F320A9F23F007A8F39 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E7C0A5F120A9F23F007A8F39 /* LaunchScreen.storyboard */; };
@@ -39,7 +39,6 @@
 		E7EF6D2720AB23B00022D7E1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E7EF6D2620AB23AF0022D7E1 /* GoogleService-Info.plist */; };
 		E7F7DB0720AA251500252AA1 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F7DB0620AA251500252AA1 /* SettingsViewController.swift */; };
 		EB008A0A20BC5E6800CE8EC3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EB008A0920BC5E6700CE8EC3 /* Assets.xcassets */; };
-		EB008A0E20BCEC4E00CE8EC3 /* IngredientsDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB008A0D20BCEC4500CE8EC3 /* IngredientsDetailsViewController.swift */; };
 		EB13408A20AA51410084B79B /* IngredientCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB13408920AA51400084B79B /* IngredientCell.swift */; };
 		EB1884B720CDAD4D0000FA98 /* CirclePath.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1884B620CDAD4D0000FA98 /* CirclePath.swift */; };
 		EB1884B920CF78080000FA98 /* SpinnerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1884B820CF78080000FA98 /* SpinnerView.swift */; };
@@ -89,7 +88,7 @@
 		BA6CFFC62176CBBD00E72478 /* BarChartExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarChartExtension.swift; sourceTree = "<group>"; };
 		BA6CFFC92176FDAF00E72478 /* UIViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtensions.swift; sourceTree = "<group>"; };
 		BA83D3582149E0B3004026FD /* LinePath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinePath.swift; sourceTree = "<group>"; };
-		BA915901217C3D73009521D2 /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
+		BA915901217C3D73009521D2 /* InfoViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewExtension.swift; sourceTree = "<group>"; };
 		CDD35D5BF6B1106C6A550085 /* Pods_ClarityTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ClarityTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E274A5A283688D6A31B4A23D /* Pods-ClarityUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ClarityUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ClarityUITests/Pods-ClarityUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		E7C0A5E520A9F23E007A8F39 /* Clarity.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Clarity.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -105,7 +104,6 @@
 		E7EF6D2620AB23AF0022D7E1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		E7F7DB0620AA251500252AA1 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		EB008A0920BC5E6700CE8EC3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = SOURCE_ROOT; };
-		EB008A0D20BCEC4500CE8EC3 /* IngredientsDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IngredientsDetailsViewController.swift; sourceTree = "<group>"; };
 		EB13408920AA51400084B79B /* IngredientCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IngredientCell.swift; sourceTree = "<group>"; };
 		EB13409520AAB2B40084B79B /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EB1884B620CDAD4D0000FA98 /* CirclePath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CirclePath.swift; sourceTree = "<group>"; };
@@ -196,7 +194,6 @@
 			isa = PBXGroup;
 			children = (
 				EB1884B820CF78080000FA98 /* SpinnerView.swift */,
-				EB008A0D20BCEC4500CE8EC3 /* IngredientsDetailsViewController.swift */,
 				EB13408920AA51400084B79B /* IngredientCell.swift */,
 				9C8BC3D72128CAF3006CE451 /* MealViewControllerDelegateExtension.swift */,
 				9CB90C3720AA11B400BEADCA /* MealViewController.swift */,
@@ -245,7 +242,7 @@
 			isa = PBXGroup;
 			children = (
 				BA6CFFC92176FDAF00E72478 /* UIViewExtensions.swift */,
-				BA915901217C3D73009521D2 /* UIViewControllerExtension.swift */,
+				BA915901217C3D73009521D2 /* InfoViewExtension.swift */,
 			);
 			path = "General Extensions";
 			sourceTree = "<group>";
@@ -578,8 +575,7 @@
 				BA6CFFC52176CAD600E72478 /* PieChartExtension.swift in Sources */,
 				BA83D3592149E0B3004026FD /* LinePath.swift in Sources */,
 				EB1884B920CF78080000FA98 /* SpinnerView.swift in Sources */,
-				EB008A0E20BCEC4E00CE8EC3 /* IngredientsDetailsViewController.swift in Sources */,
-				BA915902217C3D73009521D2 /* UIViewControllerExtension.swift in Sources */,
+				BA915902217C3D73009521D2 /* InfoViewExtension.swift in Sources */,
 				9CFD02D320AEB1F9007D4BEF /* addDatabaseIngredientCell.swift in Sources */,
 				9C93407A217715D200D80BEF /* SearchCell.swift in Sources */,
 				9C93407C2177185B00D80BEF /* SearchViewControllerDelegateExtension.swift in Sources */,

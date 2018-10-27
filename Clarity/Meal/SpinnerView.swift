@@ -26,6 +26,7 @@ class SpinnerView : UIView {
         layer.fillColor = nil
         layer.strokeColor = UIColor.white.cgColor
         layer.lineWidth = 5
+        layer.lineCap = kCALineCapRound
         setPath()
     }
     

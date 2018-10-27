@@ -27,7 +27,6 @@ extension MealViewController {
         cell.gallonsWaterLabel.text = String(Int(food.waterData) * food.quantity!) + " gal"
         cell.gallonsPerServing.text = String(Int(food.waterData)) + " gal / " + String(format: "%.2f", food.servingSize!) + " oz"
         if let category = food.category {
-            cell.category.text = setCategory(category: category)
             cell.point.backgroundColor = setColor(category: category)
             cell.point.layer.cornerRadius = cell.point.bounds.width/2
         }
@@ -96,36 +95,14 @@ extension MealViewController {
     
     func fillInfoView(ingredient: Ingredient) {
         tappedName.text = ingredient.name.capitalized
+        infoViewGallons.text = String(Int((ingredient.waterData))) + " gal / " + String(format: "%.2f", ingredient.servingSize!) + "oz"
         infoViewCategory.text = ingredient.category
         let percentile = calcPercentile(ingredient: ingredient)
         let formatter = NumberFormatter()
         formatter.numberStyle = .ordinal
         let suffixAdded = formatter.string(from: NSNumber(value: percentile))
         infoViewPercentile.text = suffixAdded! + " percentile of " + ingredient.category!
-        setRating(percentile: percentile)
-    }
-    
-    func calcPercentile(ingredient: Ingredient) -> Int {
-        let categoryArr = getCategoryArr(category: ingredient.category!)
-        let sorted = categoryArr.sorted(by: {$0.waterData > $1.waterData})
-        let index = sorted.index(where: {$0.name == ingredient.name})!
-        let percentile = (Double(index)/Double(sorted.count)) * 100.0
-        return Int(percentile)
-    }
-    
-    func setRating(percentile: Int) {
-        if percentile >= 75 {
-            infoViewRatingBoarder.layer.borderColor = green.cgColor
-            infoViewRatingLabel.textColor = green
-            infoViewRatingLabel.text = "good"
-        } else if 50 <= percentile && 75 > percentile {
-            infoViewRatingBoarder.layer.borderColor = yellow.cgColor
-            infoViewRatingLabel.textColor = yellow
-            infoViewRatingLabel.text = "fair"
-        } else {
-            infoViewRatingBoarder.layer.borderColor = orange.cgColor
-            infoViewRatingLabel.textColor = orange
-            infoViewRatingLabel.text = "poor"
-        }
+        setRating(percentile: percentile, view: infoViewRatingBoarder, label: infoViewRatingLabel)
+        infoViewSource.text = ingredient.source
     }
 }

@@ -15,7 +15,6 @@ class IngredientCell: UITableViewCell {
     @IBOutlet weak var gallonsWaterLabel: UILabel!
     @IBOutlet weak var gallonsPerServing: UILabel!
     @IBOutlet weak var point: UIView!
-    @IBOutlet weak var category: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

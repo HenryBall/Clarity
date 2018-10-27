@@ -25,12 +25,15 @@ var drinks                   = [Ingredient]()
 var grains                   = [Ingredient]()
 var other                    = [Ingredient]()
 var recent                   = [[String: Any]]()
+var recentsAsIngredient      = [Ingredient?](repeating: nil, count: 2)
 let orange                   = UIColor(red: 246/255, green: 121/255, blue: 79/255, alpha: 1)
 let periwinkle               = UIColor(red: 153/255, green: 192/255, blue: 243/255, alpha: 1)
 let blue                     = UIColor(red: 154/255, green: 225/255, blue: 241/255, alpha: 1)
 let darkBlue                 = UIColor(red: 107/255, green: 161/255, blue: 228/255, alpha: 1)
 let yellow                   = UIColor(red: 255/255, green: 215/255, blue: 130/255, alpha: 1)
 let green                    = UIColor(red: 178/255, green: 218/255, blue: 134/255, alpha: 1)
+let brown                    = UIColor(red: 244/255, green: 175/255, blue: 114/255, alpha: 1)
+let purp                     = UIColor(red: 215/255, green: 163/255, blue: 191/255, alpha: 1)
 
 class HomeViewController: UIViewController, UIScrollViewDelegate {
     
@@ -53,8 +56,12 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var recent2Name              : UILabel!
     @IBOutlet weak var recent2Total             : UILabel!
     @IBOutlet weak var recent2Serving           : UILabel!
-    @IBOutlet weak var recentCategory1: UILabel!
-    @IBOutlet weak var recentCategory2: UILabel!
+    @IBOutlet weak var infoViewName             : UILabel!
+    @IBOutlet weak var infoViewGallons: UILabel!
+    @IBOutlet weak var infoViewCategory: UILabel!
+    @IBOutlet weak var infoViewRatingLabel: UILabel!
+    @IBOutlet weak var infoViewPercentileLabel: UILabel!
+    @IBOutlet weak var infoViewSource: UILabel!
     
     //UIView
     @IBOutlet weak var circleView               : UIView!
@@ -70,8 +77,11 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var averageShadowView        : UIView!
     @IBOutlet weak var recent1Shadow            : UIView!
     @IBOutlet weak var recent2Shadow            : UIView!
-    @IBOutlet weak var recentPoint1: UIView!
-    @IBOutlet weak var recentPoint2: UIView!
+    @IBOutlet weak var recentPoint1             : UIView!
+    @IBOutlet weak var recentPoint2             : UIView!
+    @IBOutlet weak var infoView                 : UIView!
+    @IBOutlet weak var infoViewLine: UIView!
+    @IBOutlet weak var infoViewRatingBoarder: UIView!
     
     @IBOutlet weak var leftArrow                : UIButton!
     @IBOutlet weak var rightArrow               : UIButton!
@@ -109,7 +119,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         queryIngredientsFromFirebase()
         initCircle()
         initPieChart()
-        
+        initInfoView()
         let views = [shadowView1, shadowView2, shadowView3, limitShadowView, averageShadowView, recent1Shadow, recent2Shadow]
         for view in views {
             view?.layer.shadowColor = UIColor(red: 218/255, green: 218/255, blue: 218/255, alpha: 1.0).cgColor
@@ -138,17 +148,16 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         dateLabel.text = labelDateFormatter.string(from: today)
     }
     
-    /*func welcomeTransition() {
-        settingsBtn.alpha = 0.0
-        welcomeLabel.alpha = 1.0
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.welcomeLabel.fadeOut()
-            self.settingsBtn.fadeIn()
-        }
-    }*/
+    func initInfoView() {
+        infoView.alpha = 0.0
+        infoViewLine.layer.cornerRadius = infoViewLine.bounds.height/2
+        infoViewRatingBoarder.layer.borderWidth = 2.0
+        infoViewRatingBoarder.layer.cornerRadius = infoViewRatingBoarder.bounds.height/2
+    }
     
     func loadData() {
         self.addMealMenu.alpha = 0.0
+        self.infoView.alpha = 0.0
         let group = DispatchGroup()
         group.enter()
         userRef.getDocument { (doc, error) in
@@ -235,16 +244,15 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         let names = [recent1Name, recent2Name]
         let totals = [recent1Total, recent2Total]
         let servingSize = [recent1Serving, recent2Serving]
-        let categoryLabels = [recentCategory1, recentCategory2]
         
         for (index, i) in recent.enumerated() {
             if let ref = i["reference"] as? DocumentReference {
                 ref.getDocument { (document, error) in
                     if let document = document {
                         let ingredient = Ingredient(document: document)
+                        recentsAsIngredient[index] = ingredient
                         names[index]?.text = ingredient.name.capitalized
                         if let category = ingredient.category {
-                            categoryLabels[index]?.text = self.setCategory(category: category)
                             images[index]?.backgroundColor = self.setColor(category: category)
                             images[index]?.layer.cornerRadius = (images[index]?.bounds.width)!/2
                         }
@@ -258,7 +266,6 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
                 guard let item_name = i["name"] as? String else { return }
                 names[index]?.text = item_name.capitalized
                 guard let category = i["category"] as? String else { return }
-                categoryLabels[index]?.text = setCategory(category: category)
                 images[index]?.backgroundColor = setColor(category: category)
                 images[index]?.layer.cornerRadius = (images[index]?.bounds.width)!/2
                 guard let water_total = i["total"] as? Double else { return }
@@ -266,6 +273,20 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
                 servingSize[index]?.isHidden = true
             }
         }
+    }
+    
+    func fillInfoView(index: Int) {
+        let ingredient = recentsAsIngredient[index]!
+        infoViewName.text = ingredient.name.capitalized
+        infoViewGallons.text = String(Int((ingredient.waterData))) + " gal / " + String(format: "%.2f", ingredient.servingSize!) + "oz"
+        infoViewCategory.text = ingredient.category
+        let percentile = calcPercentile(ingredient: ingredient)
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .ordinal
+        let suffixAdded = formatter.string(from: NSNumber(value: percentile))
+        infoViewPercentileLabel.text = suffixAdded! + " percentile of " + (ingredient.category!)
+        setRating(percentile: percentile, view: infoViewRatingBoarder, label: infoViewRatingLabel)
+        infoViewSource.text = ingredient.source
     }
     
     func queryIngredientsFromFirebase(){
@@ -363,6 +384,26 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     @IBAction func closeMealMenu(_ sender: UITapGestureRecognizer) {
         UIView.animate(withDuration: 0.3, animations: {
             self.addMealMenu.alpha = 0.0
+        })
+    }
+
+    @IBAction func closeInfoView(_ sender: UITapGestureRecognizer) {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.infoView.alpha = 0.0
+        })
+    }
+    
+    @IBAction func recentBtnOne(_ sender: UIButton) {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.fillInfoView(index: 0)
+            self.infoView.alpha = 1.0
+        })
+    }
+    
+    @IBAction func recentBtnTwo(_ sender: UIButton) {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.fillInfoView(index: 1)
+            self.infoView.alpha = 1.0
         })
     }
 }
