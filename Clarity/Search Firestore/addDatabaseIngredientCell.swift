@@ -12,7 +12,6 @@ class addDatabaseIngredientCell: UITableViewCell {
     let grayTextColor = UIColor(red: 117/255, green: 117/255, blue: 117/255, alpha: 1)
     let grayBackgroundColor = UIColor(red: 200/255, green: 200/255, blue: 200/255, alpha: 1)
     let darkTextColor = UIColor(red: 72/255, green: 72/255, blue: 72/255, alpha: 1)
-    @IBOutlet weak var icon: UIImageView!
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var count: UITextField!
     @IBOutlet weak var gallonsWaterLabel: UILabel!
@@ -20,6 +19,7 @@ class addDatabaseIngredientCell: UITableViewCell {
     @IBOutlet weak var subtractButton: UIButton!
     @IBOutlet weak var quantityTextField: UITextField!
     @IBOutlet weak var shadowView: UIView!
+    @IBOutlet weak var point: UIView!
     
     override func awakeFromNib() {
         super.awakeFromNib()

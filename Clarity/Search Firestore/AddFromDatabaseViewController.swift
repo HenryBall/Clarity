@@ -78,6 +78,11 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
         let userRef = db.collection("users").document(defaults.string(forKey: "user_id")!)
         var pushToDatabase = [[String : Any]]()
         
+        /* crashes if add is presses but nothing is added with out this if */
+        if (self.addedIngredients.count == 0) {
+            return
+        }
+        
         if(self.addedIngredients.count == 1){
             for item in recent {
                 if (item["index"] as? Int == 0){
