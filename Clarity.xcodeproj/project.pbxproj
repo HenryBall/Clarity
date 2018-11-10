@@ -29,6 +29,7 @@
 		BA6CFFC52176CAD600E72478 /* PieChartExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6CFFC42176CAD600E72478 /* PieChartExtension.swift */; };
 		BA6CFFC72176CBBD00E72478 /* BarChartExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6CFFC62176CBBD00E72478 /* BarChartExtension.swift */; };
 		BA6CFFCA2176FDAF00E72478 /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6CFFC92176FDAF00E72478 /* UIViewExtensions.swift */; };
+		BA81609F2196323000AE9AEC /* ScanExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA81609E2196323000AE9AEC /* ScanExtension.swift */; };
 		BA83D3592149E0B3004026FD /* LinePath.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA83D3582149E0B3004026FD /* LinePath.swift */; };
 		BA915902217C3D73009521D2 /* InfoViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA915901217C3D73009521D2 /* InfoViewExtension.swift */; };
 		E7C0A5E920A9F23E007A8F39 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C0A5E820A9F23E007A8F39 /* AppDelegate.swift */; };
@@ -87,6 +88,7 @@
 		BA6CFFC42176CAD600E72478 /* PieChartExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChartExtension.swift; sourceTree = "<group>"; };
 		BA6CFFC62176CBBD00E72478 /* BarChartExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarChartExtension.swift; sourceTree = "<group>"; };
 		BA6CFFC92176FDAF00E72478 /* UIViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtensions.swift; sourceTree = "<group>"; };
+		BA81609E2196323000AE9AEC /* ScanExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanExtension.swift; sourceTree = "<group>"; };
 		BA83D3582149E0B3004026FD /* LinePath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinePath.swift; sourceTree = "<group>"; };
 		BA915901217C3D73009521D2 /* InfoViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewExtension.swift; sourceTree = "<group>"; };
 		CDD35D5BF6B1106C6A550085 /* Pods_ClarityTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ClarityTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -197,6 +199,7 @@
 				EB13408920AA51400084B79B /* IngredientCell.swift */,
 				9C8BC3D72128CAF3006CE451 /* MealViewControllerDelegateExtension.swift */,
 				9CB90C3720AA11B400BEADCA /* MealViewController.swift */,
+				BA81609E2196323000AE9AEC /* ScanExtension.swift */,
 			);
 			path = Meal;
 			sourceTree = "<group>";
@@ -576,6 +579,7 @@
 				BA83D3592149E0B3004026FD /* LinePath.swift in Sources */,
 				EB1884B920CF78080000FA98 /* SpinnerView.swift in Sources */,
 				BA915902217C3D73009521D2 /* InfoViewExtension.swift in Sources */,
+				BA81609F2196323000AE9AEC /* ScanExtension.swift in Sources */,
 				9CFD02D320AEB1F9007D4BEF /* addDatabaseIngredientCell.swift in Sources */,
 				9C93407A217715D200D80BEF /* SearchCell.swift in Sources */,
 				9C93407C2177185B00D80BEF /* SearchViewControllerDelegateExtension.swift in Sources */,

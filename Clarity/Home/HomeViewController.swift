@@ -26,14 +26,12 @@ var grains                   = [Ingredient]()
 var other                    = [Ingredient]()
 var recent                   = [[String: Any]]()
 var recentsAsIngredient      = [Ingredient?](repeating: nil, count: 2)
-let orange                   = UIColor(red: 246/255, green: 121/255, blue: 79/255, alpha: 1)
+let orange                   = UIColor(red: 255/255, green: 109/255, blue: 109/255, alpha: 1)
 let periwinkle               = UIColor(red: 153/255, green: 192/255, blue: 243/255, alpha: 1)
 let blue                     = UIColor(red: 154/255, green: 225/255, blue: 241/255, alpha: 1)
 let darkBlue                 = UIColor(red: 107/255, green: 161/255, blue: 228/255, alpha: 1)
 let yellow                   = UIColor(red: 255/255, green: 215/255, blue: 130/255, alpha: 1)
-let green                    = UIColor(red: 178/255, green: 218/255, blue: 134/255, alpha: 1)
-let brown                    = UIColor(red: 244/255, green: 175/255, blue: 114/255, alpha: 1)
-let purp                     = UIColor(red: 215/255, green: 163/255, blue: 191/255, alpha: 1)
+let green                   = UIColor(red: 158/255, green: 220/255, blue: 154/255, alpha: 1)
 
 class HomeViewController: UIViewController, UIScrollViewDelegate {
     
@@ -77,8 +75,6 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var averageShadowView        : UIView!
     @IBOutlet weak var recent1Shadow            : UIView!
     @IBOutlet weak var recent2Shadow            : UIView!
-    @IBOutlet weak var recentPoint1             : UIView!
-    @IBOutlet weak var recentPoint2             : UIView!
     @IBOutlet weak var infoView                 : UIView!
     @IBOutlet weak var infoViewLine: UIView!
     @IBOutlet weak var infoViewRatingBoarder: UIView!
@@ -87,9 +83,6 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var rightArrow               : UIButton!
     
     @IBOutlet weak var scrollView               : UIScrollView!
-    
-    @IBOutlet weak var recentImage1             : UIImageView!
-    @IBOutlet weak var recentImage2             : UIImageView!
     
     var dailyGoal                               : Double!
     var homeCircle                              : CirclePath!
@@ -163,7 +156,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         userRef.getDocument { (doc, error) in
             if let doc = doc, doc.exists {
                 self.dailyGoal = doc.data()!["water_goal"] as? Double
-                self.limitLabel.text = String(Int(self.dailyGoal))
+                //self.limitLabel.text = String(Int(self.dailyGoal)) + "gal"
                 let rawRecent = doc.get("recent")
                 if rawRecent != nil {
                     recent = doc.get("recent") as! [[String : Any]]
@@ -188,6 +181,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
                 let dinnerTotal = self.getMealTotalForDay(meal: "Dinner_total", document: document)
                 let snacksTotal = self.getMealTotalForDay(meal: "Snacks_total", document: document)
                 let total = breakfastTotal + lunchTotal + dinnerTotal + snacksTotal
+                self.limitLabel.text = String(Int(self.dailyGoal) - Int(total)) + " gal"
                 self.updateCircle(circle: self.homeCircle, label: self.percentLabel, total: Float(total), limit: Float(self.dailyGoal))
                 self.updatePieChart(breakfast: breakfastTotal, lunch: lunchTotal, dinner: dinnerTotal, snacks: snacksTotal, dailyTotal: total)
                 self.getAverage(total: Int(total))
@@ -216,21 +210,21 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
                     if (average["day"] as! String == today) {
                         if ((average["days"] as! Int) == 1) {
                             map = ["day": today, "days": average["days"]!, "totalDay": total, "totalOverall": total]
-                            self.averageLabel.text = String(total)
+                            self.averageLabel.text = String(total) + " gal"
                         } else {
                             map = ["day": today, "days": average["days"]!, "totalDay": total, "totalOverall": average["totalOverall"]!]
                             let avg = (average["totalOverall"] as! Int)/(average["days"] as! Int)
-                            self.averageLabel.text = String(avg)
+                            self.averageLabel.text = String(avg) + " gal"
                         }
                     } else {
                         let newOverallTotal = (average["totalOverall"] as! Int) + (average["totalDay"] as! Int)
                         let newNumDays = (average["days"] as! Int) + 1
                         map = ["day": today, "days": newNumDays, "totalDay": total, "totalOverall": newOverallTotal]
-                        self.averageLabel.text = String(newOverallTotal/newNumDays)
+                        self.averageLabel.text = String(newOverallTotal/newNumDays) + " gal"
                     }
                 } else {
                     map = ["day": today, "days": 1, "totalDay": total, "totalOverall": total]
-                    self.averageLabel.text = String(total)
+                    self.averageLabel.text = String(total) + " gal"
                 }
                 self.userRef.setData(["average" : map], options: SetOptions.merge())
             } else {
@@ -240,7 +234,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     }
     
     func showRecent(){
-        let images = [recentPoint1, recentPoint2]
+        //let images = [recentPoint1, recentPoint2]
         let names = [recent1Name, recent2Name]
         let totals = [recent1Total, recent2Total]
         let servingSize = [recent1Serving, recent2Serving]
@@ -252,10 +246,10 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
                         let ingredient = Ingredient(document: document)
                         recentsAsIngredient[index] = ingredient
                         names[index]?.text = ingredient.name.capitalized
-                        if let category = ingredient.category {
-                            images[index]?.backgroundColor = self.setColor(category: category)
-                            images[index]?.layer.cornerRadius = (images[index]?.bounds.width)!/2
-                        }
+                        //if let category = ingredient.category {
+                            //images[index]?.backgroundColor = self.setColor(category: category)
+                            //images[index]?.layer.cornerRadius = (images[index]?.bounds.width)!/2
+                        //}
                         totals[index]?.text = String(Int(ingredient.waterData)) + " gal"
                         servingSize[index]?.text = String(Int(ingredient.waterData)) + " gal / " + String(format: "%.2f", ingredient.servingSize!) + " oz"
                     } else {
@@ -265,9 +259,9 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
             } else {
                 guard let item_name = i["name"] as? String else { return }
                 names[index]?.text = item_name.capitalized
-                guard let category = i["category"] as? String else { return }
-                images[index]?.backgroundColor = setColor(category: category)
-                images[index]?.layer.cornerRadius = (images[index]?.bounds.width)!/2
+                //guard let category = i["category"] as? String else { return }
+                //images[index]?.backgroundColor = setColor(category: category)
+                //images[index]?.layer.cornerRadius = (images[index]?.bounds.width)!/2
                 guard let water_total = i["total"] as? Double else { return }
                 totals[index]?.text = String(Int(water_total)) + " gal"
                 servingSize[index]?.isHidden = true
@@ -320,7 +314,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         }
     }
     
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    /*func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let offset = scrollView.contentOffset.x
         if(offset == 0){
             leftArrow.isHidden = true
@@ -331,7 +325,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         }else if(offset > view.bounds.width){
             rightArrow.isHidden = true
         }
-    }
+    }*/
     
     /* IBActions ********************************************************************************************************/
     @IBAction func rightArrowTapped(_ sender: UIButton) {

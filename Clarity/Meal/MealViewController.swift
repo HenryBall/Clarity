@@ -86,6 +86,8 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
         loadingView.isHidden = !loadingScreenShouldBeActive
     }
     
+    /**
+     Set up info view constant attributes */
     func initInfoView() {
         infoView.alpha = 0.0
         infoLine.layer.cornerRadius = infoLine.bounds.height/2
@@ -93,7 +95,7 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
         infoViewRatingBoarder.layer.cornerRadius = infoViewRatingBoarder.bounds.height/2
     }
     
-    /**
+    /** UNUSED **
      Initialize loading view with spinner */
     func initSpinner() {
         let rect = CGRect(x: loadingView.bounds.width/2-40, y: loadingView.bounds.height/2-50, width: 75, height: 75)
@@ -167,13 +169,6 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
     // ***** IBActions ***** //
     
     /**
-     When the user presses the "x" button, hides the buttons view
-     - Parameter sender: "x" button */
-    @IBAction func closeTapped(_ sender: UIButton) {
-        setView(alpha: 0.0, angle: -CGFloat.pi)
-    }
-    
-    /**
      When the user presses the "<" button, returns to the home screen
      - Parameter sender: "<" back button */
     @IBAction func backTapped(_ sender: UIButton) {
@@ -181,13 +176,34 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     /**
-     When the user presses the "+" button, unhides the buttons view to reveal the 3 methods to add ingredients
-     - Parameter sender: "+" button */
-    @IBAction func addTapped(_ sender: UIButton) {
-        setView(alpha: 1.0, angle: CGFloat.pi)
+     When a cell is tapped, pull up info view
+     - Parameter sender: UITapGestureRecognizer */
+    @IBAction func closeInfoView(_ sender: UITapGestureRecognizer) {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.infoView.alpha = 0.0
+        })
     }
     
     /**
+     When the user presses the "+" button, unhides the buttons view to reveal the 3 methods to add ingredients
+     - Parameter sender: "+" button */
+    @IBAction func addTapped(_ sender: UIButton) {
+        //setView(alpha: 1.0, angle: CGFloat.pi)
+        let destination = storyboard?.instantiateViewController(withIdentifier: "AddFromDatabase") as! AddFromDatabaseViewController
+        destination.mealType = mealType
+        destination.ingredientsInMeal = ingredientsInMeal
+        setView(alpha: 0.0, angle: -CGFloat.pi)
+        navigationController?.pushViewController(destination, animated: true)
+    }
+    
+    /** UNUSED **
+     When the user presses the "x" button, hides the buttons view
+     - Parameter sender: "x" button */
+    @IBAction func closeTapped(_ sender: UIButton) {
+        setView(alpha: 0.0, angle: -CGFloat.pi)
+    }
+    
+    /** UNUSED **
      When the user presses the "search" option, pushes the search screen onto the navigation stack.
      - Parameter sender: "Search USDA" button */
     @IBAction func searchTapped(_ sender: UIButton) {
@@ -198,7 +214,7 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
         navigationController?.pushViewController(destination, animated: true)
     }
     
-    /**
+    /** UNUSED **
      When the user presses the "scan" option, opens the image picker.
      The user must be running iOS 11+. If not, an error message is presented.
      - Parameter sender: "Scan Ingredients" button */
@@ -215,14 +231,8 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
             self.present(alert, animated: true)
         }
     }
-
-    @IBAction func closeInfoView(_ sender: UITapGestureRecognizer) {
-        UIView.animate(withDuration: 0.3, animations: {
-            self.infoView.alpha = 0.0
-        })
-    }
     
-    /**
+    /** UNUSED **
      When the user presses the "Search Ingredients" button, pushes the ingredients screen onto the navigation stack.
      - Parameter sender: "Search Ingredients" button */
     @IBAction func firestoreTapped(_ sender: UIButton) {
@@ -231,92 +241,6 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
         destination.ingredientsInMeal = ingredientsInMeal
         setView(alpha: 0.0, angle: -CGFloat.pi)
         navigationController?.pushViewController(destination, animated: true)
-    }
-    
-    // ***** CLOUD VISION API REQUEST ***** //
-    
-    func analyzeResults(_ dataToParse: Data) {
-        DispatchQueue.main.async(execute: {
-            let json = JSON(data: dataToParse)
-            let ingredientSelector = json["responses"][0]["textAnnotations"][0]["description"]
-            let destination = self.storyboard?.instantiateViewController(withIdentifier: "addScannedItemViewController") as! AddScannedItemViewController
-            destination.ingredientsInMeal = self.ingredientsInMeal
-            destination.ingredientsList = ingredientSelector
-            destination.mealType = self.mealType
-            self.navigationController?.pushViewController(destination, animated: true)
-            self.loadingScreenShouldBeActive = false
-        })
-    }
-    
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
-            let binaryImageData = base64EncodeImage(pickedImage)
-            createRequest(with: binaryImageData)
-        }
-        loadingView.alpha = 1.0
-        loadingScreenShouldBeActive = true
-        dismiss(animated: true, completion: nil)
-    }
-    
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        dismiss(animated: true, completion: nil)
-    }
-    
-    func resizeImage(_ imageSize: CGSize, image: UIImage) -> Data {
-        UIGraphicsBeginImageContext(imageSize)
-        image.draw(in: CGRect(x: 0, y: 0, width: imageSize.width, height: imageSize.height))
-        let newImage = UIGraphicsGetImageFromCurrentImageContext()
-        let resizedImage = UIImagePNGRepresentation(newImage!)
-        UIGraphicsEndImageContext()
-        return resizedImage!
-    }
-}
-
-extension MealViewController {
-    func base64EncodeImage(_ image: UIImage) -> String {
-        var imagedata = UIImagePNGRepresentation(image)
-        if ((imagedata?.count)! > 2097152) {
-            let oldSize: CGSize = image.size
-            let newSize: CGSize = CGSize(width: 800, height: oldSize.height / oldSize.width * 800)
-            imagedata = resizeImage(newSize, image: image)
-        }
-        return imagedata!.base64EncodedString(options: .endLineWithCarriageReturn)
-    }
-    
-    func createRequest(with imageBase64: String) {
-        var request = URLRequest(url: googleURL)
-        request.httpMethod = "POST"
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue(Bundle.main.bundleIdentifier ?? "", forHTTPHeaderField: "X-Ios-Bundle-Identifier")
-        let jsonRequest = [
-            "requests": [
-                "image": [
-                    "content": imageBase64
-                ],
-                "features": [
-                    [
-                        "type": "TEXT_DETECTION"
-                    ]
-                ]
-            ]
-        ]
-        let jsonObject = JSON(jsonRequest)
-        guard let data = try? jsonObject.rawData() else {
-            return
-        }
-        request.httpBody = data
-        DispatchQueue.global().async { self.runRequestOnBackgroundThread(request) }
-    }
-    
-    func runRequestOnBackgroundThread(_ request: URLRequest) {
-        let task: URLSessionDataTask = session.dataTask(with: request) { (data, response, error) in
-            guard let data = data, error == nil else {
-                print(error?.localizedDescription ?? "")
-                return
-            }
-            self.analyzeResults(data)
-        }
-        task.resume()
     }
 }
 
@@ -340,3 +264,4 @@ extension UIViewController {
         label.text = mealType
     }
 }
+    

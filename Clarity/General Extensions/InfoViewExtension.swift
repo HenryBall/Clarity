@@ -32,7 +32,7 @@ extension UIViewController {
         return returnCategory
     }
     
-    func setColor(category: String) -> UIColor {
+    /*func setColor(category: String) -> UIColor {
         let returnColor: UIColor
         if category == "fruit" {
             returnColor = orange
@@ -50,7 +50,7 @@ extension UIViewController {
             returnColor = purp
         }
         return returnColor
-    }
+    }*/
     
     func getCategoryArr(category: String) -> [Ingredient] {
         switch(category){

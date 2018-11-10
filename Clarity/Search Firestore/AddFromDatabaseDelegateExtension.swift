@@ -20,10 +20,10 @@ extension AddFromDatabaseViewController {
         
         cell.label.text = displayedIngredients[indexPath.row].name.capitalized
         cell.gallonsWaterLabel.text = String(Int(food.waterData)) + " gal / " + String(format: "%.2f", food.servingSize!) + " oz"
-        if let category = food.category {
-            cell.point.backgroundColor = setColor(category: category)
-            cell.point.layer.cornerRadius = cell.point.bounds.width/2
-        }
+        //if let category = food.category {
+            //cell.point.backgroundColor = setColor(category: category)
+            //cell.point.layer.cornerRadius = cell.point.bounds.width/2
+        //}
         setCellTags(cell: cell, index: indexPath.row)
         setCellTargets(cell: cell)
         return cell
