@@ -1925,21 +1925,21 @@
                                                     </constraints>
                                                 </view>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7V4-is-tEP">
-                                                    <rect key="frame" x="330" y="35" width="30" height="40"/>
+                                                    <rect key="frame" x="315" y="35" width="30" height="40"/>
                                                     <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="20"/>
                                                     <state key="normal" title="+">
                                                         <color key="titleColor" red="0.28235294119999998" green="0.28235294119999998" blue="0.28235294119999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </state>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F0b-ee-UK4">
-                                                    <rect key="frame" x="266" y="35" width="30" height="40"/>
+                                                    <rect key="frame" x="229" y="35" width="30" height="40"/>
                                                     <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="20"/>
                                                     <state key="normal" title="−">
                                                         <color key="titleColor" red="0.28235294119999998" green="0.28235294119999998" blue="0.28235294119999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </state>
                                                 </button>
-                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="1" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="SQK-Jn-km4">
-                                                    <rect key="frame" x="306" y="44" width="14" height="22"/>
+                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="1 oz" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="SQK-Jn-km4">
+                                                    <rect key="frame" x="269" y="44" width="36" height="22"/>
                                                     <color key="textColor" red="0.28235294119999998" green="0.28235294119999998" blue="0.28235294119999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="16"/>
                                                     <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
@@ -1967,7 +1967,7 @@
                                                 <constraint firstItem="SQK-Jn-km4" firstAttribute="leading" secondItem="F0b-ee-UK4" secondAttribute="trailing" constant="10" id="Mme-nd-OoW"/>
                                                 <constraint firstItem="DZM-H9-Ya1" firstAttribute="top" secondItem="fqg-tN-7ua" secondAttribute="bottom" id="N4e-v2-IYK"/>
                                                 <constraint firstItem="7V4-is-tEP" firstAttribute="centerY" secondItem="hWm-ZA-feb" secondAttribute="centerY" id="SyV-VA-gQH"/>
-                                                <constraint firstAttribute="trailing" secondItem="7V4-is-tEP" secondAttribute="trailing" constant="15" id="c3H-7r-W4o"/>
+                                                <constraint firstItem="7V4-is-tEP" firstAttribute="trailing" secondItem="5Gb-ar-MNq" secondAttribute="trailing" constant="-15" id="T4x-Ih-XRd"/>
                                                 <constraint firstItem="fqg-tN-7ua" firstAttribute="leading" secondItem="5Gb-ar-MNq" secondAttribute="leading" constant="15" id="mUA-iZ-Ayq"/>
                                                 <constraint firstItem="7V4-is-tEP" firstAttribute="leading" secondItem="SQK-Jn-km4" secondAttribute="trailing" constant="10" id="ql5-dm-Nrg"/>
                                                 <constraint firstItem="5Gb-ar-MNq" firstAttribute="leading" secondItem="hWm-ZA-feb" secondAttribute="leading" constant="15" id="vUR-PN-9Zm"/>

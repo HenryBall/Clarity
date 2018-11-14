@@ -22,10 +22,13 @@ extension MealViewController {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "IngredientCell") as! IngredientCell
         let food = ingredientsInMeal[indexPath.row]
+        let amtPerOz = food.waterData / food.servingSize!
         
-        cell.label.text = food.name.capitalized + " - " + String(food.quantity!)
-        cell.gallonsWaterLabel.text = String(Int(food.waterData) * food.quantity!) + " gal"
-        cell.gallonsPerServing.text = String(Int(food.waterData)) + " gal / " + String(format: "%.2f", food.servingSize!) + " oz"
+        cell.label.text = food.name.capitalized
+        cell.gallonsWaterLabel.text = String(Int(amtPerOz) * food.quantity!) + " gal"
+        //cell.gallonsPerServing.text = String(Int(food.waterData)) + " gal / " + String(format: "%.2f", food.servingSize!) + " oz"
+        let str = (food.quantity! > 1) ? " ounces" : " ounce"
+        cell.gallonsPerServing.text = String(food.quantity!) + str
         //if let category = food.category {
             //cell.point.backgroundColor = setColor(category: category)
             //cell.point.layer.cornerRadius = cell.point.bounds.width/2
@@ -63,10 +66,10 @@ extension MealViewController {
             
             day.getDocument { (document, error) in
                 if(document?.exists)!{
-                    if var currentTotal = document?.data()![self.mealType + "_total"] as? Double {
+                    if var currentTotal = document?.data()![self.mealType + "_total"] as? Int {
                         print(currentTotal)
                         print(deletedIngredient.waterData)
-                        currentTotal = currentTotal - (deletedIngredient.waterData * Double(deletedIngredient.quantity!))
+                        currentTotal = currentTotal - (Int(deletedIngredient.waterData/deletedIngredient.servingSize!) * deletedIngredient.quantity!)
                         self.gallonsInMeal.text = String(Int(currentTotal))
                         self.day.setData([self.self.mealType + "_total" : currentTotal], options: SetOptions.merge())
                     }
@@ -95,8 +98,10 @@ extension MealViewController {
     
     func fillInfoView(ingredient: Ingredient) {
         tappedName.text = ingredient.name.capitalized
-        infoViewGallons.text = String(Int((ingredient.waterData))) + " gal / " + String(format: "%.2f", ingredient.servingSize!) + "oz"
-        infoViewCategory.text = ingredient.category
+        //infoViewGallons.text = String(Int((ingredient.waterData))) + " gal / " + String(format: "%.2f", ingredient.servingSize!) + "oz"
+        infoViewGallons.text = String(Int(ingredient.waterData/ingredient.servingSize!)) + " gallons per ounce"
+        let str = (ingredient.servingSize! > 1) ? " ounces" : " ounce"
+        infoViewCategory.text = "serving size: " + String(Int(ingredient.servingSize!)) + str
         let percentile = calcPercentile(ingredient: ingredient)
         let formatter = NumberFormatter()
         formatter.numberStyle = .ordinal

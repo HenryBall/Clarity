@@ -17,9 +17,11 @@ extension AddFromDatabaseViewController {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "addDatabaseIngredientCell") as! addDatabaseIngredientCell
         let food = displayedIngredients[indexPath.row]
-        
+        let amtPerOz = food.waterData / food.servingSize!
         cell.label.text = displayedIngredients[indexPath.row].name.capitalized
-        cell.gallonsWaterLabel.text = String(Int(food.waterData)) + " gal / " + String(format: "%.2f", food.servingSize!) + " oz"
+        //cell.gallonsWaterLabel.text = String(Int(food.waterData)) + " gal / " + String(format: "%.2f", food.servingSize!) + " oz"
+        cell.gallonsWaterLabel.text = String(Int(amtPerOz)) + " gallons per ounce"
+        cell.quantityTextField.text = String(food.quantity!) + " oz"
         //if let category = food.category {
             //cell.point.backgroundColor = setColor(category: category)
             //cell.point.layer.cornerRadius = cell.point.bounds.width/2
@@ -34,10 +36,8 @@ extension AddFromDatabaseViewController {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath){
-        let cell = tableView.cellForRow(at: indexPath) as! addDatabaseIngredientCell
         let currentIngredient = displayedIngredients[indexPath.row]
-        let quantity = Int(cell.quantityTextField.text!)
-        currentIngredient.quantity = quantity
+        print(String(displayedIngredients[indexPath.row].quantity!))
         ingredientsInMeal.append(currentIngredient)
         addedIngredients.append(currentIngredient)
     }
@@ -54,7 +54,6 @@ extension AddFromDatabaseViewController {
     }
     
     func setCellTargets(cell: addDatabaseIngredientCell) {
-        cell.count.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         cell.addButton.addTarget(self, action: #selector(addTapped(_:)), for: .touchUpInside)
         cell.subtractButton.addTarget(self, action: #selector(subTapped(_:)), for: .touchUpInside)
     }
@@ -65,23 +64,16 @@ extension AddFromDatabaseViewController {
         cell.subtractButton.tag = index
     }
     
-    @objc func textFieldDidChange(_ textField: UITextField) {
-        let index = textField.tag
-        let name = displayedIngredients[index].name
-        if let i = ingredientsInMeal.index(where: { $0.name == name }) {
-            ingredientsInMeal[i].quantity = Int(textField.text!)
-        }
-    }
-    
     @objc func addTapped(_ sender: UIButton){
         let index = sender.tag
         let name = displayedIngredients[index].name
+        print("add tapped on cell " + String(index) + " with name " + name)
         let indexPath = IndexPath(item: index, section: 0)
         let cell = tableView.cellForRow(at: indexPath) as! addDatabaseIngredientCell
         if let i = ingredientsInMeal.index(where: { $0.name == name }) {
             ingredientsInMeal[i].quantity = ingredientsInMeal[i].quantity! + 1
-            cell.count.text = String(ingredientsInMeal[i].quantity!)
-        } 
+            cell.count.text = String(ingredientsInMeal[i].quantity!) + " oz"
+        }
     }
     
     @objc func subTapped(_ sender: UIButton){
@@ -89,10 +81,10 @@ extension AddFromDatabaseViewController {
         let name = displayedIngredients[index].name
         let indexPath = IndexPath(item: index, section: 0)
         let cell = tableView.cellForRow(at: indexPath) as! addDatabaseIngredientCell
-        if let i = ingredientsInMeal.index(where: { $0.name == name }) {
-            if (ingredientsInMeal[i].quantity! > 1) {
+        if (displayedIngredients[index].quantity! > 1) {
+            if let i = ingredientsInMeal.index(where: { $0.name == name }) {
                 ingredientsInMeal[i].quantity = ingredientsInMeal[i].quantity! - 1
-                cell.count.text = String(ingredientsInMeal[i].quantity!)
+                cell.count.text = String(ingredientsInMeal[i].quantity!) + " oz"
             }
         }
     }

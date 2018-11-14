@@ -250,13 +250,16 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
                             //images[index]?.backgroundColor = self.setColor(category: category)
                             //images[index]?.layer.cornerRadius = (images[index]?.bounds.width)!/2
                         //}
-                        totals[index]?.text = String(Int(ingredient.waterData)) + " gal"
-                        servingSize[index]?.text = String(Int(ingredient.waterData)) + " gal / " + String(format: "%.2f", ingredient.servingSize!) + " oz"
+                        totals[index]?.text = String(Int(ingredient.waterData/ingredient.servingSize!) * ingredient.quantity!) + " gal"
+                        servingSize[index]?.text = String(ingredient.quantity!) + " ounces"
                     } else {
                         print("Document does not exist")
                     }
                 }
             } else {
+                // ***
+                // *** Do we need this??
+                // ***
                 guard let item_name = i["name"] as? String else { return }
                 names[index]?.text = item_name.capitalized
                 //guard let category = i["category"] as? String else { return }

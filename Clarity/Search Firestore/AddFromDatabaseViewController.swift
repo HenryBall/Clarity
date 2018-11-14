@@ -36,6 +36,7 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
         self.tableView.dataSource = self
         tableView.keyboardDismissMode = .onDrag
         setBannerImage(mealType: mealType, imageView: bannerImage, label: mealLabel)
+        resetDisplayedIngredients()
     }
     
     /**
@@ -43,6 +44,7 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
      - Parameter sender: "<" back button
     */
     @IBAction func backTapped(_ sender: UIButton) {
+        resetDisplayedIngredients()
         self.navigationController?.popViewController(animated: true)
     }
     
@@ -63,18 +65,29 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
             }
             allIngredients.append(ingredient)
         }
-        let total = ingredientsInMeal.map({$0.waterData * Double($0.quantity!)}).reduce(0, +)
+        let total = ingredientsInMeal.map({Int($0.waterData/$0.servingSize!) * $0.quantity!}).reduce(0, +)
         day.setData([mealType + "_total" : total], options: SetOptions.merge())
         day.setData([mealType : allIngredients], options: SetOptions.merge())
         
         updateRecent()
+        resetDisplayedIngredients()
 
         if let destination = self.navigationController?.viewControllers[1] {
             self.navigationController?.popToViewController(destination, animated: true)
         }
     }
     
+    func resetDisplayedIngredients() {
+        for ingr in displayedIngredients {
+            ingr.quantity = 1
+        }
+    }
+    
     func updateRecent() {
+        // ***
+        // *** Fix added ingredient quantites
+        // ***
+        //addedIngredients = ingredientsInMeal
         let userRef = db.collection("users").document(defaults.string(forKey: "user_id")!)
         var pushToDatabase = [[String : Any]]()
         

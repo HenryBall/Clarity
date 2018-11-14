@@ -23,7 +23,6 @@ class addDatabaseIngredientCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
         backgroundColor = UIColor.clear
         shadowView.layer.shadowColor = UIColor(red: 218/255, green: 218/255, blue: 218/255, alpha: 1.0).cgColor
         shadowView.layer.shadowOffset = CGSize(width: 1, height: 3)
