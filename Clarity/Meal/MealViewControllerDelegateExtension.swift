@@ -101,7 +101,7 @@ extension MealViewController {
         //infoViewGallons.text = String(Int((ingredient.waterData))) + " gal / " + String(format: "%.2f", ingredient.servingSize!) + "oz"
         infoViewGallons.text = String(Int(ingredient.waterData/ingredient.servingSize!)) + " gallons per ounce"
         let str = (ingredient.servingSize! > 1) ? " ounces" : " ounce"
-        infoViewCategory.text = "serving size: " + String(Int(ingredient.servingSize!)) + str
+        infoViewCategory.text = "average serving size: " + String(Int(ingredient.servingSize!)) + str
         let percentile = calcPercentile(ingredient: ingredient)
         let formatter = NumberFormatter()
         formatter.numberStyle = .ordinal

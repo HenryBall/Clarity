@@ -156,7 +156,6 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         userRef.getDocument { (doc, error) in
             if let doc = doc, doc.exists {
                 self.dailyGoal = doc.data()!["water_goal"] as? Double
-                //self.limitLabel.text = String(Int(self.dailyGoal)) + "gal"
                 let rawRecent = doc.get("recent")
                 if rawRecent != nil {
                     recent = doc.get("recent") as! [[String : Any]]
@@ -164,8 +163,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
                 }
                 group.leave()
             } else {
-                // Display error screen
-                print("Document does not exist")
+                self.displayAlert()
             }
         }
         group.notify(queue: .main) {
@@ -233,7 +231,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         }
     }
     
-    func showRecent(){
+    /*func showRecent(){
         //let images = [recentPoint1, recentPoint2]
         let names = [recent1Name, recent2Name]
         let totals = [recent1Total, recent2Total]
@@ -270,13 +268,34 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
                 servingSize[index]?.isHidden = true
             }
         }
+    }*/
+    
+    func showRecent() {
+        let names = [recent1Name, recent2Name]
+        let totals = [recent1Total, recent2Total]
+        let servingSize = [recent1Serving, recent2Serving]
+        for (i, elem) in recent.enumerated() {
+            if let ref = elem["reference"] as? DocumentReference {
+                ref.getDocument { (document, error) in
+                    let ingredient = Ingredient(document: document!)
+                    let quantity = elem["quantity"] as! Int
+                    recentsAsIngredient[i] = ingredient
+                    names[i]?.text = ingredient.name.capitalized
+                    totals[i]?.text = String(Int(ingredient.waterData/ingredient.servingSize!) * quantity) + " gal"
+                    servingSize[i]?.text = String(quantity) + ((quantity > 1) ? " ounces" : " ounce")
+                }
+            } else {
+                displayAlert()
+            }
+        }
     }
     
     func fillInfoView(index: Int) {
         let ingredient = recentsAsIngredient[index]!
         infoViewName.text = ingredient.name.capitalized
-        infoViewGallons.text = String(Int((ingredient.waterData))) + " gal / " + String(format: "%.2f", ingredient.servingSize!) + "oz"
-        infoViewCategory.text = ingredient.category
+        infoViewGallons.text = String(Int(ingredient.waterData/ingredient.servingSize!)) + " gallons per ounce"
+        let str = (ingredient.servingSize! > 1) ? " ounces" : " ounce"
+        infoViewCategory.text = "average serving size: " + String(Int(ingredient.servingSize!)) + str
         let percentile = calcPercentile(ingredient: ingredient)
         let formatter = NumberFormatter()
         formatter.numberStyle = .ordinal
@@ -316,19 +335,6 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
             }
         }
     }
-    
-    /*func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let offset = scrollView.contentOffset.x
-        if(offset == 0){
-            leftArrow.isHidden = true
-            rightArrow.isHidden = false
-        }else if(offset > 0 && offset <= view.bounds.width){
-            leftArrow.isHidden = false
-            rightArrow.isHidden = true
-        }else if(offset > view.bounds.width){
-            rightArrow.isHidden = true
-        }
-    }*/
     
     /* IBActions ********************************************************************************************************/
     @IBAction func rightArrowTapped(_ sender: UIButton) {
@@ -402,6 +408,11 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
             self.fillInfoView(index: 1)
             self.infoView.alpha = 1.0
         })
+    }
+    
+    func displayAlert() {
+        let alert = UIAlertController(title: "Uh Oh", message: "There was an error, try restarting the app.", preferredStyle: UIAlertControllerStyle.alert)
+        self.present(alert, animated: true, completion: nil)
     }
 }
 

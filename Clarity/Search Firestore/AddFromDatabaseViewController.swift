@@ -83,7 +83,7 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
         }
     }
     
-    func updateRecent() {
+    /*func updateRecent() {
         // ***
         // *** Fix added ingredient quantites
         // ***
@@ -119,7 +119,7 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
         pushToDatabase.reverse()
 
         userRef.setData(["recent" : pushToDatabase], options: SetOptions.merge())
-    }
+    }*/
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if(searchText == ""){
@@ -129,4 +129,24 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
         }
         self.tableView.reloadData()
     }
+    
+    func updateRecent() {
+        let userRef = db.collection("users").document(defaults.string(forKey: "user_id")!)
+        var pushToDb = [[String : Any]]()
+        if (self.ingredientsInMeal.count == 0) {
+            return
+        } else {
+            for ingr in self.ingredientsInMeal {
+                let ref = db.document("water-footprint-data/" + ingr.name.capitalized)
+                recent.insert(["reference": ref, "quantity": ingr.quantity!], at: 0)
+                if (recent.count > 2) { recent.popLast() }
+            }
+        }
+        for (i, elem) in recent.enumerated() {
+            pushToDb.insert(["index": i, "reference": elem["reference"]!, "quantity": elem["quantity"]!], at: i)
+        }
+        userRef.setData(["recent" : pushToDb], options: SetOptions.merge())
+        print (pushToDb)
+    }
+    
 }
