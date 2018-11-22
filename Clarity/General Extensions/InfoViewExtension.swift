@@ -83,19 +83,28 @@ extension UIViewController {
         return Int(percentile)
     }
     
-    func setRating(percentile: Int, view: UIView, label: UILabel) {
+    func setRating(percentile: Int, view: UIImageView, label: UILabel) {
+        var boldText = "fair"
+        
         if percentile >= 75 {
-            view.layer.borderColor = green.cgColor
-            label.textColor = green
-            label.text = "good"
+            view.layer.backgroundColor = UIColor(red: 177/255, green: 236/255, blue: 113/255, alpha: 1.0).cgColor
+            view.image = UIImage(named: "good")
+            boldText  = "good"
+            
         } else if 25 <= percentile && 75 > percentile {
-            view.layer.borderColor = yellow.cgColor
-            label.textColor = yellow
-            label.text = "fair"
+            view.layer.backgroundColor = yellow.cgColor
+            view.image = UIImage(named: "fair")
         } else {
-            view.layer.borderColor = orange.cgColor
-            label.textColor = orange
-            label.text = "poor"
+            view.layer.backgroundColor = orange.cgColor
+            view.image = UIImage(named: "bad")
+            boldText = "poor"
         }
+        
+        let attributedString = NSMutableAttributedString(string: "")
+        let attrs: [NSAttributedStringKey: Any] = [.font: UIFont(name: "AvenirNext-Bold", size: 12)!]
+        let boldString = NSMutableAttributedString(string: boldText, attributes: attrs)
+        attributedString.append(boldString)
+        attributedString.append(NSMutableAttributedString(string: "\noverall rating"))
+        label.attributedText = attributedString
     }
 }

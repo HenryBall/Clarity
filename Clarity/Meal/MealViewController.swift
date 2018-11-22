@@ -29,15 +29,6 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet weak var gallonsInMeal: UILabel!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var addIngredientsView: UIView!
-    @IBOutlet weak var tappedName: UILabel!
-    @IBOutlet weak var infoView: UIView!
-    @IBOutlet weak var infoLine: UIView!
-    @IBOutlet weak var infoViewCategory: UILabel!
-    @IBOutlet weak var infoViewPercentile: UILabel!
-    @IBOutlet weak var infoViewRatingBoarder: UIView!
-    @IBOutlet weak var infoViewRatingLabel: UILabel!
-    @IBOutlet weak var infoViewSource: UILabel!
-    @IBOutlet weak var infoViewGallons: UILabel!
     
     /* Views */
     var spinner : SpinnerView!
@@ -68,7 +59,6 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
         tableView.dataSource = self
         tableView.keyboardDismissMode = .onDrag
         tableView.tableFooterView = UIView(frame: CGRect.zero)
-        initInfoView()
         day = db.collection("users").document(defaults.string(forKey: "user_id")!).collection("meals").document(formatter.string(from: today))
         setBannerImage(mealType: mealType, imageView: bannerImage, label: mealName)
         initSpinner()
@@ -84,15 +74,6 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
      If the user scans an item, show the loading screen */
     override func viewWillAppear(_ animated: Bool) {
         loadingView.isHidden = !loadingScreenShouldBeActive
-    }
-    
-    /**
-     Set up info view constant attributes */
-    func initInfoView() {
-        infoView.alpha = 0.0
-        infoLine.layer.cornerRadius = infoLine.bounds.height/2
-        infoViewRatingBoarder.layer.borderWidth = 2.0
-        infoViewRatingBoarder.layer.cornerRadius = infoViewRatingBoarder.bounds.height/2
     }
     
     /** UNUSED **
@@ -173,15 +154,6 @@ class MealViewController: UIViewController, UITableViewDelegate, UITableViewData
      - Parameter sender: "<" back button */
     @IBAction func backTapped(_ sender: UIButton) {
         self.navigationController?.popViewController(animated: true)
-    }
-    
-    /**
-     When a cell is tapped, pull up info view
-     - Parameter sender: UITapGestureRecognizer */
-    @IBAction func closeInfoView(_ sender: UITapGestureRecognizer) {
-        UIView.animate(withDuration: 0.3, animations: {
-            self.infoView.alpha = 0.0
-        })
     }
     
     /**

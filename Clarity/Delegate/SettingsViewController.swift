@@ -12,53 +12,63 @@ import GoogleSignIn
 
 class SettingsViewController: UIViewController, UITextFieldDelegate {
 
-    let defaults = UserDefaults.standard
-    let db = Firestore.firestore()
-    let storage = Storage.storage()
+    let defaults                        = UserDefaults.standard
+    let db                              = Firestore.firestore()
+    let storage                         = Storage.storage()
+    var userRef                         : DocumentReference!
     
-    @IBOutlet weak var saveButton: UIButton!
-    
-    @IBOutlet weak var logoutButton: UIButton!
-    @IBOutlet weak var scrollView: UIScrollView!
-    @IBOutlet weak var userWaterGoal: UITextField!
-    @IBOutlet weak var backBtn: UIButton!
+    @IBOutlet weak var logoutButton     : UIButton!
+    @IBOutlet weak var userWaterGoal    : UITextField!
+    @IBOutlet weak var backBtn          : UIButton!
+    @IBOutlet weak var portionControl   : UISegmentedControl!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         swipeToHideKeyboard()
-        saveButton.layer.borderColor = UIColor.white.cgColor
-        logoutButton.layer.borderColor = UIColor.white.cgColor
-        let user = db.collection("users").document(defaults.string(forKey: "user_id")!)
-        user.getDocument { (document, error) in
-            if(document?.exists)!{
-                if (document?.data()!["water_goal"]) != nil{
-                    self.userWaterGoal.text = String(Int((document?.data()!["water_goal"] as! Double)))
-                }else{
+        
+        guard let userID = UserDefaults.standard.string(forKey: "user_id") else {
+            print("user ID cannot be found in user defaults")
+            userWaterGoal.text = "0"
+            return
+        }
+        
+        userRef = db.collection("users").document(userID)
+        
+        userRef.getDocument { (document, error) in
+            if let document = document {
+                if let waterGoal = document.data()?["water_goal"] {
+                    let goalAsDouble = waterGoal as! Double
+                    self.userWaterGoal.text = String(Int((goalAsDouble)))
+                } else {
                     self.backBtn.isHidden = true
                 }
-            }else{
+                
+                if let portionSettings = document.data()?["portion"] as? String {
+                    if(portionSettings == "Per Ounce"){
+                        self.portionControl.selectedSegmentIndex = 1
+                    }
+                }
+            } else {
                 print("This user does not exist in the database")
             }
         }
+        let font = UIFont(name: "AvenirNext-Medium", size: 14)!
+        portionControl.setTitleTextAttributes([NSAttributedStringKey.font: font],
+                                                for: .normal)
     }
 
     @IBAction func backBtnPressed(_ sender: Any) {
-        self.navigationController?.popViewController(animated: true)
-    }
-    
-    @IBAction func onSaveSettingsPressed(_ sender: Any) {
-        let user = db.collection("users").document(defaults.string(forKey: "user_id")!)
-        
         if (userWaterGoal.text != "") {
-            user.setData(["water_goal": Double(userWaterGoal.text!) as Any], options: SetOptions.merge())
+            userRef.setData(["water_goal": Double(userWaterGoal.text!) as Any, "portion": portionControl.titleForSegment(at: portionControl.selectedSegmentIndex)], options: SetOptions.merge())
             self.navigationController?.popViewController(animated: true)
         } else {
             let alert = UIAlertController(title: "Oops!", message: "Please enter a water goal", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
             self.present(alert, animated: true)
         }
+        self.navigationController?.popViewController(animated: true)
     }
-    
+
     @IBAction func logoutButtunPressed(_ sender: Any) {
         GIDSignIn.sharedInstance().signOut()
         let s = UIStoryboard(name: "Main", bundle: nil)

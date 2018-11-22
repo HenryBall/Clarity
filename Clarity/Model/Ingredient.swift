@@ -10,16 +10,16 @@ import Foundation
 import Firebase
 
 class Ingredient {
-    var name : String
-    var type : String
-    var waterData : Double
-    var description : String?
-    var servingSize : Double?
-    var category : String?
-    var source : String?
-    var quantity : Int?
-    var ingredients : [DocumentReference]?
-    var imageName : String?
+    var name            : String
+    var type            : String
+    var waterData       : Double
+    var description     : String?
+    var servingSize     : Double?
+    var category        : String?
+    var source          : String?
+    var quantity        : Int?
+    var ingredients     : [DocumentReference]?
+    var imageName       : String?
     
     init(name: String, type: String, waterData: Double, description: String?, servingSize: Double?, category: String?, source: String?, quantity: Int?, ingredients: [DocumentReference]?, imageName: String?) {
         self.name = name

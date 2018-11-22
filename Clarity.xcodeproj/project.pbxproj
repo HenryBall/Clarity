@@ -21,6 +21,7 @@
 		9CC4093A212A0A60004B7C3B /* OnBoardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CC40939212A0A60004B7C3B /* OnBoardingViewController.swift */; };
 		9CDC1FEC20AA02CD00503BAB /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CDC1FEB20AA02CD00503BAB /* LoginViewController.swift */; };
 		9CE2851D2129233B00C951BB /* AddFromDatabaseDelegateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE2851C2129233B00C951BB /* AddFromDatabaseDelegateExtension.swift */; };
+		9CE40BCE21A3FBED000DAF9C /* IngredientInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE40BCD21A3FBED000DAF9C /* IngredientInfoViewController.swift */; };
 		9CFD02CE20AE9CCE007D4BEF /* Ingredient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFD02CD20AE9CCE007D4BEF /* Ingredient.swift */; };
 		9CFD02D120AEAE85007D4BEF /* AddFromDatabaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFD02D020AEAE85007D4BEF /* AddFromDatabaseViewController.swift */; };
 		9CFD02D320AEB1F9007D4BEF /* addDatabaseIngredientCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFD02D220AEB1F9007D4BEF /* addDatabaseIngredientCell.swift */; };
@@ -80,6 +81,7 @@
 		9CC40939212A0A60004B7C3B /* OnBoardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingViewController.swift; sourceTree = "<group>"; };
 		9CDC1FEB20AA02CD00503BAB /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		9CE2851C2129233B00C951BB /* AddFromDatabaseDelegateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFromDatabaseDelegateExtension.swift; sourceTree = "<group>"; };
+		9CE40BCD21A3FBED000DAF9C /* IngredientInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientInfoViewController.swift; sourceTree = "<group>"; };
 		9CFD02CD20AE9CCE007D4BEF /* Ingredient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Ingredient.swift; path = Clarity/Model/Ingredient.swift; sourceTree = "<group>"; };
 		9CFD02D020AEAE85007D4BEF /* AddFromDatabaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFromDatabaseViewController.swift; sourceTree = "<group>"; };
 		9CFD02D220AEB1F9007D4BEF /* addDatabaseIngredientCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = addDatabaseIngredientCell.swift; sourceTree = "<group>"; };
@@ -200,6 +202,7 @@
 				9C8BC3D72128CAF3006CE451 /* MealViewControllerDelegateExtension.swift */,
 				9CB90C3720AA11B400BEADCA /* MealViewController.swift */,
 				BA81609E2196323000AE9AEC /* ScanExtension.swift */,
+				9CE40BCD21A3FBED000DAF9C /* IngredientInfoViewController.swift */,
 			);
 			path = Meal;
 			sourceTree = "<group>";
@@ -589,6 +592,7 @@
 				BA6CFFCA2176FDAF00E72478 /* UIViewExtensions.swift in Sources */,
 				E7F7DB0720AA251500252AA1 /* SettingsViewController.swift in Sources */,
 				9CE2851D2129233B00C951BB /* AddFromDatabaseDelegateExtension.swift in Sources */,
+				9CE40BCE21A3FBED000DAF9C /* IngredientInfoViewController.swift in Sources */,
 				9CFD02D120AEAE85007D4BEF /* AddFromDatabaseViewController.swift in Sources */,
 				BA6CFFC32176C91F00E72478 /* HomeCircleExtension.swift in Sources */,
 				9CB90C3620AA108B00BEADCA /* HomeViewController.swift in Sources */,

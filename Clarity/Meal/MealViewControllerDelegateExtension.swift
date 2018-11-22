@@ -27,8 +27,8 @@ extension MealViewController {
         cell.label.text = food.name.capitalized
         cell.gallonsWaterLabel.text = String(Int(amtPerOz) * food.quantity!) + " gal"
         //cell.gallonsPerServing.text = String(Int(food.waterData)) + " gal / " + String(format: "%.2f", food.servingSize!) + " oz"
-        let str = (food.quantity! > 1) ? " ounces" : " ounce"
-        cell.gallonsPerServing.text = String(food.quantity!) + str
+        
+        cell.gallonsPerServing.text = String(food.quantity!) + " oz"
         //if let category = food.category {
             //cell.point.backgroundColor = setColor(category: category)
             //cell.point.layer.cornerRadius = cell.point.bounds.width/2
@@ -43,13 +43,12 @@ extension MealViewController {
         return cell
     }
     
-    //When the user selects a row, pop the ingredient details page onto the navigation stack
+    //When the user selects a row, show the ingredient details page
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        UIView.animate(withDuration: 0.3, animations: {
-            self.infoView.alpha = 1.0
-        })
-        let ingredient = ingredientsInMeal[indexPath.row]
-        fillInfoView(ingredient: ingredient)
+        let ingredientToShow = ingredientsInMeal[indexPath.row]
+        let destination = self.storyboard?.instantiateViewController(withIdentifier: "IngredientInfo") as! IngredientInfoViewController
+        destination.ingredientToShow = ingredientToShow
+        present(destination, animated: true, completion: nil)
     }
     
     //Set the number of ingredients to show
@@ -94,20 +93,5 @@ extension MealViewController {
             day.setData([mealType : foodInMeal], options: SetOptions.merge())
             self.tableView.deleteRows(at: [indexPath], with: .automatic)
         }
-    }
-    
-    func fillInfoView(ingredient: Ingredient) {
-        tappedName.text = ingredient.name.capitalized
-        //infoViewGallons.text = String(Int((ingredient.waterData))) + " gal / " + String(format: "%.2f", ingredient.servingSize!) + "oz"
-        infoViewGallons.text = String(Int(ingredient.waterData/ingredient.servingSize!)) + " gallons per ounce"
-        let str = (ingredient.servingSize! > 1) ? " ounces" : " ounce"
-        infoViewCategory.text = "average serving size: " + String(Int(ingredient.servingSize!)) + str
-        let percentile = calcPercentile(ingredient: ingredient)
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .ordinal
-        let suffixAdded = formatter.string(from: NSNumber(value: percentile))
-        infoViewPercentile.text = suffixAdded! + " percentile of " + ingredient.category!
-        setRating(percentile: percentile, view: infoViewRatingBoarder, label: infoViewRatingLabel)
-        infoViewSource.text = ingredient.source
     }
 }
