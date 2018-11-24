@@ -25,10 +25,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         
         let homeViewController = s.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
         let loginViewController = s.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
-        let onBoarding = s.instantiateViewController(withIdentifier: "OnBoardingViewController") as! OnBoardingViewController
-    
+        //_ = s.instantiateViewController(withIdentifier: "OnBoardingViewController") as! OnBoardingViewController
         let navigationController: UINavigationController = s.instantiateInitialViewController() as! UINavigationController
-        
+        UIApplication.shared.statusBarStyle = .lightContent
         if (!GIDSignIn.sharedInstance().hasAuthInKeychain()){
             navigationController.viewControllers = [loginViewController]
         } else {

@@ -23,16 +23,10 @@ extension MealViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "IngredientCell") as! IngredientCell
         let food = ingredientsInMeal[indexPath.row]
         let amtPerOz = food.waterData / food.servingSize!
-        
+        let str = food.quantity! > 1 ? " ounces" : " ounce"
         cell.label.text = food.name.capitalized
         cell.gallonsWaterLabel.text = String(Int(amtPerOz) * food.quantity!) + " gal"
-        //cell.gallonsPerServing.text = String(Int(food.waterData)) + " gal / " + String(format: "%.2f", food.servingSize!) + " oz"
-        
-        cell.gallonsPerServing.text = String(food.quantity!) + " oz"
-        //if let category = food.category {
-            //cell.point.backgroundColor = setColor(category: category)
-            //cell.point.layer.cornerRadius = cell.point.bounds.width/2
-        //}
+        cell.gallonsPerServing.text = String(food.quantity!) + str
         
         if(food.type == "USDA" || food.type == "Scanned"){
             cell.gallonsPerServing.isHidden = true

@@ -32,26 +32,6 @@ extension UIViewController {
         return returnCategory
     }
     
-    /*func setColor(category: String) -> UIColor {
-        let returnColor: UIColor
-        if category == "fruit" {
-            returnColor = orange
-        } else if category == "vegetable" {
-            returnColor = green
-        } else if category == "protein" {
-            returnColor = darkBlue
-        } else if category == "drinks" {
-            returnColor = blue
-        } else if category == "dairy" {
-            returnColor = yellow
-        } else if category == "grains" {
-            returnColor = brown
-        } else {
-            returnColor = purp
-        }
-        return returnColor
-    }*/
-    
     func getCategoryArr(category: String) -> [Ingredient] {
         switch(category){
         case "protein":

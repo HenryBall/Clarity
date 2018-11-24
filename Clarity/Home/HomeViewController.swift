@@ -26,10 +26,10 @@ var grains                   = [Ingredient]()
 var other                    = [Ingredient]()
 var recent                   = [[String: Any]]()
 var recentsAsIngredient      = [Ingredient?](repeating: nil, count: 2)
-let orange                   = UIColor(red: 255/255, green: 109/255, blue: 109/255, alpha: 1)
-let periwinkle               = UIColor(red: 153/255, green: 192/255, blue: 243/255, alpha: 1)
-let blue                     = UIColor(red: 154/255, green: 225/255, blue: 241/255, alpha: 1)
-let darkBlue                 = UIColor(red: 107/255, green: 161/255, blue: 228/255, alpha: 1)
+let orange                   = UIColor(red: 252/255, green: 108/255, blue: 108/255, alpha: 1)
+let periwinkle               = UIColor(red: 72/255, green: 112/255, blue: 164/255, alpha: 1)
+let blue                     = UIColor(red: 132/255, green: 219/255, blue: 239/255, alpha: 1)
+let darkBlue                 = UIColor(red: 72/255, green: 112/255, blue: 164/255, alpha: 1)
 let yellow                   = UIColor(red: 255/255, green: 215/255, blue: 130/255, alpha: 1)
 let green                    = UIColor(red: 158/255, green: 220/255, blue: 154/255, alpha: 1)
 
@@ -107,7 +107,6 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         queryIngredientsFromFirebase()
         initCircle()
         initPieChart()
-        //initInfoView()
         let views = [shadowView1, shadowView2, limitShadowView, averageShadowView, recent1Shadow, recent2Shadow, recentEmptyMessage]
         for view in views {
             view?.layer.shadowColor = UIColor(red: 218/255, green: 218/255, blue: 218/255, alpha: 1.0).cgColor
@@ -135,14 +134,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         dayDateFormatter.dateFormat = "MM d"
         dateLabel.text = labelDateFormatter.string(from: today)
     }
-    
-//    func initInfoView() {
-//        infoView.alpha = 0.0
-//        infoViewLine.layer.cornerRadius = infoViewLine.bounds.height/2
-//        infoViewRatingBoarder.layer.borderWidth = 2.0
-//        infoViewRatingBoarder.layer.cornerRadius = infoViewRatingBoarder.bounds.height/2
-//    }
-//
+
     func loadData() {
         self.addMealMenu.alpha = 0.0
         //self.infoView.alpha = 0.0
@@ -227,45 +219,6 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         }
     }
     
-    /*func showRecent(){
-        //let images = [recentPoint1, recentPoint2]
-        let names = [recent1Name, recent2Name]
-        let totals = [recent1Total, recent2Total]
-        let servingSize = [recent1Serving, recent2Serving]
-        
-        for (index, i) in recent.enumerated() {
-            if let ref = i["reference"] as? DocumentReference {
-                ref.getDocument { (document, error) in
-                    if let document = document {
-                        let ingredient = Ingredient(document: document)
-                        recentsAsIngredient[index] = ingredient
-                        names[index]?.text = ingredient.name.capitalized
-                        //if let category = ingredient.category {
-                            //images[index]?.backgroundColor = self.setColor(category: category)
-                            //images[index]?.layer.cornerRadius = (images[index]?.bounds.width)!/2
-                        //}
-                        totals[index]?.text = String(Int(ingredient.waterData/ingredient.servingSize!) * ingredient.quantity!) + " gal"
-                        servingSize[index]?.text = String(ingredient.quantity!) + " ounces"
-                    } else {
-                        print("Document does not exist")
-                    }
-                }
-            } else {
-                // ***
-                // *** Do we need this??
-                // ***
-                guard let item_name = i["name"] as? String else { return }
-                names[index]?.text = item_name.capitalized
-                //guard let category = i["category"] as? String else { return }
-                //images[index]?.backgroundColor = setColor(category: category)
-                //images[index]?.layer.cornerRadius = (images[index]?.bounds.width)!/2
-                guard let water_total = i["total"] as? Double else { return }
-                totals[index]?.text = String(Int(water_total)) + " gal"
-                servingSize[index]?.isHidden = true
-            }
-        }
-    }*/
-    
     func toggleRecentEmptyState(hideRecent: Bool, hideLabel: Bool){
         recent1Shadow.isHidden = hideRecent
         recent2Shadow.isHidden = hideRecent
@@ -282,10 +235,11 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
                 ref.getDocument { (document, error) in
                     let ingredient = Ingredient(document: document!)
                     let quantity = elem["quantity"] as! Int
+                    let str = quantity > 1 ? " ounces" : " ounce"
                     recentsAsIngredient[i] = ingredient
                     names[i]?.text = ingredient.name.capitalized
                     totals[i]?.text = String(Int(ingredient.waterData/ingredient.servingSize!) * quantity) + " gal"
-                    servingSize[i]?.text = String(quantity) + " oz"
+                    servingSize[i]?.text = String(quantity) + str
                 }
             } else {
                 displayAlert()

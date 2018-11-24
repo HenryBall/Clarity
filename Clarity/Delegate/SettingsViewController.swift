@@ -59,7 +59,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
 
     @IBAction func backBtnPressed(_ sender: Any) {
         if (userWaterGoal.text != "") {
-            userRef.setData(["water_goal": Double(userWaterGoal.text!) as Any, "portion": portionControl.titleForSegment(at: portionControl.selectedSegmentIndex)], options: SetOptions.merge())
+            userRef.setData(["water_goal": Double(userWaterGoal.text!) as Any, "portion": portionControl.titleForSegment(at: portionControl.selectedSegmentIndex)!], options: SetOptions.merge())
             self.navigationController?.popViewController(animated: true)
         } else {
             let alert = UIAlertController(title: "Oops!", message: "Please enter a water goal", preferredStyle: .alert)
@@ -69,6 +69,10 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         self.navigationController?.popViewController(animated: true)
     }
 
+    @IBAction func saveLimitTapped(_ sender: Any) {
+        
+    }
+    
     @IBAction func logoutButtunPressed(_ sender: Any) {
         GIDSignIn.sharedInstance().signOut()
         let s = UIStoryboard(name: "Main", bundle: nil)

@@ -10,6 +10,8 @@ import UIKit
 import SwiftyJSON
 import Firebase
 
+// Currently unused class
+
 class AddScannedItemViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     /* IBOutlets */
@@ -71,12 +73,12 @@ class AddScannedItemViewController: UIViewController, UITableViewDelegate, UITab
                 if let itemRef = item["reference"] as? DocumentReference {
                     pushToDatabase.append(["index": 1, "reference": itemRef])
                 } else {
-                    pushToDatabase.append(["index": 1, "image": item["image"], "name": item["name"], "total": item["total"]])
+                    pushToDatabase.append(["index": 1, "image": item["image"]!, "name": item["name"]!, "total": item["total"]!])
                 }
             }
         }
         
-        pushToDatabase.append(["index": 0, "image": ingredient.imageName, "name": ingredient.name, "total": ingredient.waterData])
+        pushToDatabase.append(["index": 0, "image": ingredient.imageName!, "name": ingredient.name, "total": ingredient.waterData])
         pushToDatabase.reverse()
         
         userRef.setData(["recent" : pushToDatabase], options: SetOptions.merge())

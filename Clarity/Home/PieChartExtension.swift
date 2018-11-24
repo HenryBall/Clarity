@@ -30,7 +30,7 @@ extension HomeViewController {
         let lunchPercentage = Float(lunch/dailyTotal)
         drawSlice(slice: lunchCircle, percentLabel: lunchLegendPercent, percentage: lunchPercentage, startAngle: breakfastPercentage, color: yellow)
         let dinnerPercentage = Float(dinner/dailyTotal)
-        drawSlice(slice: dinnerCircle, percentLabel: dinnerLegendPercent, percentage: dinnerPercentage, startAngle: (breakfastPercentage+lunchPercentage), color: periwinkle)
+        drawSlice(slice: dinnerCircle, percentLabel: dinnerLegendPercent, percentage: dinnerPercentage, startAngle: (breakfastPercentage+lunchPercentage), color: darkBlue)
         let snacksPercentage = Float(snacks/dailyTotal)
         drawSlice(slice: snacksCircle, percentLabel: snacksLegendPercent, percentage: snacksPercentage, startAngle: (breakfastPercentage+lunchPercentage+dinnerPercentage), color: blue)
     }

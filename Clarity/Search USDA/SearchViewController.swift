@@ -207,7 +207,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                     if let itemRef = item["reference"] as? DocumentReference {
                         pushToDatabase.append(["index": 1, "reference": itemRef])
                     } else {
-                        pushToDatabase.append(["index": 1, "image": item["image"], "name": item["name"], "total": item["total"]])
+                        pushToDatabase.append(["index": 1, "image": item["image"]!, "name": item["name"]!, "total": item["total"]!])
                     }
                 }
             }

@@ -139,7 +139,7 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
             for ingr in self.ingredientsInMeal {
                 let ref = db.document("water-footprint-data/" + ingr.name.capitalized)
                 recent.insert(["reference": ref, "quantity": ingr.quantity!], at: 0)
-                if (recent.count > 2) { recent.popLast() }
+                if (recent.count > 2) { _ = recent.popLast() }
             }
         }
         for (i, elem) in recent.enumerated() {
