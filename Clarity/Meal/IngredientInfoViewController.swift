@@ -16,16 +16,19 @@ class IngredientInfoViewController: UIViewController {
     @IBOutlet weak var servingSize          : UILabel!
     @IBOutlet weak var percentile           : UILabel!
     @IBOutlet weak var source               : UITextView!
+    var ingredientToShow                    : Ingredient!
     
     @IBOutlet weak var background: UIView!
     @IBOutlet weak var rating: UILabel!
     @IBOutlet weak var ratingImage: UIImageView!
-    var ingredientToShow                    : Ingredient!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.closeScreen(_:)))
         background.addGestureRecognizer(tap)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
         setupView()
     }
     
@@ -92,7 +95,7 @@ class IngredientInfoViewController: UIViewController {
     
     func setPortionPreference(servingSize: Double, portion: String, ingredient: Ingredient){
         //Gallons of water label
-        var boldText = String(Int(ingredientToShow.waterData)) + " gallons"
+        /*var boldText = String(Int(ingredientToShow.waterData)) + " gallons"
         var portionText = " of water per " + String(Int(servingSize)) + " oz"
         let attributedString = NSMutableAttributedString(string: "")
         let attrs: [NSAttributedStringKey: Any] = [.font: UIFont(name: "AvenirNext-Bold", size: 14)!]
@@ -104,8 +107,18 @@ class IngredientInfoViewController: UIViewController {
         }
         attributedString.append(boldString)
         attributedString.append(NSMutableAttributedString(string: portionText))
-        gallonsPerServing.attributedText = attributedString
+        gallonsPerServing.attributedText = attributedString*/
+        
+        if (portion == "Per Ounce") {
+            let galStr = Int(ingredient.waterData/servingSize) > 1 ? " gallons" : " gallon"
+            gallonsPerServing.text = String(Int(ingredient.waterData/servingSize)) + galStr + " per ounce"
+        } else {
+            let galStr = Int(ingredient.waterData) > 1 ? " gallons" : " gallon"
+            let ozStr = Int(servingSize) > 1 ? (" per " + String(Int(servingSize)) + " ounces") : " per ounce"
+            gallonsPerServing.text = String(Int(ingredient.waterData)) + galStr + ozStr
+        }
     }
+    
     @objc func closeScreen(_ sender: UITapGestureRecognizer) {
         self.dismiss(animated: true, completion: nil)
     }
