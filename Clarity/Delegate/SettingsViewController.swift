@@ -21,11 +21,12 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var userWaterGoal    : UITextField!
     @IBOutlet weak var backBtn          : UIButton!
     @IBOutlet weak var portionControl   : UISegmentedControl!
+    @IBOutlet weak var saveBtn: UIButton!
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewWillAppear(_ animated: Bool) {
         swipeToHideKeyboard()
-        
+        saveBtn.isHidden = true
+        logoutButton.isHidden = true
         guard let userID = UserDefaults.standard.string(forKey: "user_id") else {
             print("user ID cannot be found in user defaults")
             userWaterGoal.text = "0"
@@ -39,8 +40,12 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
                 if let waterGoal = document.data()?["water_goal"] {
                     let goalAsDouble = waterGoal as! Double
                     self.userWaterGoal.text = String(Int((goalAsDouble)))
+                    self.saveBtn.isHidden = true
+                    self.logoutButton.isHidden = false
                 } else {
                     self.backBtn.isHidden = true
+                    self.saveBtn.isHidden = false
+                    self.logoutButton.isHidden = true
                 }
                 
                 if let portionSettings = document.data()?["portion"] as? String {
@@ -69,8 +74,19 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         self.navigationController?.popViewController(animated: true)
     }
 
-    @IBAction func saveLimitTapped(_ sender: Any) {
-        
+    
+    @IBAction func saveBtnPressed(_ sender: Any) {
+        if (userWaterGoal.text != "") {
+            userRef.setData(["water_goal": Double(userWaterGoal.text!) as Any, "portion": portionControl.titleForSegment(at: portionControl.selectedSegmentIndex)!], options: SetOptions.merge())
+            self.navigationController?.popViewController(animated: true)
+        } else {
+            let alert = UIAlertController(title: "Oops!", message: "Please enter a water goal", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+            self.present(alert, animated: true)
+        }
+        let s = UIStoryboard(name: "Main", bundle: nil)
+        let homeViewController = s.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
+        navigationController?.viewControllers = [homeViewController]
     }
     
     @IBAction func logoutButtunPressed(_ sender: Any) {

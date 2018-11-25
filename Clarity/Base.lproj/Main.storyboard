@@ -345,15 +345,30 @@
                                             <action selector="logoutButtunPressed:" destination="ac9-59-wJ6" eventType="touchUpInside" id="Sb1-qN-32o"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FeQ-Fp-TxA">
+                                        <rect key="frame" x="0.0" y="15" width="345" height="34"/>
+                                        <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="16"/>
+                                        <state key="normal" title="Save">
+                                            <color key="titleColor" red="0.2901960784" green="0.2901960784" blue="0.2901960784" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="saveBtnPressed:" destination="ac9-59-wJ6" eventType="touchUpInside" id="acr-mG-ca0"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="epZ-u6-cA0" secondAttribute="trailing" id="HDm-w7-sY2"/>
+                                    <constraint firstItem="FeQ-Fp-TxA" firstAttribute="leading" secondItem="KKe-L8-6ZN" secondAttribute="leading" id="2NN-Ja-QaI"/>
+                                    <constraint firstAttribute="trailing" secondItem="FeQ-Fp-TxA" secondAttribute="trailing" id="BbM-oU-0Fb"/>
                                     <constraint firstItem="epZ-u6-cA0" firstAttribute="centerX" secondItem="KKe-L8-6ZN" secondAttribute="centerX" id="KWo-yz-tVm"/>
+                                    <constraint firstItem="FeQ-Fp-TxA" firstAttribute="centerX" secondItem="KKe-L8-6ZN" secondAttribute="centerX" id="Md2-Qx-421"/>
+                                    <constraint firstItem="epZ-u6-cA0" firstAttribute="top" secondItem="KKe-L8-6ZN" secondAttribute="top" constant="15" id="PFV-LT-3lP"/>
                                     <constraint firstItem="epZ-u6-cA0" firstAttribute="leading" secondItem="KKe-L8-6ZN" secondAttribute="leading" id="WuX-GN-YK4"/>
+                                    <constraint firstAttribute="trailing" secondItem="epZ-u6-cA0" secondAttribute="trailing" id="bOr-rx-2d4"/>
+                                    <constraint firstItem="FeQ-Fp-TxA" firstAttribute="top" secondItem="KKe-L8-6ZN" secondAttribute="top" constant="15" id="bXD-Ou-yay"/>
                                     <constraint firstAttribute="height" constant="64" id="e4C-do-IGh"/>
                                     <constraint firstAttribute="bottom" secondItem="epZ-u6-cA0" secondAttribute="bottom" constant="15" id="eMW-Yg-cFq"/>
-                                    <constraint firstItem="epZ-u6-cA0" firstAttribute="top" secondItem="KKe-L8-6ZN" secondAttribute="top" constant="15" id="gEV-Is-Nyr"/>
+                                    <constraint firstAttribute="bottom" secondItem="FeQ-Fp-TxA" secondAttribute="bottom" constant="15" id="xzj-IT-Tt7"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -388,6 +403,7 @@
                         <outlet property="backBtn" destination="GWU-a4-iYT" id="hRq-TN-Zdy"/>
                         <outlet property="logoutButton" destination="epZ-u6-cA0" id="R7H-uN-37t"/>
                         <outlet property="portionControl" destination="Muq-Qv-f7A" id="fHR-a5-THd"/>
+                        <outlet property="saveBtn" destination="FeQ-Fp-TxA" id="aEw-o1-nVn"/>
                         <outlet property="userWaterGoal" destination="2bp-V0-rh8" id="qip-6R-aif"/>
                     </connections>
                 </viewController>
@@ -407,7 +423,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="167"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Snacks" translatesAutoresizingMaskIntoConstraints="NO" id="vnD-pB-AEv">
-                                        <rect key="frame" x="143.5" y="46.5" width="88" height="94"/>
+                                        <rect key="frame" x="134" y="33" width="107" height="121"/>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Snacks" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v0y-Ey-9YG">
                                         <rect key="frame" x="44" y="34" width="64" height="27.5"/>
@@ -1290,9 +1306,9 @@
                                 <rect key="frame" x="15" y="486" width="345" height="160"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Get started by adding some food using the “+” button above!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Rd-Tg-b3A">
-                                        <rect key="frame" x="15" y="60.5" width="315" height="38.5"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="16"/>
-                                        <color key="textColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <rect key="frame" x="15" y="61" width="315" height="38.5"/>
+                                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="14"/>
+                                        <color key="textColor" red="0.2901960784" green="0.2901960784" blue="0.2901960784" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
@@ -1302,6 +1318,12 @@
                                     <constraint firstItem="0Rd-Tg-b3A" firstAttribute="leading" secondItem="fAP-lb-e7a" secondAttribute="leading" constant="15" id="frI-Jd-Vir"/>
                                     <constraint firstItem="0Rd-Tg-b3A" firstAttribute="centerY" secondItem="fAP-lb-e7a" secondAttribute="centerY" id="jt0-5t-fjz"/>
                                 </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="4"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.maskToBounds" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                             </view>
                             <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wlA-ir-Yuy" userLabel="meal menu">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
@@ -1681,7 +1703,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="167"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Snacks" translatesAutoresizingMaskIntoConstraints="NO" id="prI-S5-ePy">
-                                        <rect key="frame" x="143.5" y="36.5" width="88" height="94"/>
+                                        <rect key="frame" x="134" y="23" width="107" height="121"/>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Snacks" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gyI-vL-jPt" userLabel="mealLabel">
                                         <rect key="frame" x="44" y="30.5" width="80.5" height="33"/>
@@ -1857,7 +1879,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Snacks" translatesAutoresizingMaskIntoConstraints="NO" id="VNx-X5-qeA">
-                                        <rect key="frame" x="143.5" y="46.5" width="88" height="94"/>
+                                        <rect key="frame" x="134" y="33" width="107" height="121"/>
                                     </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -2024,7 +2046,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="167"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Snacks" translatesAutoresizingMaskIntoConstraints="NO" id="UOf-bF-uz6">
-                                        <rect key="frame" x="143.5" y="36.5" width="88" height="94"/>
+                                        <rect key="frame" x="134" y="23" width="107" height="121"/>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Snacks" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IAK-JM-0IB" userLabel="mealLabel">
                                         <rect key="frame" x="44" y="30.5" width="80.5" height="33"/>
@@ -2143,7 +2165,7 @@
         <image name="Clarity" width="390" height="180"/>
         <image name="Plate" width="339" height="339"/>
         <image name="Settings" width="24" height="17"/>
-        <image name="Snacks" width="88" height="94"/>
+        <image name="Snacks" width="107" height="121"/>
         <image name="add" width="22" height="22"/>
         <image name="addButton" width="65" height="65"/>
         <image name="backButton" width="14" height="24"/>
@@ -2154,7 +2176,7 @@
         <image name="leftArrow" width="10" height="20"/>
         <image name="lock" width="80" height="80"/>
         <image name="mealMenu" width="304" height="304"/>
-        <image name="percentile" width="38" height="40"/>
+        <image name="percentile" width="48" height="45"/>
         <image name="rightArrow" width="10" height="20"/>
         <image name="scanButton" width="36" height="34"/>
         <image name="searchButton" width="34" height="37"/>

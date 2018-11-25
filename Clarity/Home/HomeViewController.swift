@@ -333,15 +333,19 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     }
     
     @IBAction func recentBtnOne(_ sender: UIButton) {
-        let destination = self.storyboard?.instantiateViewController(withIdentifier: "IngredientInfo") as! IngredientInfoViewController
-        destination.ingredientToShow = recentsAsIngredient[0]
-        present(destination, animated: true, completion: nil)
+        if (recentsAsIngredient[0] != nil) {
+            let destination = self.storyboard?.instantiateViewController(withIdentifier: "IngredientInfo") as! IngredientInfoViewController
+            destination.ingredientToShow = recentsAsIngredient[0]
+            present(destination, animated: true, completion: nil)
+        }
     }
     
     @IBAction func recentBtnTwo(_ sender: UIButton) {
-        let destination = self.storyboard?.instantiateViewController(withIdentifier: "IngredientInfo") as! IngredientInfoViewController
-        destination.ingredientToShow = recentsAsIngredient[1]
-        present(destination, animated: true, completion: nil)
+        if (recentsAsIngredient[1] != nil) {
+            let destination = self.storyboard?.instantiateViewController(withIdentifier: "IngredientInfo") as! IngredientInfoViewController
+            destination.ingredientToShow = recentsAsIngredient[1]
+            present(destination, animated: true, completion: nil)
+        }
     }
     
     func displayAlert() {

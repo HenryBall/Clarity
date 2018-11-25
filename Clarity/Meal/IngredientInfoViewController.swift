@@ -29,7 +29,9 @@ class IngredientInfoViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        setupView()
+        if (ingredientToShow != nil) {
+            setupView()
+        }
     }
     
     func setupView(){
