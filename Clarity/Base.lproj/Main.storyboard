@@ -194,20 +194,20 @@
                                 <color key="backgroundColor" red="0.51764705879999995" green="0.85882352939999995" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lDy-u5-xfh">
-                                <rect key="frame" x="25" y="45" width="14" height="24"/>
+                                <rect key="frame" x="25" y="45" width="24" height="42"/>
                                 <state key="normal" image="backButton"/>
                                 <connections>
                                     <action selector="backBtnPressed:" destination="ac9-59-wJ6" eventType="touchUpInside" id="dBw-Pu-bgR"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Settings" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9BN-lZ-U6A">
-                                <rect key="frame" x="144.5" y="34.5" width="86" height="45"/>
+                                <rect key="frame" x="144.5" y="43.5" width="86" height="45"/>
                                 <fontDescription key="fontDescription" name="Pacifico" family="Pacifico" pointSize="24"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1TJ-pM-aZQ" userLabel="Daily Water Limit">
-                                <rect key="frame" x="15" y="89.5" width="345" height="187"/>
+                                <rect key="frame" x="15" y="98.5" width="345" height="187"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Daily Water Limit" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6R2-d9-VHO">
                                         <rect key="frame" x="109" y="20" width="127" height="22"/>
@@ -269,7 +269,7 @@
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aLl-lF-O3v" userLabel="Portion Settings">
-                                <rect key="frame" x="15" y="288.5" width="345" height="158.5"/>
+                                <rect key="frame" x="15" y="297.5" width="345" height="158.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Portion Settings" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ygI-kW-5fF">
                                         <rect key="frame" x="114" y="20" width="117" height="22"/>
@@ -332,7 +332,7 @@
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KKe-L8-6ZN" userLabel="Log out">
-                                <rect key="frame" x="15" y="459" width="345" height="64"/>
+                                <rect key="frame" x="15" y="468" width="345" height="64"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="epZ-u6-cA0">
                                         <rect key="frame" x="0.0" y="15" width="345" height="34"/>
@@ -425,13 +425,13 @@
                                         <rect key="frame" x="134" y="33" width="107" height="121"/>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Snacks" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v0y-Ey-9YG">
-                                        <rect key="frame" x="44" y="34" width="64" height="27.5"/>
+                                        <rect key="frame" x="54" y="43" width="64" height="27.5"/>
                                         <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="20"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Og-c1-VA6" userLabel="Back Button">
-                                        <rect key="frame" x="15" y="15" width="54" height="64"/>
+                                        <rect key="frame" x="15" y="15" width="64" height="82"/>
                                         <inset key="contentEdgeInsets" minX="0.0" minY="20" maxX="40" maxY="20"/>
                                         <state key="normal" image="backButton"/>
                                         <connections>
@@ -1705,7 +1705,7 @@
                                         <rect key="frame" x="134" y="23" width="107" height="121"/>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Snacks" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gyI-vL-jPt" userLabel="mealLabel">
-                                        <rect key="frame" x="44" y="30.5" width="80.5" height="33"/>
+                                        <rect key="frame" x="54" y="39.5" width="80.5" height="33"/>
                                         <fontDescription key="fontDescription" name="AvenirNext-Bold" family="Avenir Next" pointSize="24"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
@@ -1718,7 +1718,7 @@
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dLL-TJ-lus" userLabel="Back Button">
-                                <rect key="frame" x="15" y="15" width="54" height="64"/>
+                                <rect key="frame" x="15" y="15" width="64" height="82"/>
                                 <inset key="contentEdgeInsets" minX="0.0" minY="20" maxX="40" maxY="20"/>
                                 <state key="normal" image="backButton"/>
                                 <connections>
@@ -1872,7 +1872,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="167"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Snacks" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Ox-8S-dJp" userLabel="mealLabel">
-                                        <rect key="frame" x="44" y="34" width="64" height="27.5"/>
+                                        <rect key="frame" x="54" y="43" width="64" height="27.5"/>
                                         <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="20"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
@@ -1892,7 +1892,7 @@
                                 <color key="backgroundColor" red="0.98431372549999996" green="0.98431372549999996" blue="0.98431372549999996" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ffz-uD-cjY" userLabel="Back Button">
-                                <rect key="frame" x="15" y="15" width="54" height="64"/>
+                                <rect key="frame" x="15" y="15" width="64" height="82"/>
                                 <inset key="contentEdgeInsets" minX="0.0" minY="20" maxX="40" maxY="20"/>
                                 <state key="normal" image="backButton"/>
                                 <connections>
@@ -1985,7 +1985,7 @@
                                 <textInputTraits key="textInputTraits"/>
                             </searchBar>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L6o-dB-y8d">
-                                <rect key="frame" x="320" y="27" width="40" height="40"/>
+                                <rect key="frame" x="320" y="36" width="40" height="40"/>
                                 <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="20"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" title="Add">
@@ -2048,7 +2048,7 @@
                                         <rect key="frame" x="134" y="23" width="107" height="121"/>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Snacks" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IAK-JM-0IB" userLabel="mealLabel">
-                                        <rect key="frame" x="44" y="30.5" width="80.5" height="33"/>
+                                        <rect key="frame" x="54" y="39.5" width="80.5" height="33"/>
                                         <fontDescription key="fontDescription" name="AvenirNext-Bold" family="Avenir Next" pointSize="24"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
@@ -2072,7 +2072,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K12-YM-Wxm" userLabel="Back Button">
-                                <rect key="frame" x="15" y="15" width="54" height="64"/>
+                                <rect key="frame" x="15" y="15" width="64" height="82"/>
                                 <inset key="contentEdgeInsets" minX="0.0" minY="20" maxX="40" maxY="20"/>
                                 <state key="normal" image="backButton"/>
                                 <connections>
@@ -2167,7 +2167,7 @@
         <image name="Snacks" width="107" height="121"/>
         <image name="add" width="22" height="22"/>
         <image name="addButton" width="65" height="65"/>
-        <image name="backButton" width="14" height="24"/>
+        <image name="backButton" width="24" height="42"/>
         <image name="databaseIcon" width="44" height="26"/>
         <image name="getStartedBtn" width="250" height="56"/>
         <image name="good" width="25" height="22"/>
