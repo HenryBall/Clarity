@@ -28,4 +28,8 @@ extension UIColor {
         static let darkText     = UIColor(red: 117/255, green: 117/255, blue: 117/255, alpha: 1)
         static let darkestText  = UIColor(red: 72/255, green: 72/255, blue: 72/255, alpha: 1)
     }
+    
+    struct main {
+        static let mainBlue   = UIColor(red: 132/255, green: 219/255, blue: 239/255, alpha: 1)
+    }
 }
