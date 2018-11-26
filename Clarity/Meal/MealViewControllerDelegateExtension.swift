@@ -22,11 +22,22 @@ extension MealViewController {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "IngredientCell") as! IngredientCell
         let food = ingredientsInMeal[indexPath.row]
-        let amtPerOz = food.waterData / food.servingSize!
-        let str = food.quantity! > 1 ? " ounces" : " ounce"
+        
         cell.label.text = food.name.capitalized
-        cell.gallonsWaterLabel.text = String(Int(amtPerOz) * food.quantity!) + " gal"
-        cell.gallonsPerServing.text = String(food.quantity!) + str
+        
+        if let quantity = food.quantity {
+            if let servingSize = food.servingSize {
+                let amtPerOz = food.waterData / servingSize
+                
+                if (portionPref == "Per Ounce") {
+                    cell.gallonsWaterLabel.text = String(Int(amtPerOz) * quantity) + " gal"
+                    cell.gallonsPerServing.text = String(quantity) + " oz"
+                } else {
+                    cell.gallonsWaterLabel.text = String(Int(food.waterData) * quantity) + " gal"
+                    cell.gallonsPerServing.text = String(Int(servingSize)) + " oz"
+                }
+            }
+        }
         
         if(food.type == "USDA" || food.type == "Scanned"){
             cell.gallonsPerServing.isHidden = true

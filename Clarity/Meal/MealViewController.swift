@@ -221,13 +221,13 @@ extension UIViewController {
     func setBannerImage(mealType: String, imageView: UIImageView, label: UILabel){
         switch mealType {
         case "Breakfast":
-            view.backgroundColor = orange
+            view.backgroundColor = UIColor.mealBackgrounds.breakfast
         case "Lunch":
-            view.backgroundColor = yellow
+            view.backgroundColor = UIColor.mealBackgrounds.lunch
         case "Dinner":
-            view.backgroundColor = periwinkle
+            view.backgroundColor = UIColor.mealBackgrounds.dinner
         case "Snacks":
-            view.backgroundColor = blue
+            view.backgroundColor = UIColor.mealBackgrounds.snacks
         default:
             print("error")
         }

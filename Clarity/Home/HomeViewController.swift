@@ -16,6 +16,7 @@ let defaults                 = UserDefaults.standard
 let db                       = Firestore.firestore()
 let storage                  = Storage.storage()
 var day                      : DocumentReference!
+var portionPref              : String!
 var ingredientsFromDatabase  = [Ingredient]()
 var proteins                 = [Ingredient]()
 var fruits                   = [Ingredient]()
@@ -26,12 +27,6 @@ var grains                   = [Ingredient]()
 var other                    = [Ingredient]()
 var recent                   = [[String: Any]]()
 var recentsAsIngredient      = [Ingredient?](repeating: nil, count: 2)
-let orange                   = UIColor(red: 252/255, green: 108/255, blue: 108/255, alpha: 1)
-let periwinkle               = UIColor(red: 72/255, green: 112/255, blue: 164/255, alpha: 1)
-let blue                     = UIColor(red: 132/255, green: 219/255, blue: 239/255, alpha: 1)
-let darkBlue                 = UIColor(red: 72/255, green: 112/255, blue: 164/255, alpha: 1)
-let yellow                   = UIColor(red: 255/255, green: 215/255, blue: 130/255, alpha: 1)
-let green                    = UIColor(red: 158/255, green: 220/255, blue: 154/255, alpha: 1)
 
 /** Main screen of the application
  ## Contains: ##
@@ -59,19 +54,16 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var recent2Name              : UILabel!
     @IBOutlet weak var recent2Total             : UILabel!
     @IBOutlet weak var recent2Serving           : UILabel!
-    @IBOutlet weak var recentEmptyMessage: UIView!
     
     //UIView
     @IBOutlet weak var circleView               : UIView!
     @IBOutlet weak var addMealMenu              : UIView!
     @IBOutlet weak var pieChart                 : UIView!
-    @IBOutlet weak var shadowView1              : UIView!
-    @IBOutlet weak var shadowView2              : UIView!
-    @IBOutlet weak var limitShadowView          : UIView!
-    @IBOutlet weak var averageShadowView        : UIView!
-    @IBOutlet weak var recent1Shadow            : UIView!
-    @IBOutlet weak var recent2Shadow            : UIView!
     @IBOutlet weak var infoView                 : UIView!
+    @IBOutlet weak var recentEmptyMessage       : UIView!
+    @IBOutlet weak var recent1                  : UIView!
+    @IBOutlet weak var recent2                  : UIView!
+    @IBOutlet var shadowViews                   : [UIView]!
     
     @IBOutlet weak var leftArrow                : UIButton!
     @IBOutlet weak var rightArrow               : UIButton!
@@ -101,20 +93,27 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         self.navigationController?.isNavigationBarHidden = true
         self.scrollView.delegate = self
         setUpDateFormatter()
-        userRef = db.collection("users").document(defaults.string(forKey: "user_id")!)
-        print(defaults.string(forKey: "user_id")!)
+        
+        //TO DO: Show error screen
+        guard let userID = UserDefaults.standard.string(forKey: "user_id") else {
+            print("user ID cannot be found in user defaults")
+            return
+        }
+        
+        userRef = db.collection("users").document(userID)
         day = userRef.collection("meals").document(databaseDateFormatter.string(from: today))
+        
         queryIngredientsFromFirebase()
         initCircle()
         initPieChart()
-        let views = [shadowView1, shadowView2, limitShadowView, averageShadowView, recent1Shadow, recent2Shadow, recentEmptyMessage]
-        for view in views {
-            view?.layer.shadowColor = UIColor(red: 218/255, green: 218/255, blue: 218/255, alpha: 1.0).cgColor
-            view?.layer.shadowOffset = CGSize(width: 1, height: 3)
-            view?.layer.shadowOpacity = 1.0
-            view?.layer.shadowRadius = 2.0
-            view?.layer.masksToBounds = false
-            view?.layer.shadowPath = UIBezierPath(roundedRect: view!.bounds, cornerRadius: 4).cgPath
+        
+        for view in shadowViews {
+            view.layer.shadowColor = UIColor(red: 218/255, green: 218/255, blue: 218/255, alpha: 1.0).cgColor
+            view.layer.shadowOffset = CGSize(width: 1, height: 3)
+            view.layer.shadowOpacity = 1.0
+            view.layer.shadowRadius = 2.0
+            view.layer.masksToBounds = false
+            view.layer.shadowPath = UIBezierPath(roundedRect: view.bounds, cornerRadius: 4).cgPath
         }
     }
     
@@ -137,7 +136,6 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
 
     func loadData() {
         self.addMealMenu.alpha = 0.0
-        //self.infoView.alpha = 0.0
         let group = DispatchGroup()
         group.enter()
         userRef.getDocument { (doc, error) in
@@ -145,7 +143,13 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
                 self.dailyGoal = doc.data()!["water_goal"] as? Double
                 if let rawRecent = doc.get("recent"){
                     recent = rawRecent as! [[String : Any]]
-                    self.showRecent()
+                    if let portionSettings = doc.data()?["portion"] as? String {
+                        portionPref = portionSettings
+                        self.showRecent(portionSettings: portionSettings)
+                    }else{
+                        portionPref = "Per Serving"
+                        self.showRecent(portionSettings: "Per Serving")
+                    }
                 } else {
                     self.toggleRecentEmptyState(hideRecent: true, hideLabel: false)
                 }
@@ -220,26 +224,35 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     }
     
     func toggleRecentEmptyState(hideRecent: Bool, hideLabel: Bool){
-        recent1Shadow.isHidden = hideRecent
-        recent2Shadow.isHidden = hideRecent
+        recent1.isHidden = hideRecent
+        recent2.isHidden = hideRecent
         recentEmptyMessage.isHidden = hideLabel
     }
-    
-    func showRecent() {
+
+    func showRecent(portionSettings: String) {
         toggleRecentEmptyState(hideRecent: false, hideLabel: true)
         let names = [recent1Name, recent2Name]
         let totals = [recent1Total, recent2Total]
         let servingSize = [recent1Serving, recent2Serving]
+        
         for (i, elem) in recent.enumerated() {
             if let ref = elem["reference"] as? DocumentReference {
                 ref.getDocument { (document, error) in
                     let ingredient = Ingredient(document: document!)
-                    let quantity = elem["quantity"] as! Int
-                    let str = quantity > 1 ? " ounces" : " ounce"
-                    recentsAsIngredient[i] = ingredient
-                    names[i]?.text = ingredient.name.capitalized
-                    totals[i]?.text = String(Int(ingredient.waterData/ingredient.servingSize!) * quantity) + " gal"
-                    servingSize[i]?.text = String(quantity) + str
+                    if let quantity = elem["quantity"] as? Int {
+                        if let ingServingSize = ingredient.servingSize {
+                            recentsAsIngredient[i] = ingredient
+                            names[i]?.text = ingredient.name.capitalized
+                            
+                            if (portionSettings == "Per Ounce") {
+                                totals[i]?.text = String(Int(ingredient.waterData/ingServingSize) * quantity) + " gal"
+                                servingSize[i]?.text = String(quantity) + " oz."
+                            } else {
+                                totals[i]?.text = String(Int(ingredient.waterData) * quantity) + " gal"
+                                servingSize[i]?.text = String(quantity * Int(ingServingSize)) + " oz."
+                            }
+                        }
+                    }
                 }
             } else {
                 displayAlert()
@@ -260,7 +273,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
                         proteins.append(current_ingredient)
                     case "fruit":
                         fruits.append(current_ingredient)
-                    case "vegetable":
+                    case "vegetables":
                         vegetables.append(current_ingredient)
                     case "dairy":
                         dairy.append(current_ingredient)
@@ -271,7 +284,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
                     case "other":
                         other.append(current_ingredient)
                     default:
-                        print("some item not in a category has been entered")
+                        print(current_ingredient.name + "has an invalid category")
                     }
                 }
             }

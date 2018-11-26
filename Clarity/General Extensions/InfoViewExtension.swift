@@ -3,42 +3,25 @@
 //  Clarity
 //
 //  Created by henry on 10/20/18.
-//  Copyright © 2018 Robert. All rights reserved.
+//  Copyright © 2018 Clarity. All rights reserved.
 //
 
 import Foundation
 import UIKit
+import Firebase
 
 extension UIViewController {
     
     /* Extensions for setting up info view just to hide the ugly code
      -- used in HomeViewController and MealViewControllerDelegateExtension
     */
-    func setCategory(category: String) -> String {
-        let returnCategory: String
-        if category == "vegetable" {
-            returnCategory = "V"
-        } else if category == "protein" {
-            returnCategory = "P"
-        } else if category == "drinks" {
-            returnCategory = "B"
-        } else if category == "fruit" {
-            returnCategory = "F"
-        } else if category == "dairy" {
-            returnCategory = "D"
-        } else {
-            returnCategory = ""
-        }
-        return returnCategory
-    }
-    
     func getCategoryArr(category: String) -> [Ingredient] {
         switch(category){
         case "protein":
             return proteins
         case "fruit":
             return fruits
-        case "vegetable":
+        case "vegetables":
             return vegetables
         case "dairy":
             return dairy
@@ -55,29 +38,41 @@ extension UIViewController {
         }
     }
     
-    func calcPercentile(ingredient: Ingredient) -> Int {
-        let categoryArr = getCategoryArr(category: ingredient.category!)
-        let sorted = categoryArr.sorted(by: {$0.waterData > $1.waterData})
-        let index = sorted.index(where: {$0.name == ingredient.name})!
-        let percentile = (Double(index)/Double(sorted.count)) * 100.0
-        return Int(percentile)
+    /**
+     Calculates and returns an integer representing how an item's water usage compares against every other item in the same category.
+     - Parameter category: Current item's category, since a guard let is used where it's called, cannot be nil in this function
+     - Parameter name: Current item's name */
+    func getPercentile(category: String, name: String) -> Int {
+            let categoryArr = getCategoryArr(category: category)
+            let sorted = categoryArr.sorted(by: {$0.waterData < $1.waterData})
+
+            if(sorted.count != 0){
+                let index = sorted.index(where: {$0.name == name})!
+                let percentile = (Double(index)/Double(sorted.count)) * 100.0
+                return Int(percentile)
+            }
+        return 0
     }
     
+    /**
+     Sets the rating view (left): image and label
+     - Parameter percentile: Current item's percentile in it's category
+     - Parameter view: Image of green, yellow or orange circle depending on value
+     - Parameter label: "good, fair or bad" overall rating */
     func setRating(percentile: Int, view: UIImageView, label: UILabel) {
         var boldText = "fair"
         
         if percentile >= 75 {
-            view.layer.backgroundColor = UIColor(red: 177/255, green: 236/255, blue: 113/255, alpha: 1.0).cgColor
-            view.image = UIImage(named: "good")
-            boldText  = "good"
-            
-        } else if 25 <= percentile && 75 > percentile {
-            view.layer.backgroundColor = yellow.cgColor
-            view.image = UIImage(named: "fair")
-        } else {
-            view.layer.backgroundColor = orange.cgColor
+            view.layer.backgroundColor = UIColor.ratingColors.badRating.cgColor
             view.image = UIImage(named: "bad")
             boldText = "poor"
+        } else if percentile >= 25 && percentile < 75{
+            view.layer.backgroundColor = UIColor.ratingColors.fairRating.cgColor
+            view.image = UIImage(named: "fair")
+        } else {
+            view.layer.backgroundColor = UIColor.ratingColors.goodRating.cgColor
+            view.image = UIImage(named: "good")
+            boldText  = "good"
         }
         
         let attributedString = NSMutableAttributedString(string: "")

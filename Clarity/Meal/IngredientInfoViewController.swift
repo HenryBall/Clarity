@@ -11,16 +11,18 @@ import Firebase
 
 class IngredientInfoViewController: UIViewController {
 
+    //IBOutlet
     @IBOutlet weak var name                 : UILabel!
     @IBOutlet weak var gallonsPerServing    : UILabel!
     @IBOutlet weak var servingSize          : UILabel!
     @IBOutlet weak var percentile           : UILabel!
+    @IBOutlet weak var rating               : UILabel!
+    @IBOutlet weak var ratingImage          : UIImageView!
     @IBOutlet weak var source               : UITextView!
-    var ingredientToShow                    : Ingredient!
+    @IBOutlet weak var background           : UIView!
     
-    @IBOutlet weak var background: UIView!
-    @IBOutlet weak var rating: UILabel!
-    @IBOutlet weak var ratingImage: UIImageView!
+    //Class Globals
+    var ingredientToShow                    : Ingredient!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,9 +31,12 @@ class IngredientInfoViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        if (ingredientToShow != nil) {
-            setupView()
+        //TO DO: Show error screen
+        guard ingredientToShow != nil else {
+            print("Ingredient is nil")
+            return
         }
+        setupView()
     }
     
     func setupView(){
@@ -44,24 +49,24 @@ class IngredientInfoViewController: UIViewController {
             return
         }
         
-        let ingPercentile = calcPercentile(ingredient: ingredientToShow)
+        let ingPercentile = getPercentile(category: ingredientCategory, name: ingredientToShow.name)
         setRating(percentile: ingPercentile, view: ratingImage, label: rating)
-        
+    
         //Percentile (Middle)
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .ordinal
-        let suffixAdded = formatter.string(from: NSNumber(value: ingPercentile))
-        percentile.text = suffixAdded! + " percentile of " + (ingredientCategory)
-        
-        
+        if(ingPercentile < 50){
+            percentile.text = "Uses less water than " + String(100-ingPercentile) + "% of other " + ingredientCategory
+        } else {
+            percentile.text = "Uses more water than " + String(ingPercentile) + "% of other " + ingredientCategory
+        }
+
         //Serving size (Right)
         guard let ingredientServingSize = ingredientToShow.servingSize else {
             print("serving size is nil")
             return
         }
         
-        servingSize.text = "serving size: " + String(Int(ingredientServingSize)) + " oz"
-        getPortionPreference(servingSize: ingredientServingSize, ingredient: ingredientToShow)
+        servingSize.text = "serving size: " + String(Int(ingredientServingSize)) + " oz."
+        setPortionPreference(servingSize: ingredientServingSize)
         
         //Source label
         guard let sourceURL = ingredientToShow.source else {
@@ -70,57 +75,24 @@ class IngredientInfoViewController: UIViewController {
         }
         source.text = "Source: \n" + sourceURL
     }
-    
-    func getPortionPreference(servingSize: Double, ingredient: Ingredient) {
-        guard let userID = UserDefaults.standard.string(forKey: "user_id") else {
-            print("user ID cannot be found in user defaults")
-            return
-        }
-        let group = DispatchGroup()
-        group.enter()
-        var portion = "Per Serving"
-        let userRef = Firestore.firestore().collection("users").document(userID)
-        userRef.getDocument { (document, error) in
-            if let document = document {
-                if let portionSettings = document.data()?["portion"] as? String {
-                    if(portionSettings == "Per Ounce"){
-                        portion = "Per Ounce"
-                    }
-                    group.leave()
-                }
-            }
-        }
-        group.notify(queue: .main) {
-            self.setPortionPreference(servingSize: servingSize, portion: portion, ingredient: ingredient)
-        }
-    }
-    
-    func setPortionPreference(servingSize: Double, portion: String, ingredient: Ingredient){
-        //Gallons of water label
-        /*var boldText = String(Int(ingredientToShow.waterData)) + " gallons"
-        var portionText = " of water per " + String(Int(servingSize)) + " oz"
-        let attributedString = NSMutableAttributedString(string: "")
-        let attrs: [NSAttributedStringKey: Any] = [.font: UIFont(name: "AvenirNext-Bold", size: 14)!]
-        let boldString = NSMutableAttributedString(string: boldText, attributes: attrs)
-        
-        if(portion == "Per Ounce"){
-            boldText = String(Int(ingredient.waterData/servingSize)) + " gallons"
-            portionText = " of water per 1 oz"
-        }
-        attributedString.append(boldString)
-        attributedString.append(NSMutableAttributedString(string: portionText))
-        gallonsPerServing.attributedText = attributedString*/
-        
-        if (portion == "Per Ounce") {
-            let galStr = Int(ingredient.waterData/servingSize) > 1 ? " gallons" : " gallon"
-            gallonsPerServing.text = String(Int(ingredient.waterData/servingSize)) + galStr + " per ounce"
+
+    /**
+     Sets the UI based on whichever portion preference the user has set,
+     either displayed as per oz. or per serving
+     - Parameter servingSize: Double describing the serving size in oz., since guard let is used earlier in the code, cannot be nil
+     - Parameter portion: either "Per Ounce" or "Per Serving", determined by user's preference saved to the database */
+    func setPortionPreference(servingSize: Double){
+        if (portionPref == "Per Ounce") {
+            let galStr = Int(ingredientToShow.waterData/servingSize) > 1 ? " gallons" : " gallon"
+            gallonsPerServing.text = String(Int(ingredientToShow.waterData/servingSize)) + galStr + " of water per oz."
         } else {
-            let galStr = Int(ingredient.waterData) > 1 ? " gallons" : " gallon"
-            let ozStr = Int(servingSize) > 1 ? (" per " + String(Int(servingSize)) + " ounces") : " per ounce"
-            gallonsPerServing.text = String(Int(ingredient.waterData)) + galStr + ozStr
+            let galStr = Int(ingredientToShow.waterData) > 1 ? " gallons" : " gallon"
+            let ozStr = Int(servingSize) > 1 ? (" of water per " + String(Int(servingSize)) + " oz.") : " of water per oz."
+            gallonsPerServing.text = String(Int(ingredientToShow.waterData)) + galStr + ozStr
         }
     }
     
+    ///Closes the info view. Triggered by tapping on the background view
     @objc func closeScreen(_ sender: UITapGestureRecognizer) {
         self.dismiss(animated: true, completion: nil)
     }

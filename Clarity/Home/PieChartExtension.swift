@@ -26,13 +26,13 @@ extension HomeViewController {
     func updatePieChart(breakfast: Double, lunch: Double, dinner: Double, snacks: Double, dailyTotal : Double) {
         totalGallonsLabel.text = String(Int(dailyTotal))
         let breakfastPercentage = Float(breakfast/dailyTotal)
-        drawSlice(slice: breakfastCircle, percentLabel: breakfastLegendPercent, percentage: breakfastPercentage, startAngle: 0.0, color: orange)
+        drawSlice(slice: breakfastCircle, percentLabel: breakfastLegendPercent, percentage: breakfastPercentage, startAngle: 0.0, color: UIColor.mealBackgrounds.breakfast)
         let lunchPercentage = Float(lunch/dailyTotal)
-        drawSlice(slice: lunchCircle, percentLabel: lunchLegendPercent, percentage: lunchPercentage, startAngle: breakfastPercentage, color: yellow)
+        drawSlice(slice: lunchCircle, percentLabel: lunchLegendPercent, percentage: lunchPercentage, startAngle: breakfastPercentage, color: UIColor.mealBackgrounds.lunch)
         let dinnerPercentage = Float(dinner/dailyTotal)
-        drawSlice(slice: dinnerCircle, percentLabel: dinnerLegendPercent, percentage: dinnerPercentage, startAngle: (breakfastPercentage+lunchPercentage), color: darkBlue)
+        drawSlice(slice: dinnerCircle, percentLabel: dinnerLegendPercent, percentage: dinnerPercentage, startAngle: (breakfastPercentage+lunchPercentage), color: UIColor.mealBackgrounds.dinner)
         let snacksPercentage = Float(snacks/dailyTotal)
-        drawSlice(slice: snacksCircle, percentLabel: snacksLegendPercent, percentage: snacksPercentage, startAngle: (breakfastPercentage+lunchPercentage+dinnerPercentage), color: blue)
+        drawSlice(slice: snacksCircle, percentLabel: snacksLegendPercent, percentage: snacksPercentage, startAngle: (breakfastPercentage+lunchPercentage+dinnerPercentage), color: UIColor.mealBackgrounds.snacks)
     }
     
     func drawSlice(slice: CirclePath, percentLabel: UILabel, percentage: Float, startAngle: Float, color: UIColor) {
