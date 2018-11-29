@@ -67,12 +67,10 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                 
                 let matchedIngredients = self.compareIngredients(text: itemJSON["report"]["food"]["ing"]["desc"])
                 let totalGallons = matchedIngredients.map({$0.waterData}).reduce(0, +) * Double(quantity)
-                let refWithMostWater = matchedIngredients.max { $0.waterData < $1.waterData }
-                let imageName = (refWithMostWater?.category)!
                 
                 let ingredientRefs = self.getMatchedRefsToPush(matchedIngredients: matchedIngredients)
                 
-                let currentIngredient = Ingredient(name: name, type: "USDA", waterData: totalGallons, description: "", servingSize: 1, category: nil, source: "", quantity: quantity, ingredients: ingredientRefs, imageName: imageName)
+                let currentIngredient = Ingredient(name: name, type: "USDA", waterData: totalGallons, description: "", servingSize: 1, category: nil, source: "", quantity: quantity, ingredients: ingredientRefs, measurement: "oz")
                 self.ingredientsInMeal.append(currentIngredient)
                 self.addedIngredients.append(currentIngredient)
                 
@@ -198,7 +196,6 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     func setRecent() {
-        let userRef = db.collection("users").document(defaults.string(forKey: "user_id")!)
         var pushToDatabase = [[String : Any]]()
         
         if(self.addedIngredients.count == 1){
@@ -216,11 +213,11 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         if self.addedIngredients.count > 1 {
             index = addedIngredients.count-2
             let ing = self.addedIngredients[index+1]
-            pushToDatabase.append(["index": 1, "image": ing.imageName as Any, "name": ing.name.capitalized, "total": ing.waterData])
+            pushToDatabase.append(["index": 1, "name": ing.name.capitalized, "total": ing.waterData])
         }
         
         let ing2 = self.addedIngredients[index]
-        pushToDatabase.append(["index": 0, "image": ing2.imageName as Any, "name": ing2.name.capitalized, "total": ing2.waterData])
+        pushToDatabase.append(["index": 0, "name": ing2.name.capitalized, "total": ing2.waterData])
         pushToDatabase.reverse()
         
         userRef.setData(["recent" : pushToDatabase], options: SetOptions.merge())
@@ -247,7 +244,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                 let ref = db.document("water-footprint-data/" + ing.name.capitalized)
                 map = ["reference" : ref, "quantity" : ing.quantity ?? 1]
             }else {
-                map = ["name" : ing.name, "total" : ing.waterData, "ingredients": ing.ingredients as Any, "image": ing.imageName as Any, "quantity" : ing.quantity ?? 1, "type" : ing.type]
+                map = ["name" : ing.name, "total" : ing.waterData, "ingredients": ing.ingredients as Any, "quantity" : ing.quantity ?? 1, "type" : ing.type]
             }
             foodInMeal.append(map)
         }

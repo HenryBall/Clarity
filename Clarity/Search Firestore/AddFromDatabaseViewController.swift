@@ -59,16 +59,18 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
         for ingr in ingredientsInMeal {
             if(ingr.type == "Database"){
                 let ref = db.document("water-footprint-data/" + ingr.name.capitalized)
-                ingredient = ["reference" : ref, "quantity" : ingr.quantity ?? 1]
+                ingredient = ["reference" : ref, "quantity" : ingr.quantity ?? 1, "measure" : ingr.measurement ?? portionPref as Any]
             } else {
-                ingredient = ["name" : ingr.name, "total" : ingr.waterData, "ingredients": ingr.ingredients as Any, "image": ingr.imageName as Any, "quantity" : ingr.quantity ?? 1, "type" : ingr.type]
+                ingredient = ["name" : ingr.name, "total" : ingr.waterData, "ingredients": ingr.ingredients as Any, "quantity" : ingr.quantity ?? 1, "type" : ingr.type]
             }
             allIngredients.append(ingredient)
         }
+        
         let total = ingredientsInMeal.map({Int($0.waterData/$0.servingSize!) * $0.quantity!}).reduce(0, +)
         day.setData([mealType + "_total" : total], options: SetOptions.merge())
         day.setData([mealType : allIngredients], options: SetOptions.merge())
         
+        ingredientsInMeal.append(contentsOf: addedIngredients)
         updateRecent()
         resetDisplayedIngredients()
 
@@ -82,44 +84,6 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
             ingr.quantity = 1
         }
     }
-    
-    /*func updateRecent() {
-        // ***
-        // *** Fix added ingredient quantites
-        // ***
-        //addedIngredients = ingredientsInMeal
-        let userRef = db.collection("users").document(defaults.string(forKey: "user_id")!)
-        var pushToDatabase = [[String : Any]]()
-        
-        /* crashes if add is presses but nothing is added with out this if */
-        if (self.addedIngredients.count == 0) {
-            return
-        }
-        
-        if(self.addedIngredients.count == 1){
-            for item in recent {
-                if (item["index"] as? Int == 0){
-                    if let itemRef = item["reference"] as? DocumentReference {
-                        pushToDatabase.append(["index": 1, "reference": itemRef])
-                    } else {
-                        pushToDatabase.append(["index": 1, "image": item["image"], "name": item["name"], "total": item["total"]])
-                    }
-                }
-            }
-        }
-        var index = 0
-        if self.addedIngredients.count > 1 {
-            index = addedIngredients.count-2
-            let ref2 = db.document("water-footprint-data/" + self.addedIngredients[index+1].name.capitalized)
-            pushToDatabase.append(["index": 1, "reference": ref2])
-        }
-        
-        let ref1 = db.document("water-footprint-data/" + self.addedIngredients[index].name.capitalized)
-        pushToDatabase.append(["index": 0, "reference": ref1])
-        pushToDatabase.reverse()
-
-        userRef.setData(["recent" : pushToDatabase], options: SetOptions.merge())
-    }*/
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if(searchText == ""){
@@ -131,22 +95,21 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
     }
     
     func updateRecent() {
-        let userRef = db.collection("users").document(defaults.string(forKey: "user_id")!)
         var pushToDb = [[String : Any]]()
         if (self.ingredientsInMeal.count == 0) {
             return
         } else {
             for ingr in self.ingredientsInMeal {
                 let ref = db.document("water-footprint-data/" + ingr.name.capitalized)
-                recent.insert(["reference": ref, "quantity": ingr.quantity!], at: 0)
-                if (recent.count > 2) { _ = recent.popLast() }
+                if let quantity = ingr.quantity {
+                    recent.insert(["reference": ref, "quantity": quantity, "measure" : ingr.measurement ?? portionPref], at: 0)
+                    if (recent.count > 2) { _ = recent.popLast() }
+                }
             }
         }
         for (i, elem) in recent.enumerated() {
-            pushToDb.insert(["index": i, "reference": elem["reference"]!, "quantity": elem["quantity"]!], at: i)
+            pushToDb.insert(["index": i, "reference": elem["reference"]!, "quantity": elem["quantity"]!, "measure": elem["measure"]], at: i)
         }
         userRef.setData(["recent" : pushToDb], options: SetOptions.merge())
-        print (pushToDb)
     }
-    
 }

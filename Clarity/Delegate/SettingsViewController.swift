@@ -15,7 +15,6 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     let defaults                        = UserDefaults.standard
     let db                              = Firestore.firestore()
     let storage                         = Storage.storage()
-    var userRef                         : DocumentReference!
     
     @IBOutlet weak var logoutButton     : UIButton!
     @IBOutlet weak var userWaterGoal    : UITextField!
@@ -27,13 +26,6 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         swipeToHideKeyboard()
         saveBtn.isHidden = true
         logoutButton.isHidden = true
-        guard let userID = UserDefaults.standard.string(forKey: "user_id") else {
-            print("user ID cannot be found in user defaults")
-            userWaterGoal.text = "0"
-            return
-        }
-        
-        userRef = db.collection("users").document(userID)
         
         userRef.getDocument { (document, error) in
             if let document = document {
@@ -47,16 +39,15 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
                     self.saveBtn.isHidden = false
                     self.logoutButton.isHidden = true
                 }
-                
-                if let portionSettings = document.data()?["portion"] as? String {
-                    if(portionSettings == "Per Ounce"){
-                        self.portionControl.selectedSegmentIndex = 1
-                    }
-                }
             } else {
                 print("This user does not exist in the database")
             }
         }
+        
+        if portionPref == "Per Ounce" {
+            self.portionControl.selectedSegmentIndex = 1
+        }
+        
         let font = UIFont(name: "AvenirNext-Medium", size: 14)!
         portionControl.setTitleTextAttributes([NSAttributedStringKey.font: font],
                                                 for: .normal)

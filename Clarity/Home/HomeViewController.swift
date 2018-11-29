@@ -15,6 +15,7 @@ import CoreGraphics
 let defaults                 = UserDefaults.standard
 let db                       = Firestore.firestore()
 let storage                  = Storage.storage()
+var userRef                  : DocumentReference!
 var day                      : DocumentReference!
 var portionPref              : String!
 var ingredientsFromDatabase  = [Ingredient]()
@@ -86,7 +87,6 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     let databaseDateFormatter = DateFormatter()
     let labelDateFormatter = DateFormatter()
     let dayDateFormatter = DateFormatter()
-    var userRef: DocumentReference!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -145,10 +145,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
                     recent = rawRecent as! [[String : Any]]
                     if let portionSettings = doc.data()?["portion"] as? String {
                         portionPref = portionSettings
-                        self.showRecent(portionSettings: portionSettings)
-                    }else{
-                        portionPref = "Per Serving"
-                        self.showRecent(portionSettings: "Per Serving")
+                        self.showRecent()
                     }
                 } else {
                     self.toggleRecentEmptyState(hideRecent: true, hideLabel: false)
@@ -216,7 +213,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
                     map = ["day": today, "days": 1, "totalDay": total, "totalOverall": total]
                     self.averageLabel.text = String(total) + " gal"
                 }
-                self.userRef.setData(["average" : map], options: SetOptions.merge())
+                userRef.setData(["average" : map], options: SetOptions.merge())
             } else {
                 print("Document does not exist")
             }
@@ -229,7 +226,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         recentEmptyMessage.isHidden = hideLabel
     }
 
-    func showRecent(portionSettings: String) {
+    func showRecent() {
         toggleRecentEmptyState(hideRecent: false, hideLabel: true)
         let names = [recent1Name, recent2Name]
         let totals = [recent1Total, recent2Total]
@@ -244,7 +241,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
                             recentsAsIngredient[i] = ingredient
                             names[i]?.text = ingredient.name.capitalized
                             
-                            if (portionSettings == "Per Ounce") {
+                            if (ingredient.measurement == "Per Ounce") {
                                 totals[i]?.text = String(Int(ingredient.waterData/ingServingSize) * quantity) + " gal"
                                 servingSize[i]?.text = String(quantity) + " oz."
                             } else {

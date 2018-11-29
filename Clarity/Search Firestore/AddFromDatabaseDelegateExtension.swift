@@ -17,15 +17,20 @@ extension AddFromDatabaseViewController {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "addDatabaseIngredientCell") as! addDatabaseIngredientCell
         let food = displayedIngredients[indexPath.row]
-        let amtPerOz = food.waterData / food.servingSize!
         cell.label.text = displayedIngredients[indexPath.row].name.capitalized
-        //cell.gallonsWaterLabel.text = String(Int(food.waterData)) + " gal / " + String(format: "%.2f", food.servingSize!) + " oz"
-        cell.gallonsWaterLabel.text = String(Int(amtPerOz)) + " gallons per ounce"
-        cell.quantityTextField.text = String(food.quantity!) + " oz"
-        //if let category = food.category {
-            //cell.point.backgroundColor = setColor(category: category)
-            //cell.point.layer.cornerRadius = cell.point.bounds.width/2
-        //}
+        
+        if let quantity = food.quantity {
+            if let servingSize = food.servingSize {
+                let amtPerOz = food.waterData / servingSize
+                if (portionPref == "Per Ounce") {
+                    cell.gallonsWaterLabel.text = String(Int(amtPerOz) * quantity) + " gallons per oz."
+                    cell.quantityTextField.text = String(quantity) + " oz"
+                } else {
+                    cell.gallonsWaterLabel.text = String(Int(food.waterData) * quantity) + " gallons per " + String(Int(servingSize)) + " oz."
+                    cell.quantityTextField.text = String(quantity)
+                }
+            }
+        }
         setCellTags(cell: cell, index: indexPath.row)
         setCellTargets(cell: cell)
         return cell
@@ -37,19 +42,13 @@ extension AddFromDatabaseViewController {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath){
         let currentIngredient = displayedIngredients[indexPath.row]
-        print(String(displayedIngredients[indexPath.row].quantity!))
         ingredientsInMeal.append(currentIngredient)
-        addedIngredients.append(currentIngredient)
     }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         let item = displayedIngredients[indexPath.row]
         if let index = ingredientsInMeal.index(where: { $0.name == item.name }) {
             ingredientsInMeal.remove(at: index)
-        }
-        
-        if let index = addedIngredients.index(where: { $0.name == item.name }) {
-            addedIngredients.remove(at: index)
         }
     }
     
@@ -71,8 +70,15 @@ extension AddFromDatabaseViewController {
         let indexPath = IndexPath(item: index, section: 0)
         let cell = tableView.cellForRow(at: indexPath) as! addDatabaseIngredientCell
         if let i = ingredientsInMeal.index(where: { $0.name == name }) {
-            ingredientsInMeal[i].quantity = ingredientsInMeal[i].quantity! + 1
-            cell.count.text = String(ingredientsInMeal[i].quantity!) + " oz"
+            if let quantity = ingredientsInMeal[i].quantity {
+                ingredientsInMeal[i].quantity = quantity + 1
+                
+                if(portionPref == "Per Ounce"){
+                    cell.count.text = String(quantity + 1) + " oz"
+                } else {
+                    cell.count.text = String(quantity + 1)
+                }
+            }
         }
     }
     
@@ -83,8 +89,15 @@ extension AddFromDatabaseViewController {
         let cell = tableView.cellForRow(at: indexPath) as! addDatabaseIngredientCell
         if (displayedIngredients[index].quantity! > 1) {
             if let i = ingredientsInMeal.index(where: { $0.name == name }) {
-                ingredientsInMeal[i].quantity = ingredientsInMeal[i].quantity! - 1
-                cell.count.text = String(ingredientsInMeal[i].quantity!) + " oz"
+                if let quantity = ingredientsInMeal[i].quantity {
+                    ingredientsInMeal[i].quantity = quantity - 1
+                    
+                    if(portionPref == "Per Ounce"){
+                        cell.count.text = String(quantity - 1) + " oz"
+                    } else {
+                        cell.count.text = String(quantity - 1)
+                    }
+                }
             }
         }
     }

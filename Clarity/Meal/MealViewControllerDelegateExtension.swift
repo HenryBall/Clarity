@@ -28,13 +28,14 @@ extension MealViewController {
         if let quantity = food.quantity {
             if let servingSize = food.servingSize {
                 let amtPerOz = food.waterData / servingSize
-                
-                if (portionPref == "Per Ounce") {
-                    cell.gallonsWaterLabel.text = String(Int(amtPerOz) * quantity) + " gal"
-                    cell.gallonsPerServing.text = String(quantity) + " oz"
-                } else {
-                    cell.gallonsWaterLabel.text = String(Int(food.waterData) * quantity) + " gal"
-                    cell.gallonsPerServing.text = String(Int(servingSize)) + " oz"
+                if let foodMeasurement = food.measurement {
+                    if(foodMeasurement == "Per Ounce"){
+                        cell.gallonsWaterLabel.text = String(Int(amtPerOz) * quantity) + " gal"
+                        cell.gallonsPerServing.text = String(quantity) + " oz"
+                    } else {
+                        cell.gallonsWaterLabel.text = String(Int(food.waterData) * quantity) + " gal"
+                        cell.gallonsPerServing.text = String(Int(servingSize)) + " oz"
+                    }
                 }
             }
         }
@@ -90,7 +91,7 @@ extension MealViewController {
                     let ref = db.document("water-footprint-data/" + ing.name.capitalized)
                     map = ["reference" : ref, "quantity" : ing.quantity ?? 1]
                 } else {
-                    map = ["name" : ing.name, "total" : ing.waterData, "ingredients": ing.ingredients as Any, "image": ing.imageName as Any, "quantity" : ing.quantity ?? 1, "type" : ing.type]
+                    map = ["name" : ing.name, "total" : ing.waterData, "ingredients": ing.ingredients as Any, "quantity" : ing.quantity ?? 1, "type" : ing.type]
                 }
                 foodInMeal.append(map)
             }

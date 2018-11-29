@@ -65,7 +65,6 @@ class AddScannedItemViewController: UIViewController, UITableViewDelegate, UITab
     }
     
     func updateRecent(ingredient: Ingredient) {
-        let userRef = db.collection("users").document(defaults.string(forKey: "user_id")!)
         var pushToDatabase = [[String : Any]]()
         
         for item in recent {
@@ -78,7 +77,7 @@ class AddScannedItemViewController: UIViewController, UITableViewDelegate, UITab
             }
         }
         
-        pushToDatabase.append(["index": 0, "image": ingredient.imageName!, "name": ingredient.name, "total": ingredient.waterData])
+        pushToDatabase.append(["index": 0, "name": ingredient.name, "total": ingredient.waterData])
         pushToDatabase.reverse()
         
         userRef.setData(["recent" : pushToDatabase], options: SetOptions.merge())
@@ -100,7 +99,7 @@ class AddScannedItemViewController: UIViewController, UITableViewDelegate, UITab
             let imageName = (refWithMostWater?.category)!
             let matchedWaterTotal = matchedIngredients.map({$0.waterData}).reduce(0, +)
         
-            let ingredient = Ingredient(name: self.itemName.text!, type: "Scanned", waterData: matchedWaterTotal, description: "", servingSize: 1, category: nil, source: "", quantity: 1, ingredients: matched, imageName: imageName)
+            let ingredient = Ingredient(name: self.itemName.text!, type: "Scanned", waterData: matchedWaterTotal, description: "", servingSize: 1, category: nil, source: "", quantity: 1, ingredients: matched, measurement: "oz")
             ingredientsInMeal.append(ingredient)
         
             group.notify(queue: .main) {
@@ -113,7 +112,7 @@ class AddScannedItemViewController: UIViewController, UITableViewDelegate, UITab
                         let ref = db.document("water-footprint-data/" + ing.name.capitalized)
                         map = ["reference" : ref, "quantity" : ing.quantity ?? 1]
                     } else if(ing.type == "Scanned"){
-                        map = ["name" : ing.name, "total" : ing.waterData, "ingredients": matched, "image": ing.imageName as Any, "quantity" : ing.quantity ?? 1, "type" : ing.type]
+                        map = ["name" : ing.name, "total" : ing.waterData, "ingredients": matched, "quantity" : ing.quantity ?? 1, "type" : ing.type]
                     }else{
                         map = ["name" : ing.name, "total" : ing.waterData, "quantity" : ing.quantity ?? 1]
                     }

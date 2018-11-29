@@ -17,7 +17,7 @@ extension HomeViewController {
         dinnerCircle = CirclePath(frame: pathRect)
         snacksCircle = CirclePath(frame: pathRect)
         pieChartTrack = CirclePath(frame: pathRect)
-        pieChartTrack.color = UIColor(red: 213/255, green: 213/255, blue: 213/255, alpha: 1.0).cgColor
+        pieChartTrack.color = UIColor.greys.background.cgColor
         pieChartTrack.width = 5
         pieChartTrack.endAngle = 1.0
         pieChart.addSubview(pieChartTrack)

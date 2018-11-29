@@ -17,7 +17,7 @@ extension HomeViewController {
         homeCircle.transform = CGAffineTransform(rotationAngle: CGFloat(3*CFloat.pi/2))
         homeCircle.roundedLineCap = true
         homeTrack = CirclePath(frame: pathRect)
-        homeTrack.color = UIColor(red: 230/255, green: 230/255, blue: 230/255, alpha: 1).cgColor
+        homeTrack.color = UIColor.greys.background.cgColor
         homeTrack.width = 6
         homeTrack.endAngle = 1.0
         circleView.addSubview(homeTrack)
