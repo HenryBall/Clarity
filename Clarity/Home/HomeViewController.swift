@@ -168,6 +168,9 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
                 self.updateCircle(circle: self.homeCircle, label: self.percentLabel, total: Float(total), limit: Float(self.dailyGoal))
                 self.updatePieChart(breakfast: breakfastTotal, lunch: lunchTotal, dinner: dinnerTotal, snacks: snacksTotal, dailyTotal: total)
                 self.getAverage(total: Int(total))
+            } else {
+                self.limitLabel.text = String(Int(self.dailyGoal)) + " gal"
+                self.getAverage(total: 0)
             }
         }
     }
@@ -237,7 +240,9 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
                             recentsAsIngredient[i] = ingredient
                             names[i]?.text = ingredient.name.capitalized
                             totals[i]?.text = String(Int(ingredient.waterData) * quantity) + " gal"
-                            servingSize[i]?.text = String(quantity * Int(ingServingSize)) + " oz."
+                            //servingSize[i]?.text = String(quantity * Int(ingServingSize)) + " oz."
+                            let str = quantity > 1 ? " servings" : " serving"
+                            servingSize[i]?.text = String(quantity) + str
                         }
                     }
                 }

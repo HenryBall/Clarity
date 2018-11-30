@@ -65,7 +65,7 @@ class IngredientInfoViewController: UIViewController {
             return
         }
         
-        servingSize.text = "serving size: " + String(Int(ingredientServingSize)) + " oz."
+        servingSize.text = "serving size: " + String(Int(ingredientServingSize)) + " oz"
         setPortionPreference(servingSize: ingredientServingSize)
         
         //Source label
@@ -83,8 +83,8 @@ class IngredientInfoViewController: UIViewController {
      - Parameter portion: either "Per Ounce" or "Per Serving", determined by user's preference saved to the database */
     func setPortionPreference(servingSize: Double){
         let galStr = Int(ingredientToShow.waterData) > 1 ? " gallons" : " gallon"
-        let ozStr = Int(servingSize) > 1 ? (" of water per " + String(Int(servingSize)) + " oz.") : " of water per oz."
-        gallonsPerServing.text = String(Int(ingredientToShow.waterData)) + galStr + ozStr
+        //let ozStr = Int(servingSize) > 1 ? (" of water per " + String(Int(servingSize)) + " oz.") : " of water per oz."
+        gallonsPerServing.text = String(Int(ingredientToShow.waterData)) + galStr + " of water per serving"
     }
     
     ///Closes the info view. Triggered by tapping on the background view

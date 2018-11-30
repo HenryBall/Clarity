@@ -21,7 +21,8 @@ extension AddFromDatabaseViewController {
         
         if let quantity = food.quantity {
             if let servingSize = food.servingSize {
-                cell.gallonsWaterLabel.text = String(Int(food.waterData) * quantity) + " gallons per " + String(Int(servingSize)) + " oz."
+                //cell.gallonsWaterLabel.text = String(Int(food.waterData) * quantity) + " gallons per " + String(Int(servingSize)) + " oz"
+                cell.gallonsWaterLabel.text = String(Int(food.waterData) * quantity) + " gallons per serving"
                 cell.quantityTextField.text = String(quantity)
             }
         }
@@ -37,6 +38,7 @@ extension AddFromDatabaseViewController {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath){
         let currentIngredient = displayedIngredients[indexPath.row]
         ingredientsInMeal.append(currentIngredient)
+        print(currentIngredient.quantity!)
     }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {

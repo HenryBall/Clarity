@@ -66,7 +66,7 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
             allIngredients.append(ingredient)
         }
         
-        let total = ingredientsInMeal.map({Int($0.waterData/$0.servingSize!) * $0.quantity!}).reduce(0, +)
+        let total = ingredientsInMeal.map({Int($0.waterData) * $0.quantity!}).reduce(0, +)
         day.setData([mealType + "_total" : total], options: SetOptions.merge())
         day.setData([mealType : allIngredients], options: SetOptions.merge())
         
@@ -80,9 +80,8 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
     }
     
     func resetDisplayedIngredients() {
-        for ingr in displayedIngredients {
-            ingr.quantity = 1
-        }
+        for ingr in displayedIngredients { ingr.quantity = 1 }
+        //for ingr in ingredientsInMeal { ingr.quantity = 1 }
     }
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {

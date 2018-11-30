@@ -11,7 +11,6 @@ import UIKit
 class addDatabaseIngredientCell: UITableViewCell {
     let grayTextColor = UIColor(red: 117/255, green: 117/255, blue: 117/255, alpha: 1)
     let grayBackgroundColor = UIColor(red: 200/255, green: 200/255, blue: 200/255, alpha: 1)
-    let darkTextColor = UIColor(red: 72/255, green: 72/255, blue: 72/255, alpha: 1)
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var count: UITextField!
     @IBOutlet weak var gallonsWaterLabel: UILabel!
@@ -50,10 +49,10 @@ class addDatabaseIngredientCell: UITableViewCell {
     func textToGray() {
         //self.backgroundColor = UIColor.white
         self.shadowView.backgroundColor = UIColor.white
-        self.quantityTextField.textColor = darkTextColor
-        self.label.textColor = darkTextColor
+        self.quantityTextField.textColor = grayTextColor
+        self.label.textColor = grayTextColor
         self.gallonsWaterLabel.textColor = grayTextColor
-        self.addButton.setTitleColor(darkTextColor, for: [])
-        self.subtractButton.setTitleColor(darkTextColor, for: [])
+        self.addButton.setTitleColor(grayTextColor, for: [])
+        self.subtractButton.setTitleColor(grayTextColor, for: [])
     }
 }

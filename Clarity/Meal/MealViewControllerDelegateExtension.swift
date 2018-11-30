@@ -28,7 +28,8 @@ extension MealViewController {
         if let quantity = food.quantity {
             if let servingSize = food.servingSize {
                 cell.gallonsWaterLabel.text = String(Int(food.waterData) * quantity) + " gal"
-                cell.gallonsPerServing.text = String(Int(servingSize) * quantity) + " oz"
+                let str = quantity > 1 ? " servings" : " serving"
+                cell.gallonsPerServing.text = String(Int(quantity)) + str
             }
         }
         
@@ -66,7 +67,7 @@ extension MealViewController {
                     if var currentTotal = document?.data()![self.mealType + "_total"] as? Int {
                         print(currentTotal)
                         print(deletedIngredient.waterData)
-                        currentTotal = currentTotal - (Int(deletedIngredient.waterData/deletedIngredient.servingSize!) * deletedIngredient.quantity!)
+                        currentTotal = currentTotal - (Int(deletedIngredient.waterData) * deletedIngredient.quantity!)
                         self.gallonsInMeal.text = String(Int(currentTotal))
                         self.day.setData([self.self.mealType + "_total" : currentTotal], options: SetOptions.merge())
                     }
