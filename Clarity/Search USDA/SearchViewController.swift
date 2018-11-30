@@ -70,7 +70,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                 
                 let ingredientRefs = self.getMatchedRefsToPush(matchedIngredients: matchedIngredients)
                 
-                let currentIngredient = Ingredient(name: name, type: "USDA", waterData: totalGallons, description: "", servingSize: 1, category: nil, source: "", quantity: quantity, ingredients: ingredientRefs, measurement: "oz")
+                let currentIngredient = Ingredient(name: name, type: "USDA", waterData: totalGallons, description: "", servingSize: 1, category: nil, source: "", quantity: quantity, ingredients: ingredientRefs)
                 self.ingredientsInMeal.append(currentIngredient)
                 self.addedIngredients.append(currentIngredient)
                 

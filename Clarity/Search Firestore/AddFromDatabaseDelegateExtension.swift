@@ -21,14 +21,8 @@ extension AddFromDatabaseViewController {
         
         if let quantity = food.quantity {
             if let servingSize = food.servingSize {
-                let amtPerOz = food.waterData / servingSize
-                if (portionPref == "Per Ounce") {
-                    cell.gallonsWaterLabel.text = String(Int(amtPerOz) * quantity) + " gallons per oz."
-                    cell.quantityTextField.text = String(quantity) + " oz"
-                } else {
-                    cell.gallonsWaterLabel.text = String(Int(food.waterData) * quantity) + " gallons per " + String(Int(servingSize)) + " oz."
-                    cell.quantityTextField.text = String(quantity)
-                }
+                cell.gallonsWaterLabel.text = String(Int(food.waterData) * quantity) + " gallons per " + String(Int(servingSize)) + " oz."
+                cell.quantityTextField.text = String(quantity)
             }
         }
         setCellTags(cell: cell, index: indexPath.row)
@@ -72,12 +66,7 @@ extension AddFromDatabaseViewController {
         if let i = ingredientsInMeal.index(where: { $0.name == name }) {
             if let quantity = ingredientsInMeal[i].quantity {
                 ingredientsInMeal[i].quantity = quantity + 1
-                
-                if(portionPref == "Per Ounce"){
-                    cell.count.text = String(quantity + 1) + " oz"
-                } else {
-                    cell.count.text = String(quantity + 1)
-                }
+                cell.count.text = String(quantity + 1)
             }
         }
     }
@@ -91,12 +80,7 @@ extension AddFromDatabaseViewController {
             if let i = ingredientsInMeal.index(where: { $0.name == name }) {
                 if let quantity = ingredientsInMeal[i].quantity {
                     ingredientsInMeal[i].quantity = quantity - 1
-                    
-                    if(portionPref == "Per Ounce"){
-                        cell.count.text = String(quantity - 1) + " oz"
-                    } else {
-                        cell.count.text = String(quantity - 1)
-                    }
+                    cell.count.text = String(quantity - 1)
                 }
             }
         }

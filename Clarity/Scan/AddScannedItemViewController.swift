@@ -99,7 +99,7 @@ class AddScannedItemViewController: UIViewController, UITableViewDelegate, UITab
             let imageName = (refWithMostWater?.category)!
             let matchedWaterTotal = matchedIngredients.map({$0.waterData}).reduce(0, +)
         
-            let ingredient = Ingredient(name: self.itemName.text!, type: "Scanned", waterData: matchedWaterTotal, description: "", servingSize: 1, category: nil, source: "", quantity: 1, ingredients: matched, measurement: "oz")
+            let ingredient = Ingredient(name: self.itemName.text!, type: "Scanned", waterData: matchedWaterTotal, description: "", servingSize: 1, category: nil, source: "", quantity: 1, ingredients: matched)
             ingredientsInMeal.append(ingredient)
         
             group.notify(queue: .main) {

@@ -19,9 +19,8 @@ class Ingredient {
     var source          : String?
     var quantity        : Int?
     var ingredients     : [DocumentReference]?
-    var measurement     : String?
     
-    init(name: String, type: String, waterData: Double, description: String?, servingSize: Double?, category: String?, source: String?, quantity: Int?, ingredients: [DocumentReference]?, measurement: String?) {
+    init(name: String, type: String, waterData: Double, description: String?, servingSize: Double?, category: String?, source: String?, quantity: Int?, ingredients: [DocumentReference]?) {
         self.name = name
         self.type = type
         self.waterData = waterData
@@ -31,7 +30,6 @@ class Ingredient {
         self.source = source
         self.quantity = quantity
         self.ingredients = ingredients
-        self.measurement = measurement
     }
     
     init(document: DocumentSnapshot){
@@ -43,6 +41,5 @@ class Ingredient {
         self.category = document.data()!["category"] as? String
         self.source = document.data()!["source"] as? String
         self.quantity = 1
-    //    self.measurement = "serving"
     }
 }

@@ -19,8 +19,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var logoutButton     : UIButton!
     @IBOutlet weak var userWaterGoal    : UITextField!
     @IBOutlet weak var backBtn          : UIButton!
-    @IBOutlet weak var portionControl   : UISegmentedControl!
-    @IBOutlet weak var saveBtn: UIButton!
+    @IBOutlet weak var saveBtn          : UIButton!
     
     override func viewWillAppear(_ animated: Bool) {
         swipeToHideKeyboard()
@@ -43,19 +42,11 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
                 print("This user does not exist in the database")
             }
         }
-        
-        if portionPref == "Per Ounce" {
-            self.portionControl.selectedSegmentIndex = 1
-        }
-        
-        let font = UIFont(name: "AvenirNext-Medium", size: 14)!
-        portionControl.setTitleTextAttributes([NSAttributedStringKey.font: font],
-                                                for: .normal)
     }
 
     @IBAction func backBtnPressed(_ sender: Any) {
         if (userWaterGoal.text != "") {
-            userRef.setData(["water_goal": Double(userWaterGoal.text!) as Any, "portion": portionControl.titleForSegment(at: portionControl.selectedSegmentIndex)!], options: SetOptions.merge())
+            userRef.setData(["water_goal": Double(userWaterGoal.text!) as Any], options: SetOptions.merge())
             self.navigationController?.popViewController(animated: true)
         } else {
             let alert = UIAlertController(title: "Oops!", message: "Please enter a water goal", preferredStyle: .alert)
@@ -68,7 +59,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func saveBtnPressed(_ sender: Any) {
         if (userWaterGoal.text != "") {
-            userRef.setData(["water_goal": Double(userWaterGoal.text!) as Any, "portion": portionControl.titleForSegment(at: portionControl.selectedSegmentIndex)!], options: SetOptions.merge())
+            userRef.setData(["water_goal": Double(userWaterGoal.text!) as Any], options: SetOptions.merge())
             self.navigationController?.popViewController(animated: true)
         } else {
             let alert = UIAlertController(title: "Oops!", message: "Please enter a water goal", preferredStyle: .alert)
@@ -109,4 +100,3 @@ extension UIViewController {
         self.view.addGestureRecognizer(swipeDown)
     }
 }
-

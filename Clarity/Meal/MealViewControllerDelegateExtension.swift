@@ -27,16 +27,8 @@ extension MealViewController {
         
         if let quantity = food.quantity {
             if let servingSize = food.servingSize {
-                let amtPerOz = food.waterData / servingSize
-                if let foodMeasurement = food.measurement {
-                    if(foodMeasurement == "Per Ounce"){
-                        cell.gallonsWaterLabel.text = String(Int(amtPerOz) * quantity) + " gal"
-                        cell.gallonsPerServing.text = String(quantity) + " oz"
-                    } else {
-                        cell.gallonsWaterLabel.text = String(Int(food.waterData) * quantity) + " gal"
-                        cell.gallonsPerServing.text = String(Int(servingSize)) + " oz"
-                    }
-                }
+                cell.gallonsWaterLabel.text = String(Int(food.waterData) * quantity) + " gal"
+                cell.gallonsPerServing.text = String(Int(servingSize) * quantity) + " oz"
             }
         }
         

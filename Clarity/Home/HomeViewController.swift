@@ -17,7 +17,6 @@ let db                       = Firestore.firestore()
 let storage                  = Storage.storage()
 var userRef                  : DocumentReference!
 var day                      : DocumentReference!
-var portionPref              : String!
 var ingredientsFromDatabase  = [Ingredient]()
 var proteins                 = [Ingredient]()
 var fruits                   = [Ingredient]()
@@ -143,10 +142,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
                 self.dailyGoal = doc.data()!["water_goal"] as? Double
                 if let rawRecent = doc.get("recent"){
                     recent = rawRecent as! [[String : Any]]
-                    if let portionSettings = doc.data()?["portion"] as? String {
-                        portionPref = portionSettings
-                        self.showRecent()
-                    }
+                    self.showRecent()
                 } else {
                     self.toggleRecentEmptyState(hideRecent: true, hideLabel: false)
                 }
@@ -240,14 +236,8 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
                         if let ingServingSize = ingredient.servingSize {
                             recentsAsIngredient[i] = ingredient
                             names[i]?.text = ingredient.name.capitalized
-                            
-                            if (ingredient.measurement == "Per Ounce") {
-                                totals[i]?.text = String(Int(ingredient.waterData/ingServingSize) * quantity) + " gal"
-                                servingSize[i]?.text = String(quantity) + " oz."
-                            } else {
-                                totals[i]?.text = String(Int(ingredient.waterData) * quantity) + " gal"
-                                servingSize[i]?.text = String(quantity * Int(ingServingSize)) + " oz."
-                            }
+                            totals[i]?.text = String(Int(ingredient.waterData) * quantity) + " gal"
+                            servingSize[i]?.text = String(quantity * Int(ingServingSize)) + " oz."
                         }
                     }
                 }

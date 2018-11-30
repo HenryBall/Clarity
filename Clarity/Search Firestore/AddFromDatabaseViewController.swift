@@ -59,7 +59,7 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
         for ingr in ingredientsInMeal {
             if(ingr.type == "Database"){
                 let ref = db.document("water-footprint-data/" + ingr.name.capitalized)
-                ingredient = ["reference" : ref, "quantity" : ingr.quantity ?? 1, "measure" : ingr.measurement ?? portionPref as Any]
+                ingredient = ["reference" : ref, "quantity" : ingr.quantity ?? 1]
             } else {
                 ingredient = ["name" : ingr.name, "total" : ingr.waterData, "ingredients": ingr.ingredients as Any, "quantity" : ingr.quantity ?? 1, "type" : ingr.type]
             }
@@ -102,13 +102,13 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
             for ingr in self.ingredientsInMeal {
                 let ref = db.document("water-footprint-data/" + ingr.name.capitalized)
                 if let quantity = ingr.quantity {
-                    recent.insert(["reference": ref, "quantity": quantity, "measure" : ingr.measurement ?? portionPref], at: 0)
+                    recent.insert(["reference": ref, "quantity": quantity], at: 0)
                     if (recent.count > 2) { _ = recent.popLast() }
                 }
             }
         }
         for (i, elem) in recent.enumerated() {
-            pushToDb.insert(["index": i, "reference": elem["reference"]!, "quantity": elem["quantity"]!, "measure": elem["measure"]], at: i)
+            pushToDb.insert(["index": i, "reference": elem["reference"]!, "quantity": elem["quantity"]!], at: i)
         }
         userRef.setData(["recent" : pushToDb], options: SetOptions.merge())
     }
