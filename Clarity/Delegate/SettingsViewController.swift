@@ -21,11 +21,12 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var backBtn          : UIButton!
     @IBOutlet weak var saveBtn          : UIButton!
     
-    override func viewWillAppear(_ animated: Bool) {
-        swipeToHideKeyboard()
-        saveBtn.isHidden = true
-        logoutButton.isHidden = true
-        
+    override func viewDidLoad() {
+        guard let userID = UserDefaults.standard.string(forKey: "user_id") else {
+            print("user ID cannot be found in user defaults")
+            return
+        }
+        userRef = db.collection("users").document(userID)
         userRef.getDocument { (document, error) in
             if let document = document {
                 if let waterGoal = document.data()?["water_goal"] {
@@ -42,6 +43,12 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
                 print("This user does not exist in the database")
             }
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        swipeToHideKeyboard()
+        saveBtn.isHidden = true
+        logoutButton.isHidden = true
     }
 
     @IBAction func backBtnPressed(_ sender: Any) {

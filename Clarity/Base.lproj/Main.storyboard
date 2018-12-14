@@ -283,15 +283,29 @@
                                             <action selector="logoutButtunPressed:" destination="ac9-59-wJ6" eventType="touchUpInside" id="Sb1-qN-32o"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Efh-rx-70A">
+                                        <rect key="frame" x="0.0" y="15" width="345" height="34"/>
+                                        <fontDescription key="fontDescription" name="AvenirNext-Bold" family="Avenir Next" pointSize="16"/>
+                                        <state key="normal" title="Save">
+                                            <color key="titleColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="saveBtnPressed:" destination="ac9-59-wJ6" eventType="touchUpInside" id="VQd-my-GOq"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
+                                    <constraint firstItem="Efh-rx-70A" firstAttribute="leading" secondItem="KKe-L8-6ZN" secondAttribute="leading" id="5Sa-VD-1qU"/>
                                     <constraint firstItem="epZ-u6-cA0" firstAttribute="centerX" secondItem="KKe-L8-6ZN" secondAttribute="centerX" id="KWo-yz-tVm"/>
                                     <constraint firstItem="epZ-u6-cA0" firstAttribute="top" secondItem="KKe-L8-6ZN" secondAttribute="top" constant="15" id="PFV-LT-3lP"/>
                                     <constraint firstItem="epZ-u6-cA0" firstAttribute="leading" secondItem="KKe-L8-6ZN" secondAttribute="leading" id="WuX-GN-YK4"/>
+                                    <constraint firstItem="Efh-rx-70A" firstAttribute="top" secondItem="KKe-L8-6ZN" secondAttribute="top" constant="15" id="b2I-2H-nB5"/>
                                     <constraint firstAttribute="trailing" secondItem="epZ-u6-cA0" secondAttribute="trailing" id="bOr-rx-2d4"/>
                                     <constraint firstAttribute="height" constant="64" id="e4C-do-IGh"/>
                                     <constraint firstAttribute="bottom" secondItem="epZ-u6-cA0" secondAttribute="bottom" constant="15" id="eMW-Yg-cFq"/>
+                                    <constraint firstAttribute="bottom" secondItem="Efh-rx-70A" secondAttribute="bottom" constant="15" id="r8z-BY-PzY"/>
+                                    <constraint firstAttribute="trailing" secondItem="Efh-rx-70A" secondAttribute="trailing" id="uHL-ta-gUF"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -322,6 +336,7 @@
                     <connections>
                         <outlet property="backBtn" destination="lDy-u5-xfh" id="sk1-Ek-FtH"/>
                         <outlet property="logoutButton" destination="epZ-u6-cA0" id="R7H-uN-37t"/>
+                        <outlet property="saveBtn" destination="Efh-rx-70A" id="wZh-Wd-Ens"/>
                         <outlet property="userWaterGoal" destination="2bp-V0-rh8" id="qip-6R-aif"/>
                     </connections>
                 </viewController>
