@@ -37,6 +37,7 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
         tableView.keyboardDismissMode = .onDrag
         setBannerImage(mealType: mealType, imageView: bannerImage, label: mealLabel)
         resetDisplayedIngredients()
+        print(ingredientsInMeal)
     }
     
     /**
@@ -56,18 +57,21 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
         var allIngredients = [[String : Any]]()
         var ingredient = [String : Any]()
         
-        for ingr in ingredientsInMeal {
-            if(ingr.type == "Database"){
-                let ref = db.document("water-footprint-data/" + ingr.name.capitalized)
-                ingredient = ["reference" : ref, "quantity" : ingr.quantity ?? 1]
-            } else {
-                ingredient = ["name" : ingr.name, "total" : ingr.waterData, "ingredients": ingr.ingredients as Any, "quantity" : ingr.quantity ?? 1, "type" : ingr.type]
-            }
+        for ingr in addedIngredients {
+            let ref = db.document("water-footprint-data/" + ingr.name.capitalized)
+            ingredient = ["reference" : ref, "quantity" : ingr.quantity ?? 1]
             allIngredients.append(ingredient)
         }
         
-        let total = ingredientsInMeal.map({Int($0.waterData) * $0.quantity!}).reduce(0, +)
-        day.setData([mealType + "_total" : total], options: SetOptions.merge())
+        for ingr in ingredientsInMeal {
+            let ref = db.document("water-footprint-data/" + ingr.name.capitalized)
+            ingredient = ["reference" : ref, "quantity" : ingr.quantity ?? 1]
+            allIngredients.append(ingredient)
+        }
+        
+        let mealTotal = ingredientsInMeal.map({Int($0.waterData) * $0.quantity!}).reduce(0, +)
+        let addedTotal = addedIngredients.map({Int($0.waterData) * $0.quantity!}).reduce(0, +)
+        day.setData([mealType + "_total" : mealTotal+addedTotal], options: SetOptions.merge())
         day.setData([mealType : allIngredients], options: SetOptions.merge())
         
         ingredientsInMeal.append(contentsOf: addedIngredients)
@@ -95,10 +99,10 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
     
     func updateRecent() {
         var pushToDb = [[String : Any]]()
-        if (self.ingredientsInMeal.count == 0) {
+        if (self.addedIngredients.count == 0) {
             return
         } else {
-            for ingr in self.ingredientsInMeal {
+            for ingr in self.addedIngredients {
                 let ref = db.document("water-footprint-data/" + ingr.name.capitalized)
                 if let quantity = ingr.quantity {
                     recent.insert(["reference": ref, "quantity": quantity], at: 0)

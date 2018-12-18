@@ -28,15 +28,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         //_ = s.instantiateViewController(withIdentifier: "OnBoardingViewController") as! OnBoardingViewController
         let navigationController: UINavigationController = s.instantiateInitialViewController() as! UINavigationController
         UIApplication.shared.statusBarStyle = .lightContent
-        if (!GIDSignIn.sharedInstance().hasAuthInKeychain()){
-            navigationController.viewControllers = [loginViewController]
-        } else {
-            navigationController.viewControllers = [homeViewController]
-            //navigationController.viewControllers = [onBoarding]
+        
+        if let userID = UserDefaults.standard.string(forKey: "user_id") {
+            userRef = db.collection("users").document(userID)
+            userRef.getDocument { (doc, error) in
+                if let doc = doc, doc.exists {
+                    if (doc.data()!["water_goal"] as? Double) != nil {
+                        if (!GIDSignIn.sharedInstance().hasAuthInKeychain()){
+                            navigationController.viewControllers = [homeViewController]
+                        }
+                    } else {
+                        navigationController.viewControllers = [loginViewController]
+                    }
+                }
+            }
         }
         self.window.rootViewController = navigationController
         self.window.makeKeyAndVisible()
-        
         let navigationBarAppearace = UINavigationBar.appearance()
         navigationBarAppearace.tintColor = UIColor(red: 75/255, green: 150/255, blue: 255/255, alpha: 216/255)
         navigationBarAppearace.barTintColor = UIColor(red: 75/255, green: 150/255, blue: 255/255, alpha: 216/255)
