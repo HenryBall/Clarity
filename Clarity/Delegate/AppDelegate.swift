@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import GoogleSignIn
+import FBSDKLoginKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
@@ -16,10 +17,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
     let s = UIStoryboard(name: "Main", bundle: nil)
     let window = UIWindow(frame: UIScreen.main.bounds)
     
-    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        //Use Firebase library to configure APIs
         FirebaseApp.configure()
+        
         GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
         GIDSignIn.sharedInstance().delegate = self
         
@@ -49,15 +51,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         navigationBarAppearace.tintColor = UIColor(red: 75/255, green: 150/255, blue: 255/255, alpha: 216/255)
         navigationBarAppearace.barTintColor = UIColor(red: 75/255, green: 150/255, blue: 255/255, alpha: 216/255)
         
-        return true
+//        let appId: String = SDKSettings.appId
+//        if url.scheme != nil && url.scheme!.hasPrefix("fb\(appId)") && url.host ==  "authorize" {
+//            return SDKApplicationDelegate.shared.application(app, open: url, options: options)
+//
+        return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
     }
     
     @available(iOS 9.0, *)
     func application(_ application: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any])
         -> Bool {
+            let sourceApplication = options[UIApplicationOpenURLOptionsKey.sourceApplication] as? String
+            let annotation = options[UIApplicationOpenURLOptionsKey.annotation]
             
-            return GIDSignIn.sharedInstance().handle(url,
-                                                     sourceApplication:options[UIApplicationOpenURLOptionsKey.sourceApplication] as? String, annotation: [:])
+            let googleHandler = GIDSignIn.sharedInstance().handle(
+                url,
+                sourceApplication: sourceApplication,
+                annotation: [:] )
+            
+            let facebookHandler = FBSDKApplicationDelegate.sharedInstance().application (
+                application,
+                open: url,
+                sourceApplication: sourceApplication,
+                annotation: annotation )
+            
+            return googleHandler || facebookHandler
     }
     
     func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {

@@ -14,6 +14,7 @@ pod 'SDWebImage', '~> 4.0'
 pod 'FirebaseUI/Storage', '~> 4.0'
 pod 'GoogleSignIn'
 pod 'Firebase/Auth'
+pod 'FBSDKLoginKit'
 
 target 'ClarityTests' do
 inherit! :search_paths

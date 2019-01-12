@@ -117,6 +117,10 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        guard let userID = UserDefaults.standard.string(forKey: "user_id") else {
+            print("user ID cannot be found in user defaults")
+            return
+        }
         loadData()
     }
     

@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="bUs-0D-f2x">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="bUs-0D-f2x">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
-        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -62,14 +58,28 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Clarity" translatesAutoresizingMaskIntoConstraints="NO" id="oaC-me-7yt">
                                 <rect key="frame" x="94" y="243.5" width="187.5" height="180"/>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C00-FB-l1l" customClass="FBSDKLoginButton">
+                                <rect key="frame" x="62.5" y="463.5" width="250" height="56"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                <state key="normal" title="Login with Facebook">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="loginWithFacebook:" destination="Nmx-cJ-Cvc" eventType="touchUpInside" id="P58-9U-It4"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.51764705879999995" green="0.85882352939999995" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="tintColor" red="0.60392156860000001" green="0.88235294119999996" blue="0.94509803920000002" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="KcM-mf-e6x" firstAttribute="bottom" secondItem="Fnb-1S-5Aj" secondAttribute="bottom" constant="40" id="3kZ-rR-v7X"/>
+                            <constraint firstItem="ike-5x-tpu" firstAttribute="top" secondItem="C00-FB-l1l" secondAttribute="bottom" constant="20" id="6fR-Fk-p9d"/>
                             <constraint firstItem="Fnb-1S-5Aj" firstAttribute="top" secondItem="ike-5x-tpu" secondAttribute="bottom" constant="12" id="IQT-DF-ZU6"/>
                             <constraint firstItem="ike-5x-tpu" firstAttribute="centerX" secondItem="Ciu-zF-Ma5" secondAttribute="centerX" id="Ma2-Z3-XiU"/>
+                            <constraint firstItem="C00-FB-l1l" firstAttribute="leading" secondItem="ike-5x-tpu" secondAttribute="leading" id="XmZ-kz-kyA"/>
+                            <constraint firstItem="C00-FB-l1l" firstAttribute="width" secondItem="ike-5x-tpu" secondAttribute="width" id="bRz-KM-ijD"/>
                             <constraint firstItem="oaC-me-7yt" firstAttribute="centerY" secondItem="Ciu-zF-Ma5" secondAttribute="centerY" id="bnp-oZ-1HB"/>
+                            <constraint firstItem="C00-FB-l1l" firstAttribute="height" secondItem="ike-5x-tpu" secondAttribute="height" id="fbr-Wd-3kg"/>
                             <constraint firstItem="Fnb-1S-5Aj" firstAttribute="centerX" secondItem="Ciu-zF-Ma5" secondAttribute="centerX" id="gnU-PS-wSE"/>
                             <constraint firstItem="oaC-me-7yt" firstAttribute="width" secondItem="Ciu-zF-Ma5" secondAttribute="width" multiplier="1:2" id="vP1-3f-bAa"/>
                             <constraint firstItem="oaC-me-7yt" firstAttribute="centerX" secondItem="Ciu-zF-Ma5" secondAttribute="centerX" id="zUc-Mk-GsY"/>
@@ -79,6 +89,7 @@
                     <navigationItem key="navigationItem" id="kxM-2W-alK"/>
                     <connections>
                         <outlet property="GoogleSignInButton" destination="ike-5x-tpu" id="OIr-Vv-J3A"/>
+                        <outlet property="fbLoginButton" destination="C00-FB-l1l" id="Jy2-2D-Qui"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Arf-6E-t6t" userLabel="First Responder" sceneMemberID="firstResponder"/>
