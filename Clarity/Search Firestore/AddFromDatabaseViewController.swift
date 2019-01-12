@@ -36,6 +36,8 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
         self.tableView.dataSource = self
         tableView.keyboardDismissMode = .onDrag
         setBannerImage(mealType: mealType, imageView: bannerImage, label: mealLabel)
+        resetDisplayedIngredients()
+        print(ingredientsInMeal)
     }
     
     /**
@@ -43,6 +45,7 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
      - Parameter sender: "<" back button
     */
     @IBAction func backTapped(_ sender: UIButton) {
+        resetDisplayedIngredients()
         self.navigationController?.popViewController(animated: true)
     }
     
@@ -54,53 +57,35 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
         var allIngredients = [[String : Any]]()
         var ingredient = [String : Any]()
         
-        for ingr in ingredientsInMeal {
-            if(ingr.type == "Database"){
-                let ref = db.document("water-footprint-data/" + ingr.name.capitalized)
-                ingredient = ["reference" : ref, "quantity" : ingr.quantity ?? 1]
-            } else {
-                ingredient = ["name" : ingr.name, "total" : ingr.waterData, "ingredients": ingr.ingredients as Any, "image": ingr.imageName as Any, "quantity" : ingr.quantity ?? 1, "type" : ingr.type]
-            }
+        for ingr in addedIngredients {
+            let ref = db.document("water-footprint-data/" + ingr.name.capitalized)
+            ingredient = ["reference" : ref, "quantity" : ingr.quantity ?? 1]
             allIngredients.append(ingredient)
         }
-        let total = ingredientsInMeal.map({$0.waterData * Double($0.quantity!)}).reduce(0, +)
-        day.setData([mealType + "_total" : total], options: SetOptions.merge())
+        
+        for ingr in ingredientsInMeal {
+            let ref = db.document("water-footprint-data/" + ingr.name.capitalized)
+            ingredient = ["reference" : ref, "quantity" : ingr.quantity ?? 1]
+            allIngredients.append(ingredient)
+        }
+        
+        let mealTotal = ingredientsInMeal.map({Int($0.waterData) * $0.quantity!}).reduce(0, +)
+        let addedTotal = addedIngredients.map({Int($0.waterData) * $0.quantity!}).reduce(0, +)
+        day.setData([mealType + "_total" : mealTotal+addedTotal], options: SetOptions.merge())
         day.setData([mealType : allIngredients], options: SetOptions.merge())
         
+        ingredientsInMeal.append(contentsOf: addedIngredients)
         updateRecent()
+        resetDisplayedIngredients()
 
         if let destination = self.navigationController?.viewControllers[1] {
             self.navigationController?.popToViewController(destination, animated: true)
         }
     }
     
-    func updateRecent() {
-        let userRef = db.collection("users").document(defaults.string(forKey: "user_id")!)
-        var pushToDatabase = [[String : Any]]()
-        
-        if(self.addedIngredients.count == 1){
-            for item in recent {
-                if (item["index"] as? Int == 0){
-                    if let itemRef = item["reference"] as? DocumentReference {
-                        pushToDatabase.append(["index": 1, "reference": itemRef])
-                    } else {
-                        pushToDatabase.append(["index": 1, "image": item["image"], "name": item["name"], "total": item["total"]])
-                    }
-                }
-            }
-        }
-        var index = 0
-        if self.addedIngredients.count > 1 {
-            index = addedIngredients.count-2
-            let ref2 = db.document("water-footprint-data/" + self.addedIngredients[index+1].name.capitalized)
-            pushToDatabase.append(["index": 1, "reference": ref2])
-        }
-        
-        let ref1 = db.document("water-footprint-data/" + self.addedIngredients[index].name.capitalized)
-        pushToDatabase.append(["index": 0, "reference": ref1])
-        pushToDatabase.reverse()
-
-        userRef.setData(["recent" : pushToDatabase], options: SetOptions.merge())
+    func resetDisplayedIngredients() {
+        for ingr in displayedIngredients { ingr.quantity = 1 }
+        //for ingr in ingredientsInMeal { ingr.quantity = 1 }
     }
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -110,5 +95,24 @@ class AddFromDatabaseViewController: UIViewController, UITableViewDelegate, UITa
             displayedIngredients = ingredientsFromDatabase.filter({$0.name.lowercased().contains(searchText.lowercased())})
         }
         self.tableView.reloadData()
+    }
+    
+    func updateRecent() {
+        var pushToDb = [[String : Any]]()
+        if (self.addedIngredients.count == 0) {
+            return
+        } else {
+            for ingr in self.addedIngredients {
+                let ref = db.document("water-footprint-data/" + ingr.name.capitalized)
+                if let quantity = ingr.quantity {
+                    recent.insert(["reference": ref, "quantity": quantity], at: 0)
+                    if (recent.count > 2) { _ = recent.popLast() }
+                }
+            }
+        }
+        for (i, elem) in recent.enumerated() {
+            pushToDb.insert(["index": i, "reference": elem["reference"]!, "quantity": elem["quantity"]!], at: i)
+        }
+        userRef.setData(["recent" : pushToDb], options: SetOptions.merge())
     }
 }

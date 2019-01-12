@@ -21,17 +21,17 @@
 		<key>BoringSSL.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>18</integer>
+			<integer>1</integer>
 		</dict>
 		<key>Charts.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>19</integer>
+			<integer>3</integer>
 		</dict>
 		<key>ChartsRealm.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>20</integer>
+			<integer>5</integer>
 		</dict>
 		<key>GTMOAuth2.xcscheme</key>
 		<dict>

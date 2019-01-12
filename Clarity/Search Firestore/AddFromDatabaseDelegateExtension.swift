@@ -17,11 +17,14 @@ extension AddFromDatabaseViewController {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "addDatabaseIngredientCell") as! addDatabaseIngredientCell
         let food = displayedIngredients[indexPath.row]
-        
         cell.label.text = displayedIngredients[indexPath.row].name.capitalized
-        cell.gallonsWaterLabel.text = String(Int(food.waterData)) + " gal / " + String(format: "%.2f", food.servingSize!) + " oz"
-        if let category = displayedIngredients[indexPath.row].category {
-            cell.icon.image = UIImage(named: category)
+        
+        if let quantity = food.quantity {
+            if let servingSize = food.servingSize {
+                //cell.gallonsWaterLabel.text = String(Int(food.waterData) * quantity) + " gallons per " + String(Int(servingSize)) + " oz"
+                cell.gallonsWaterLabel.text = String(Int(food.waterData) * quantity) + " gallons per serving"
+                cell.quantityTextField.text = String(quantity)
+            }
         }
         setCellTags(cell: cell, index: indexPath.row)
         setCellTargets(cell: cell)
@@ -33,27 +36,19 @@ extension AddFromDatabaseViewController {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath){
-        let cell = tableView.cellForRow(at: indexPath) as! addDatabaseIngredientCell
         let currentIngredient = displayedIngredients[indexPath.row]
-        let quantity = Int(cell.quantityTextField.text!)
-        currentIngredient.quantity = quantity
-        ingredientsInMeal.append(currentIngredient)
         addedIngredients.append(currentIngredient)
+        print(currentIngredient.quantity!)
     }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         let item = displayedIngredients[indexPath.row]
-        if let index = ingredientsInMeal.index(where: { $0.name == item.name }) {
-            ingredientsInMeal.remove(at: index)
-        }
-        
         if let index = addedIngredients.index(where: { $0.name == item.name }) {
             addedIngredients.remove(at: index)
         }
     }
     
     func setCellTargets(cell: addDatabaseIngredientCell) {
-        cell.count.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         cell.addButton.addTarget(self, action: #selector(addTapped(_:)), for: .touchUpInside)
         cell.subtractButton.addTarget(self, action: #selector(subTapped(_:)), for: .touchUpInside)
     }
@@ -64,23 +59,18 @@ extension AddFromDatabaseViewController {
         cell.subtractButton.tag = index
     }
     
-    @objc func textFieldDidChange(_ textField: UITextField) {
-        let index = textField.tag
-        let name = displayedIngredients[index].name
-        if let i = ingredientsInMeal.index(where: { $0.name == name }) {
-            ingredientsInMeal[i].quantity = Int(textField.text!)
-        }
-    }
-    
     @objc func addTapped(_ sender: UIButton){
         let index = sender.tag
         let name = displayedIngredients[index].name
+        print("add tapped on cell " + String(index) + " with name " + name)
         let indexPath = IndexPath(item: index, section: 0)
         let cell = tableView.cellForRow(at: indexPath) as! addDatabaseIngredientCell
-        if let i = ingredientsInMeal.index(where: { $0.name == name }) {
-            ingredientsInMeal[i].quantity = ingredientsInMeal[i].quantity! + 1
-            cell.count.text = String(ingredientsInMeal[i].quantity!)
-        } 
+        if let i = addedIngredients.index(where: { $0.name == name }) {
+            if let quantity = addedIngredients[i].quantity {
+                addedIngredients[i].quantity = quantity + 1
+                cell.count.text = String(quantity + 1)
+            }
+        }
     }
     
     @objc func subTapped(_ sender: UIButton){
@@ -88,10 +78,12 @@ extension AddFromDatabaseViewController {
         let name = displayedIngredients[index].name
         let indexPath = IndexPath(item: index, section: 0)
         let cell = tableView.cellForRow(at: indexPath) as! addDatabaseIngredientCell
-        if let i = ingredientsInMeal.index(where: { $0.name == name }) {
-            if (ingredientsInMeal[i].quantity! > 1) {
-                ingredientsInMeal[i].quantity = ingredientsInMeal[i].quantity! - 1
-                cell.count.text = String(ingredientsInMeal[i].quantity!)
+        if (displayedIngredients[index].quantity! > 1) {
+            if let i = addedIngredients.index(where: { $0.name == name }) {
+                if let quantity = addedIngredients[i].quantity {
+                    addedIngredients[i].quantity = quantity - 1
+                    cell.count.text = String(quantity - 1)
+                }
             }
         }
     }
