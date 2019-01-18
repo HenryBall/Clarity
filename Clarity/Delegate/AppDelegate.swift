@@ -3,7 +3,7 @@
 //  Clarity
 //
 //  Created by Robert on 5/14/18.
-//  Copyright © 2018 Robert. All rights reserved.
+//  Copyright © 2018 Clarity. All rights reserved.
 //
 
 import UIKit
@@ -25,7 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         
         let homeViewController = s.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
         let loginViewController = s.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
-        //_ = s.instantiateViewController(withIdentifier: "OnBoardingViewController") as! OnBoardingViewController
+      
         let navigationController: UINavigationController = s.instantiateInitialViewController() as! UINavigationController
         UIApplication.shared.statusBarStyle = .lightContent
         
@@ -82,24 +82,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
             
             let db = Firestore.firestore()
             let document = db.collection("users").document(GIDSignIn.sharedInstance().currentUser.userID)
-            document.setData(["logged-in": true], options: SetOptions.merge())
+            document.setData(["email": user?.email, "name": user?.displayName], options: SetOptions.merge())
             UserDefaults.standard.set(GIDSignIn.sharedInstance().currentUser.userID, forKey: "user_id")
+            
             document.getDocument { (document, error) in
                 if let document = document, document.exists {
-                    let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
-                    if(document.data()?.count == 1){
-                        let destination = self.s.instantiateViewController(withIdentifier: "SettingsViewController") as! SettingsViewController
-                        let home = self.s.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
+                    let homeVC = self.s.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
+                    let settingsVC = self.s.instantiateViewController(withIdentifier: "SettingsViewController") as! SettingsViewController
+                    
+                    //Check if the user has a water limit saved. If so, just show homeVC, if not, show settings
+                    if (document.data()?["water_goal"]) != nil {
                         let nv = self.window.rootViewController as! UINavigationController
-                        nv.viewControllers = [home, destination]
+                        nv.viewControllers = [homeVC]
                     } else {
-                        let destination = self.s.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
                         let nv = self.window.rootViewController as! UINavigationController
-                        nv.viewControllers = [destination]
+                        nv.viewControllers = [homeVC, settingsVC]
                     }
-                    
+                    let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
                     print("Document data: \(dataDescription) \(String(describing: document.data()?.count))")
-                    
                 } else {
                     print("Document does not exist")
                 }

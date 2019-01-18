@@ -10,12 +10,15 @@ import UIKit
 import Firebase
 import GoogleSignIn
 
-class LoginViewController: UIViewController, GIDSignInUIDelegate {
+class LoginViewController: UIViewController, GIDSignInUIDelegate, UIScrollViewDelegate {
     
     @IBOutlet weak var GoogleSignInButton: UIButton!
-
+    @IBOutlet weak var pageControl: UIPageControl!
+    @IBOutlet weak var scrollView: UIScrollView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        scrollView.delegate = self
         self.navigationController?.isNavigationBarHidden = true
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(sender:)))
         GoogleSignInButton.addGestureRecognizer(tap)
@@ -27,4 +30,9 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate {
         GIDSignIn.sharedInstance().signIn()
     }
 
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        
+        let pageNumber = round(scrollView.contentOffset.x / scrollView.frame.size.width)
+        pageControl.currentPage = Int(pageNumber)
+    }
 }
