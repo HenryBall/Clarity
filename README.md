@@ -11,3 +11,8 @@ While we are told to shorten our showers and turn off the faucets while brushing
 So, how do we make a more meaningful effort toward water sustainability? We need to look at the food we eat!
 <br>
 To make this data easy and accessible, we've developed Clarity. By allowing users to keep track of their personal water footprint, we hope to encourage a more sustainable diet.
+
+## How it works
+
+## Download for iOS
+[Available on the App Store now](https://itunes.apple.com/us/app/clarity-become-water-wise/id1447307471?mt=8)
