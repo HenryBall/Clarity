@@ -15,21 +15,21 @@ To make this data easy and accessible, we've developed Clarity. By allowing user
 ## How it works
  <p align="center"> 
   <img src="/Screenshots/Home.PNG" alt="Image" width="281" height="500" />
+ <img src="/Screenshots/Home2.PNG" alt="Image" width="281" height="500" />
  </p>
  
 When the user opens the app, they are presented with a screen that allows them to see multiple points of data at once
 * The percent of their daily limit they have eaten so far
 * How many gallons left until their daily limit
 * Their average daily limit
-* Two most recent items entered <br>
-This provides a good overall view while the button in the top right allows users to enter a new item
+* Two most recent items entered <br> 
 
-<p align="center"> 
-  <img src="/Screenshots/Home2.PNG" alt="Image" width="281" height="500" />
- </p>
 Scrolling on the daily limit section reveals a breakdown of the user's water usage per meal. This allows users to see which meals are particularly water consumptive and focus on making changes there first.
 
-![Meal](/Screenshots/Meal.PNG) ![Details](/Screenshots/Details.PNG) <br>
+ <p align="center"> 
+  <img src="/Screenshots/Meal.PNG" alt="Image" width="281" height="500" />
+ <img src="/Screenshots/Details.PNG" alt="Image" width="281" height="500" />
+ </p>
 When the user selects a specific meal, they are able to see both the total water usage for that meal and the water footprint of each ingredient. Selecting an item brings up the details page which provides 4 main points of data: <br>
 * An overall rating for the item (good/fair/bad)
 * How this item compares to other items in the same category
