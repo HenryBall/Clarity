@@ -30,6 +30,7 @@ Scrolling on the daily limit section reveals a breakdown of the user's water usa
   <img src="/Screenshots/Meal.PNG" alt="Image" width="281" height="500" />
  <img src="/Screenshots/Details.PNG" alt="Image" width="281" height="500" />
  </p>
+ 
 When the user selects a specific meal, they are able to see both the total water usage for that meal and the water footprint of each ingredient. Selecting an item brings up the details page which provides 4 main points of data: <br>
 * An overall rating for the item (good/fair/bad)
 * How this item compares to other items in the same category
