@@ -13,6 +13,6 @@ So, how do we make a more meaningful effort toward water sustainability? We need
 To make this data easy and accessible, we've developed Clarity. By allowing users to keep track of their personal water footprint, we hope to encourage a more sustainable diet.
 
 ## How it works
-![image](Clarity/Screenshots/IMG_7632.PNG)
+![image](/Screenshots/Home.PNG)
 ## Download for iOS
 [Available on the App Store now](https://itunes.apple.com/us/app/clarity-become-water-wise/id1447307471?mt=8)
