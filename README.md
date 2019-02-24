@@ -10,9 +10,29 @@ While we are told to shorten our showers and turn off the faucets while brushing
 <br> <br>
 So, how do we make a more meaningful effort toward water sustainability? We need to look at the food we eat!
 <br>
-To make this data easy and accessible, we've developed Clarity. By allowing users to keep track of their personal water footprint, we hope to encourage a more sustainable diet.
+To make this data easy and accessible, we've developed Clarity. By allowing users to keep track of their personal water footprint, we hope to encourage users to make changes toward a more sustainable diet.
 
 ## How it works
-![image](/Screenshots/Home.PNG)
+![Home](/Screenshots/Home.PNG?style=centerme) <br>
+When the user opens the app, they are presented with a screen that allows them to see multiple points of data at once
+* The percent of their daily limit they have eaten so far
+* How many gallons left until their daily limit
+* Their average daily limit
+* Two most recent items entered <br>
+This provides a good overall view while the button in the top right allows users to enter a new item
+
+![Home2](/Screenshots/Home2.PNG?style=centerme) <br>
+Scrolling on the daily limit section reveals a breakdown of the user's water usage per meal. This allows users to see which meals are particularly water consumptive and focus on making changes there first.
+
+![Meal](/Screenshots/Meal.PNG) ![Details](/Screenshots/Details.PNG) <br>
+When the user selects a specific meal, they are able to see both the total water usage for that meal and the water footprint of each ingredient. Selecting an item brings up the details page which provides 4 main points of data: <br>
+* An overall rating for the item (good/fair/bad)
+* How this item compares to other items in the same category
+* Serving size this water footprint value is based on
+* Source URL where the data was extracted from
+
+![Settings](/Screenshots/Settings.PNG) <br>
+To encourage the user to improve their water footprint, they are able to set a daily limit. This value is used to calculate the value shown on the home screen.
+
 ## Download for iOS
 [Available on the App Store now](https://itunes.apple.com/us/app/clarity-become-water-wise/id1447307471?mt=8)
