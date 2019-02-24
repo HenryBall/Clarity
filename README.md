@@ -13,7 +13,10 @@ So, how do we make a more meaningful effort toward water sustainability? We need
 To make this data easy and accessible, we've developed Clarity. By allowing users to keep track of their personal water footprint, we hope to encourage users to make changes toward a more sustainable diet.
 
 ## How it works
-![Home](/Screenshots/Home.PNG?style=centerme) <br>
+ <p align="center"> 
+  <img src="/Screenshots/Home.PNG" alt="Image" width="281" height="500" />
+ </p>
+ 
 When the user opens the app, they are presented with a screen that allows them to see multiple points of data at once
 * The percent of their daily limit they have eaten so far
 * How many gallons left until their daily limit
@@ -21,7 +24,9 @@ When the user opens the app, they are presented with a screen that allows them t
 * Two most recent items entered <br>
 This provides a good overall view while the button in the top right allows users to enter a new item
 
-![Home2](/Screenshots/Home2.PNG?style=centerme) <br>
+<p align="center"> 
+  <img src="/Screenshots/Home2.PNG" alt="Image" width="281" height="500" />
+ </p>
 Scrolling on the daily limit section reveals a breakdown of the user's water usage per meal. This allows users to see which meals are particularly water consumptive and focus on making changes there first.
 
 ![Meal](/Screenshots/Meal.PNG) ![Details](/Screenshots/Details.PNG) <br>
@@ -31,7 +36,9 @@ When the user selects a specific meal, they are able to see both the total water
 * Serving size this water footprint value is based on
 * Source URL where the data was extracted from
 
-![Settings](/Screenshots/Settings.PNG) <br>
+<p align="center"> 
+  <img src="/Screenshots/Settings.PNG" alt="Image" width="281" height="500" />
+ </p>
 To encourage the user to improve their water footprint, they are able to set a daily limit. This value is used to calculate the value shown on the home screen.
 
 ## Download for iOS
