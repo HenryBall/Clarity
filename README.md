@@ -1,5 +1,5 @@
 # Clarity
-<center>We've developed an iOS application that allows users to be more responsible for their individual water footprint through the food they eat. Using text matching and text recognition, users are able to input the food they eat throughout the day and retrieve the water footprint of each food. </center>
+<center>We've developed an iOS application that allows users to be more responsible for their individual water footprint through the food they eat. Using text matching and text recognition, users are able to input the food they eat throughout the day and retrieve the water footprint of each food. We hope that providing the water footprint will encourage users to consider the impact of the foods they eat and ultimately build a diet with a smaller impact.  </center>
 
 ## Why did we build this?
 Did you know that only 3% of Earth's water is fresh water? Or that only 1% is available for drinking? <br>
